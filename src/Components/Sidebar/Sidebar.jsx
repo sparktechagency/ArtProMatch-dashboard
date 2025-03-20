@@ -98,7 +98,7 @@ const Sidebar = ({ closeDrawer }) => {
                 onClick={!item.isDropdown ? closeDrawer : undefined}
               >
                 <div
-                  className={`w-52 flex justify-between items-center px-5 py-2 cursor-pointer ${
+                  className={`w-60 flex justify-between items-center px-5 py-2 cursor-pointer ${
                     active === item.label
                       ? "rounded-xl bg-primary text-white  hover:text-white"
                       : "bg-white text-primary hover:text-primary border border-primary rounded-xl"
@@ -177,9 +177,9 @@ const Sidebar = ({ closeDrawer }) => {
           ))}
 
           {/* Logout */}
-          <Link className="text-black hover:text-black" to="/auth/login">
+          <Link className="text-black hover:text-black" to="/sign-in">
             <div
-              className="bg-red-700 w-52 md:mt-20 py-3 flex justify-center items-center cursor-pointer hover:bg-red-500 text-white"
+              className="bg-primary w-60 py-2 flex justify-center items-center px-5 cursor-pointer text-white"
               onClick={() => console.log("Logged out")}
             >
               <FiLogOut className="text-xl" />
