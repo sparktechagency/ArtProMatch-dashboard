@@ -6,8 +6,10 @@ import ForgatePassword from "../Pages/Auth/ForgatePassword/ForgatePassword";
 import ResetPass from "../Pages/Auth/ResetPass/ResetPass";
 import Newpass from "../Pages/Auth/NewPass/Newpass";
 import VerifyPass from "../Pages/Auth/VerifyPass/VerifyPass";
-import Chat from "../Pages/ChatComponent/Chat";
+
 import ScheduledOrder from "../Pages/Orders/ScheduledOrder/ScheduledOrder";
+import CompleteadOrders from "../Pages/Orders/CompleteadOrders/CompleteadOrders";
+import Payments from "../Pages/Payments/Payments";
 
 export const router = createBrowserRouter([
   {
@@ -45,7 +47,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "/completed",
-        element: <ScheduledOrder />,
+        element: <CompleteadOrders />,
+      },
+      {
+        path: "/payments",
+        element: <Payments />,
       },
     ],
   },

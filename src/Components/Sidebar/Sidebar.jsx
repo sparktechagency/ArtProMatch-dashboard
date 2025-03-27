@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
 import { FiLogOut } from "react-icons/fi";
-import { BsGraphUp } from "react-icons/bs";
+// import { BsGraphUp } from "react-icons/bs";
 import { FaBook, FaUser } from "react-icons/fa";
 import { BiChevronDown } from "react-icons/bi";
 import { Link } from "react-router-dom";
@@ -44,12 +44,12 @@ const Sidebar = ({ closeDrawer }) => {
       isDropdown: true,
       subItems: [
         {
-          icon: <BsGraphUp className="h-5 w-5 text-primary" />,
+          // icon: <BsGraphUp className="h-5 w-5 text-primary" />,
           label: "Scheduled",
           Link: "/scheduled",
         },
         {
-          icon: <BsGraphUp className="h-5 w-5 text-primary" />,
+          // icon: <BsGraphUp className="h-5 w-5 text-primary" />,
           label: "Completed",
           Link: "/completed",
         },
