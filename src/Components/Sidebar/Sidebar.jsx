@@ -1,27 +1,21 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
-import {  FiLogOut } from "react-icons/fi";
+import { FiLogOut } from "react-icons/fi";
 import { BsGraphUp } from "react-icons/bs";
-import { FaBook,  FaUser } from "react-icons/fa";
+import { FaBook, FaUser } from "react-icons/fa";
 import { BiChevronDown } from "react-icons/bi";
 import { Link } from "react-router-dom";
-import {
-  MdDashboard,
-
-  MdPolicy,
-
-} from "react-icons/md";
+import { MdDashboard, MdPolicy } from "react-icons/md";
 import { FaMoneyCheckAlt } from "react-icons/fa";
 import { FaEdit } from "react-icons/fa";
 import { GrAnalytics } from "react-icons/gr";
 const Sidebar = ({ closeDrawer }) => {
   const [active, setActive] = useState("Dashboard");
-
-  const [showSettings, setShowSettings] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState("");
 
   const handleActiveRoute = (item) => {
     setActive(item);
-    setShowSettings(false);
+    setOpenDropdown("");
   };
 
   const handleSubItemClick = (subItem) => {
@@ -29,8 +23,13 @@ const Sidebar = ({ closeDrawer }) => {
     closeDrawer();
   };
 
-  const toggleDropdown = (item) => {
-    setShowSettings(item === "Settings");
+  // const toggleDropdown = (item) => {
+  //     setActive(item);
+  //     setOpenDropdown(openDropdown === item ? "" : item);
+  // };
+  const toggleDropdown = (label) => {
+    // setActive(label);
+    setOpenDropdown(openDropdown === label ? "" : label);
   };
 
   const menuItems = [
@@ -48,13 +47,13 @@ const Sidebar = ({ closeDrawer }) => {
           icon: <BsGraphUp className="h-5 w-5 text-primary" />,
           label: "Scheduled",
           Link: "/scheduled",
-      },
+        },
         {
           icon: <BsGraphUp className="h-5 w-5 text-primary" />,
           label: "Completed",
           Link: "/completed",
-      },
-    ]
+        },
+      ],
     },
     {
       icon: <FaMoneyCheckAlt className="h-5 w-5 text-primary" />,
@@ -82,65 +81,52 @@ const Sidebar = ({ closeDrawer }) => {
           label: "Business Profile",
           Link: "/business-profile",
         },
-        
       ],
     },
   ];
 
   return (
-    <div className="">
-      <div className=" flex flex-col md:h-full">
-        <div className="flex flex-col justify-end items-end gap-2 md:my-5 mb-10">
+    <div className="bg-white h-full md:ml-16">
+      <div className="flex flex-col md:h-full">
+        <div className="flex flex-col gap-2 md:my-5 mb-10">
           {menuItems.map((item) => (
             <div key={item.label}>
-              <Link
-                to={item.Link}
-                onClick={!item.isDropdown ? closeDrawer : undefined}
+              <div
+                className={`w-72 flex justify-between items-center px-5 py-2 cursor-pointer  ${
+                  active === item.label
+                    ? "bg-black text-primary font-semibold"
+                    : "bg-white text-black font-semibold"
+                }`}
+                onClick={() =>
+                  item.isDropdown
+                    ? toggleDropdown(item.label)
+                    : handleActiveRoute(item.label)
+                }
               >
-                <div
-                  className={`w-60 flex justify-between items-center px-5 py-2 cursor-pointer ${
-                    active === item.label
-                      ? "rounded-xl bg-primary text-white  hover:text-white"
-                      : "bg-white text-primary hover:text-primary border border-primary rounded-xl"
-                  }`}
-                  onClick={() =>
-                    item.isDropdown
-                      ? toggleDropdown(item.label)
-                      : handleActiveRoute(item.label)
-                  }
-                >
-                  <div
-                    className={`${
-                      active === item.label
-                        ? "text-white hover:text-white"
-                        : "bg-white text-black hover:text-black"
-                    }`}
-                  >
-                    <div className="flex items-center gap-3">
-                      {item.icon}
-                      {!item.isDropdown ? (
-                        <p>{item.label}</p>
-                      ) : (
-                        <div className="flex items-center justify-between w-full">
-                          <p>{item.label}</p>
-                          <BiChevronDown />
-                        </div>
-                      )}
-                    </div>
+                <Link to={item.Link}>
+                  <div className="flex items-center gap-3">
+                    {item.icon}
+                    <p>{item.label}</p>
+                    {item.isDropdown && (
+                      <BiChevronDown
+                        className={`transform transition-transform ${
+                          openDropdown === item.label ? "rotate-180" : ""
+                        }`}
+                      />
+                    )}
                   </div>
-                </div>
-              </Link>
-
-              {/* Dropdown for Settings */}
-              {item.label === "User Management" && showSettings && (
+                </Link>
+              </div>
+              {/* Dropdown for sub-items */}
+              {item.isDropdown && openDropdown === item.label && (
                 <div className="flex flex-col">
                   {item.subItems.map((subItem) => (
                     <Link to={subItem.Link} key={subItem.label}>
                       <div
-                        className={`py-2 px-5 cursor-pointer ${
+                        className={`py-2 px-5 cursor-pointer  ${
                           active === subItem.label
-                            ? "text-white bg-red-300 font-bold"
-                            : "text-black bg-white"
+                            ? "text-white bg-primary font-bold"
+                            : "text-black bg-[#efe5c4]"
                         }`}
                         onClick={() => handleSubItemClick(subItem.label)}
                       >
@@ -153,37 +139,15 @@ const Sidebar = ({ closeDrawer }) => {
                   ))}
                 </div>
               )}
-
-              {/* Dropdown for Content */}
-              {item.label === "Content" && (
-                <div className="flex flex-col">
-                  {item.subItems.map((subItem) => (
-                    <Link to={subItem.Link} key={subItem.label}>
-                      <div
-                        className={`py-2 px-5 cursor-pointer ${
-                          active === subItem.label
-                            ? "text-white bg-red-700 font-bold"
-                            : "text-black bg-white"
-                        }`}
-                        onClick={() => handleSubItemClick(subItem.label)}
-                      >
-                        {subItem.label}
-                      </div>
-                    </Link>
-                  ))}
-                </div>
-              )}
             </div>
           ))}
-
           {/* Logout */}
           <Link className="text-black hover:text-black" to="/sign-in">
             <div
-              className="bg-primary w-60 py-2 flex justify-center items-center px-5 cursor-pointer text-white"
+              className="bg-primary w-72 md:mt-20 py-3 flex justify-center items-center cursor-pointer hover:bg-primary text-white"
               onClick={() => console.log("Logged out")}
             >
               <FiLogOut className="text-xl" />
-
               <p className="ml-2">Log out</p>
             </div>
           </Link>
