@@ -2,9 +2,12 @@ import { useState } from "react";
 import { Input, ConfigProvider } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import PaymentsCards from "../../Components/PageComponents/PaymentsCards";
+import ArtistPayments from "../../Components/PageComponents/ArtistPayments";
+import BusinessPayments from "../../Components/PageComponents/BusinessPayments";
+import UserPayents from "../../Components/PageComponents/UserPayents";
 
 const Payments = () => {
-  const [active, setActive] = useState(null);
+  const [active, setActive] = useState("users");
   const [email, setEmail] = useState("");
 
   const handleSearch = () => {
@@ -51,7 +54,7 @@ const Payments = () => {
         </div>
 
         {/* Search Input */}
-        <div className="">
+        <div>
           <ConfigProvider
             theme={{
               components: {
@@ -87,6 +90,13 @@ const Payments = () => {
             </div>
           </ConfigProvider>
         </div>
+      </div>
+
+      {/* Render corresponding component based on active state */}
+      <div className="mt-4">
+        {active === "users" && <UserPayents />}
+        {active === "artist" && <ArtistPayments />}
+        {active === "business" && <BusinessPayments />}
       </div>
     </div>
   );
