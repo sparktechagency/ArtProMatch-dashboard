@@ -21,15 +21,15 @@ const RevinueStats = () => {
   const mockData = [
     { name: "Jan", User: 100 },
     { name: "Feb", User: 45 },
-    { name: "Mar", User: 35 },
+    { name: "Mar", User: 35 }, // March
     { name: "Apr", User: 100 },
-    { name: "May", User: 20 },
+    { name: "May", User: 20 }, // May
     { name: "Jun", User: 80 },
     { name: "Jul", User: 70 },
-    { name: "Aug", User: 40 },
+    { name: "Aug", User: 40 }, // August
     { name: "Sep", User: 60 },
     { name: "Oct", User: 50 },
-    { name: "Nov", User: 30 },
+    { name: "Nov", User: 30 }, // November
     { name: "Dec", User: 10 },
   ];
 
@@ -66,21 +66,15 @@ const RevinueStats = () => {
         <div className="mt-6" style={{ height: "300px" }}>
           <ResponsiveContainer width="100%" height="100%">
             <BarChart
-              data={mockData}
-              margin={{
-                top: 10,
-                right: 20,
-                left: -10,
-                bottom: 0,
-              }}
+              data={normalizeData} // Use normalized data
+              margin={{ top: 10, right: 20, left: 0, bottom: 0 }}
             >
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" />
-              <YAxis tickFormatter={(value) => `${value}%`} />
+              <XAxis dataKey="name" interval={0} /> {/* Force all labels */}
+              <YAxis domain={[0, 100]} tickFormatter={(value) => `${value}%`} />
               <Tooltip formatter={(value) => `${value.toFixed(2)}%`} />
               <Legend />
-              <Bar dataKey="User" fill="#816a6b" />
-              {/* <Bar dataKey="Active" fill="#28A745" /> */}
+              <Bar dataKey="User" fill="#816a6b" barSize={20} />
             </BarChart>
           </ResponsiveContainer>
         </div>

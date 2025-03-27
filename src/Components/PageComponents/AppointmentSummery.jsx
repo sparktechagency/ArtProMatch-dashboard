@@ -40,7 +40,7 @@ const AppointmentSummery = () => {
         {/* Header Section */}
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
           <h1 className="text-lg md:text-xl font-medium">
-            Subscription Growth
+            Appointment Summary
           </h1>
           <DatePicker
             onChange={onChange}
@@ -65,8 +65,8 @@ const AppointmentSummery = () => {
             >
               <defs>
                 <linearGradient id="colorEarnings" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#d4af37" stopOpacity={0.8} />
-                  <stop offset="95%" stopColor="#d4af37" stopOpacity={0} />
+                  <stop offset="5%" stopColor="#816a6b" stopOpacity={0.8} />
+                  <stop offset="95%" stopColor="#816a6b" stopOpacity={0} />
                 </linearGradient>
               </defs>
               <CartesianGrid strokeDasharray="3 3" />
