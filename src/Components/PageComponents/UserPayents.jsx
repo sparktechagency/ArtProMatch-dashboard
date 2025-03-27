@@ -20,6 +20,7 @@ const UserPayents = () => {
       phone: "9876543210",
       address: "New York, America",
       payment: "Online",
+      price: "200",
       method: "Delivery",
       description:
         "A black-and-gray realism tattoo designed to create a bold and lasting impression. The client requested intricate details with shading to enhance depth and texture.",
@@ -42,6 +43,7 @@ const UserPayents = () => {
       address: "Los Angeles, USA",
       payment: "Cash",
       method: "Pickup",
+      price: "200",
       description:
         "A modern and stylish ear and nose piercing service tailored to enhance facial aesthetics. The client preferred a minimalist approach with high-quality titanium jewelry.",
       images: [tatto, tatto],
@@ -101,14 +103,14 @@ const UserPayents = () => {
       key: "email",
     },
     {
-      title: "Order Date",
+      title: "Date",
       dataIndex: "date",
       key: "date",
     },
     {
-      title: "Time",
-      dataIndex: "time",
-      key: "time",
+      title: "Method",
+      dataIndex: "method",
+      key: "method",
     },
     {
       title: "Artist Name",
@@ -119,6 +121,11 @@ const UserPayents = () => {
       title: "Service",
       dataIndex: "service",
       key: "service",
+    },
+    {
+      title: "price",
+      dataIndex: "price",
+      key: "price",
     },
 
     {
