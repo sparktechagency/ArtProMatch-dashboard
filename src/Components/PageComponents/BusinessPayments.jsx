@@ -126,11 +126,6 @@ const BusinessPayments = () => {
               onClick={() => showModal(record)}
               icon={<FaEye className="text-primary" />}
             />
-
-            <Button
-              onClick={() => handleSession(record)}
-              icon={<FiUserCheck className="h-5 w-5 text-green-500" />}
-            />
           </Space>
         </ConfigProvider>
       ),
