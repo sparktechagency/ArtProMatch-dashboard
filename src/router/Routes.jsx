@@ -10,6 +10,7 @@ import VerifyPass from "../Pages/Auth/VerifyPass/VerifyPass";
 import ScheduledOrder from "../Pages/Orders/ScheduledOrder/ScheduledOrder";
 import CompleteadOrders from "../Pages/Orders/CompleteadOrders/CompleteadOrders";
 import Payments from "../Pages/Payments/Payments";
+import AdminProfile from "../Pages/AdminProfile/AdminProfile";
 
 export const router = createBrowserRouter([
   {
@@ -52,6 +53,10 @@ export const router = createBrowserRouter([
       {
         path: "/payments",
         element: <Payments />,
+      },
+      {
+        path: "/admin-profile",
+        element: <AdminProfile />,
       },
     ],
   },

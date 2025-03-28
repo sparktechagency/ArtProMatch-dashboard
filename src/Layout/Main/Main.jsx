@@ -87,12 +87,11 @@ const MainLayout = () => {
                       </div>
                     </Link>
                     {/* User Profile Icon */}
-                    <Link to="/userProfile">
+                    <Link to="/admin-profile">
                       <div className="flex justify-center items-center gap-2">
                         <img
                           src={user}
                           alt="User"
-                          
                           className="h-8 w-8 rounded-full"
                         />
                       </div>
@@ -103,7 +102,7 @@ const MainLayout = () => {
                 {/* Desktop Layout */}
                 {!isMobile && (
                   <div className="w-full flex justify-between items-center  ">
-                    <Link to="/userProfile">
+                    <Link to="/admin-profile">
                       <div className="flex justify-center items-center gap-2">
                         <img
                           src={user}
