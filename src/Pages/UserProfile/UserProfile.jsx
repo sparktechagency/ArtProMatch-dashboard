@@ -1,6 +1,7 @@
 import { ConfigProvider, Input } from "antd";
 import { useState } from "react";
 import { SearchOutlined } from "@ant-design/icons";
+import ActiveUserList from "../../Components/PageComponents/ActiveUserList";
 const UserProfile = () => {
   const [active, setActive] = useState("active");
   const [email, setEmail] = useState("");
@@ -76,9 +77,8 @@ const UserProfile = () => {
 
       {/* Render corresponding component based on active state */}
       <div className="mt-4">
-        {/* {active === "active" && <UserPayents />}
+        {active === "active" && <ActiveUserList />}
         {active === "delete" && <deletePayments />}
-        {active === "business" && <BusinessPayments />} */}
       </div>
     </div>
   );
