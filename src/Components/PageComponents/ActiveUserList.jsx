@@ -104,13 +104,13 @@ const ActiveUserList = () => {
     },
     {
       title: "Contact No",
-      dataIndex: "contact-no",
-      key: "contact-no",
+      dataIndex: "phone",
+      key: "phone",
     },
     {
-      title: "Email",
-      dataIndex: "email",
-      key: "email",
+      title: "Address",
+      dataIndex: "address",
+      key: "address",
     },
 
     {
@@ -159,12 +159,12 @@ const ActiveUserList = () => {
         {selectedUser && (
           <div className="p-4">
             {/* Order Header */}
-            <div className="flex justify-between items-center border-b pb-2">
+            {/* <div className="flex justify-between items-center border-b pb-2">
               <h2 className="text-lg font-semibold">Order {selectedUser.id}</h2>
               <p className="text-gray-600 text-sm">
                 Order {selectedUser.date} {selectedUser.time}
               </p>
-            </div>
+            </div> */}
 
             {/* User & Delivery Info */}
             <div className="grid grid-cols-2 gap-4 border p-4 my-4">
@@ -183,12 +183,12 @@ const ActiveUserList = () => {
                   <strong>Email:</strong> {selectedUser.email}
                 </p>
                 <p>
-                  <strong>Artist:</strong> {selectedUser["artist-name"]}
+                  <strong>Address:</strong> {selectedUser["address"]}
                 </p>
               </div>
 
               {/* Delivery Info */}
-              <div>
+              {/* <div>
                 <h3 className="font-semibold border-b pb-1">Delivery Info</h3>
                 <p>
                   <strong>Address:</strong> {selectedUser.address}
@@ -199,21 +199,21 @@ const ActiveUserList = () => {
                 <p>
                   <strong>Method:</strong> {selectedUser.method}
                 </p>
-              </div>
+              </div> */}
             </div>
 
             {/* Description */}
-            <div className="border p-3 my-4">
+            {/* <div className="border p-3 my-4">
               <h3 className="font-semibold border-b pb-1">
                 Description About Tattoo Idea
               </h3>
               <p className="text-gray-600 text-sm">
                 {selectedUser.description}
               </p>
-            </div>
+            </div> */}
 
             {/* Sample Images */}
-            {selectedUser.images && selectedUser.images.length > 0 && (
+            {/* {selectedUser.images && selectedUser.images.length > 0 && (
               <div className="my-4">
                 <h3 className="font-semibold border-b pb-1">Sample Images</h3>
                 <div className="flex gap-2 mt-2">
@@ -227,10 +227,10 @@ const ActiveUserList = () => {
                   ))}
                 </div>
               </div>
-            )}
+            )} */}
 
             {/* Order Items */}
-            <div className="border p-3 my-4">
+            {/* <div className="border p-3 my-4">
               <h3 className="font-semibold border-b pb-1">Order</h3>
               {selectedUser.orderItems.map((item, index) => (
                 <div key={index} className="flex justify-between text-sm my-1">
@@ -249,7 +249,7 @@ const ActiveUserList = () => {
                   )}
                 </p>
               </div>
-            </div>
+            </div> */}
           </div>
         )}
       </Modal>
