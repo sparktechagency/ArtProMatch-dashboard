@@ -2,7 +2,7 @@ import { ConfigProvider, Input } from "antd";
 import { useState } from "react";
 import { SearchOutlined } from "@ant-design/icons";
 const UserProfile = () => {
-  const [active, setActive] = useState("users");
+  const [active, setActive] = useState("active");
   const [email, setEmail] = useState("");
 
   const handleSearch = () => {
@@ -15,33 +15,23 @@ const UserProfile = () => {
         <div className="flex justify-start items-center gap-2">
           <button
             className={`px-4 py-2 rounded-md ${
-              active === "users"
+              active === "active"
                 ? "bg-primary text-white"
                 : "border border-primary"
             }`}
-            onClick={() => setActive("users")}
+            onClick={() => setActive("active")}
           >
-            Users
+            Active Users
           </button>
           <button
             className={`px-4 py-2 rounded-md ${
-              active === "artist"
+              active === "delete"
                 ? "bg-primary text-white"
                 : "border border-primary"
             }`}
-            onClick={() => setActive("artist")}
+            onClick={() => setActive("delete")}
           >
-            Artist
-          </button>
-          <button
-            className={`px-4 py-2 rounded-md ${
-              active === "business"
-                ? "bg-primary text-white"
-                : "border border-primary"
-            }`}
-            onClick={() => setActive("business")}
-          >
-            Business
+            Delete Users
           </button>
         </div>
 
@@ -86,8 +76,8 @@ const UserProfile = () => {
 
       {/* Render corresponding component based on active state */}
       <div className="mt-4">
-        {/* {active === "users" && <UserPayents />}
-        {active === "artist" && <ArtistPayments />}
+        {/* {active === "active" && <UserPayents />}
+        {active === "delete" && <deletePayments />}
         {active === "business" && <BusinessPayments />} */}
       </div>
     </div>
