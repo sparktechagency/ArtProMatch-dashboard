@@ -4,8 +4,7 @@ import { useState } from "react";
 import tatto from "../../assets/image/tatto.jpg";
 import { Button, Modal } from "antd";
 import { FaEye, FaUser } from "react-icons/fa";
-import { FiUserCheck } from "react-icons/fi";
-import { SearchOutlined } from "@ant-design/icons";
+
 const BusinessPayments = () => {
   const userData = [
     {
