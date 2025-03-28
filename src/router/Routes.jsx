@@ -11,6 +11,7 @@ import ScheduledOrder from "../Pages/Orders/ScheduledOrder/ScheduledOrder";
 import CompleteadOrders from "../Pages/Orders/CompleteadOrders/CompleteadOrders";
 import Payments from "../Pages/Payments/Payments";
 import AdminProfile from "../Pages/AdminProfile/AdminProfile";
+import UserProfile from "../Pages/UserProfile/UserProfile";
 
 export const router = createBrowserRouter([
   {
@@ -57,6 +58,10 @@ export const router = createBrowserRouter([
       {
         path: "/admin-profile",
         element: <AdminProfile />,
+      },
+      {
+        path: "/user-profile",
+        element: <UserProfile />,
       },
     ],
   },
