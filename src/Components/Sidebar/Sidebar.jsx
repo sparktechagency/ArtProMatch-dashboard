@@ -67,17 +67,17 @@ const Sidebar = ({ closeDrawer }) => {
       isDropdown: true,
       subItems: [
         {
-          icon: <FaEdit className="h-5 w-5 text-primary" />,
+          // icon: <FaEdit className="h-5 w-5 text-primary" />,
           label: "User Profile",
           Link: "/user-profile",
         },
         {
-          icon: <MdPolicy className="h-5 w-5 text-primary" />,
+          // icon: <MdPolicy className="h-5 w-5 text-primary" />,
           label: "Artist Profile",
           Link: "/artist-profile",
         },
         {
-          icon: <GrAnalytics className="h-5 w-5 text-primary" />,
+          // icon: <GrAnalytics className="h-5 w-5 text-primary" />,
           label: "Business Profile",
           Link: "/business-profile",
         },
