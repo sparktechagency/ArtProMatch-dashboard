@@ -29,6 +29,7 @@ const ActiveBusiness = () => {
         { item: "Oral Tattoo (Small)", price: 130 },
         { item: "Realism Tattoo", price: 70 },
       ],
+      businessName: "Rivera Ink Studio",
     },
     {
       id: "#1240",
@@ -51,6 +52,7 @@ const ActiveBusiness = () => {
         { item: "Ear Piercing", price: 50 },
         { item: "Nose Piercing", price: 40 },
       ],
+      businessName: "Rivera Ink Studio",
     },
     {
       id: "#1240",
@@ -73,6 +75,7 @@ const ActiveBusiness = () => {
         { item: "Ear Piercing", price: 50 },
         { item: "Nose Piercing", price: 40 },
       ],
+      businessName: "Rivera Ink Studio",
     },
   ];
 
@@ -193,7 +196,7 @@ const ActiveBusiness = () => {
               {/* User Info */}
               <div>
                 <h3 className="font-semibold border-b pb-1">
-                  User Information
+                  Business Information
                 </h3>
                 <p>
                   <strong>Name:</strong> {selectedUser.name}
@@ -206,6 +209,9 @@ const ActiveBusiness = () => {
                 </p>
                 <p>
                   <strong>Address:</strong> {selectedUser["address"]}
+                </p>
+                <p>
+                  <strong>Business Name:</strong> {selectedUser["businessName"]}
                 </p>
               </div>
 
@@ -235,7 +241,7 @@ const ActiveBusiness = () => {
             </div> */}
 
             {/* Sample Images */}
-            {/* {selectedUser.images && selectedUser.images.length > 0 && (
+            {selectedUser.images && selectedUser.images.length > 0 && (
               <div className="my-4">
                 <h3 className="font-semibold border-b pb-1">Sample Images</h3>
                 <div className="flex gap-2 mt-2">
@@ -249,7 +255,7 @@ const ActiveBusiness = () => {
                   ))}
                 </div>
               </div>
-            )} */}
+            )}
 
             {/* Order Items */}
             {/* <div className="border p-3 my-4">

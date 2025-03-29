@@ -94,7 +94,7 @@ const Sidebar = ({ closeDrawer }) => {
               <div
                 className={`w-72 flex justify-between items-center px-5 py-2 cursor-pointer  ${
                   active === item.label
-                    ? "bg-black text-primary font-semibold"
+                    ? "bg-[#d3cccd] text-primary font-semibold"
                     : "bg-white text-black font-semibold"
                 }`}
                 onClick={() =>
@@ -130,7 +130,7 @@ const Sidebar = ({ closeDrawer }) => {
                         }`}
                         onClick={() => handleSubItemClick(subItem.label)}
                       >
-                        <p className="flex items-center gap-2 ml-10">
+                        <p className="flex items-center gap-2 ml-2">
                           {subItem.icon}
                           {subItem.label}
                         </p>
@@ -142,7 +142,7 @@ const Sidebar = ({ closeDrawer }) => {
             </div>
           ))}
           {/* Logout */}
-          <Link className="text-black hover:text-black" to="/sign-in">
+          <Link className="text-[#d3cccd] hover:text-[#d3cccd]" to="/sign-in">
             <div
               className="bg-primary w-72 md:mt-20 py-3 flex justify-center items-center cursor-pointer hover:bg-primary text-white"
               onClick={() => console.log("Logged out")}
