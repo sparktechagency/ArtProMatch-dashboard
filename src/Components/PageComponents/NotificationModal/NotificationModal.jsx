@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import user from "../../../assets/image/User 2.png";
-const NotificationModal = ({ handleOk, handleCancel }) => {
+const NotificationModal = () => {
   return (
     <div>
       <h1 className="text-xl font-bold border-0 border-b pb-2 ">
