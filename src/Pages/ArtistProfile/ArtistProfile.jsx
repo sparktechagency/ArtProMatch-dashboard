@@ -3,6 +3,7 @@ import { SearchOutlined } from "@ant-design/icons";
 import { ConfigProvider, Input } from "antd";
 import PendingArtist from "../../Components/PageComponents/PendingArtist";
 import ActiveArtist from "../../Components/PageComponents/ActiveArtist";
+import DeleteArtist from "../../Components/PageComponents/DeleteArtist";
 const ArtistProfile = () => {
   const [active, setActive] = useState();
   const [email, setEmail] = useState();
@@ -88,6 +89,7 @@ const ArtistProfile = () => {
       <div className="mt-4">
         {active === "pending" && <PendingArtist />}
         {active === "active" && <ActiveArtist />}
+        {active === "delete" && <DeleteArtist />}
       </div>
     </div>
   );

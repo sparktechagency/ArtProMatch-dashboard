@@ -6,31 +6,9 @@ import { Button, Modal } from "antd";
 import { FaEye, FaUser } from "react-icons/fa";
 import { FiUserCheck } from "react-icons/fi";
 import { SearchOutlined } from "@ant-design/icons";
-const ActiveArtist = () => {
+const DeleteArtist = () => {
   const userData = [
     {
-      id: "#1239",
-      name: "Mr. Mahmud",
-      email: "mr101@mail.ru",
-      profileImage: <FaUser />,
-      date: "2024-03-27",
-      time: "10:00 AM",
-      "artist-name": "John Doe",
-      service: "Tattoo",
-      phone: "9876543210",
-      address: "New York, America",
-      payment: "Online",
-      price: "200",
-      method: "Delivery",
-      description:
-        "A black-and-gray realism tattoo designed to create a bold and lasting impression. The client requested intricate details with shading to enhance depth and texture.",
-      images: [tatto, tatto, tatto],
-      orderItems: [
-        { item: "Oral Tattoo (Small)", price: 130 },
-        { item: "Realism Tattoo", price: 70 },
-      ],
-    },
-    {
       id: "#1240",
       name: "Ms. Sarah",
       email: "sarah99@mail.com",
@@ -51,28 +29,8 @@ const ActiveArtist = () => {
         { item: "Ear Piercing", price: 50 },
         { item: "Nose Piercing", price: 40 },
       ],
-    },
-    {
-      id: "#1240",
-      name: "Ms. Sarah",
-      email: "sarah99@mail.com",
-      profileImage: <FaUser />,
-      date: "2024-03-28",
-      time: "02:30 PM",
-      "artist-name": "Jane Smith",
-      service: "Piercing",
-      phone: "1234567890",
-      address: "Los Angeles, USA",
-      payment: "Cash",
-      method: "Pickup",
-      price: "200",
-      description:
-        "A modern and stylish ear and nose piercing service tailored to enhance facial aesthetics. The client preferred a minimalist approach with high-quality titanium jewelry.",
-      images: [tatto, tatto],
-      orderItems: [
-        { item: "Ear Piercing", price: 50 },
-        { item: "Nose Piercing", price: 40 },
-      ],
+      deleteReason:
+        "Valo lage Nai ,Ti Delete Kore dichi.Onek Time waste hoy. Amar Moner Moto service pai nai.",
     },
   ];
 
@@ -189,7 +147,7 @@ const ActiveArtist = () => {
             </div> */}
 
             {/* User & Delivery Info */}
-            <div className="grid grid-cols-2 gap-4 border p-4 my-4">
+            <div className="grid grid-cols-1 gap-4 border p-4 my-4">
               {/* User Info */}
               <div>
                 <h3 className="font-semibold border-b pb-1">
@@ -206,6 +164,9 @@ const ActiveArtist = () => {
                 </p>
                 <p>
                   <strong>Address:</strong> {selectedUser["address"]}
+                </p>
+                <p>
+                  <strong>Delete Reason:</strong> {selectedUser["deleteReason"]}
                 </p>
               </div>
 
@@ -279,4 +240,4 @@ const ActiveArtist = () => {
   );
 };
 
-export default ActiveArtist;
+export default DeleteArtist;
