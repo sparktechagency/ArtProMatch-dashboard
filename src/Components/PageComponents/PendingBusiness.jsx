@@ -29,6 +29,7 @@ const PendingBusiness = () => {
         { item: "Oral Tattoo (Small)", price: 130 },
         { item: "Realism Tattoo", price: 70 },
       ],
+      businessName: "Rivera Ink Studio",
     },
     {
       id: "#1240",
@@ -51,6 +52,7 @@ const PendingBusiness = () => {
         { item: "Ear Piercing", price: 50 },
         { item: "Nose Piercing", price: 40 },
       ],
+      businessName: "Rivera Ink Studio",
     },
     {
       id: "#1240",
@@ -73,6 +75,7 @@ const PendingBusiness = () => {
         { item: "Ear Piercing", price: 50 },
         { item: "Nose Piercing", price: 40 },
       ],
+      businessName: "Rivera Ink Studio",
     },
   ];
 
@@ -207,6 +210,9 @@ const PendingBusiness = () => {
                 <p>
                   <strong>Address:</strong> {selectedUser["address"]}
                 </p>
+                <p>
+                  <strong>Business Name:</strong> {selectedUser["businessName"]}
+                </p>
               </div>
 
               {/* Delivery Info */}
@@ -235,9 +241,11 @@ const PendingBusiness = () => {
             </div> */}
 
             {/* Sample Images */}
-            {/* {selectedUser.images && selectedUser.images.length > 0 && (
+            {selectedUser.images && selectedUser.images.length > 0 && (
               <div className="my-4">
-                <h3 className="font-semibold border-b pb-1">Sample Images</h3>
+                <h3 className="font-semibold border-b pb-1">
+                  Verify ID With Selfie
+                </h3>
                 <div className="flex gap-2 mt-2">
                   {selectedUser.images.map((img, index) => (
                     <img
@@ -249,7 +257,7 @@ const PendingBusiness = () => {
                   ))}
                 </div>
               </div>
-            )} */}
+            )}
 
             {/* Order Items */}
             {/* <div className="border p-3 my-4">
