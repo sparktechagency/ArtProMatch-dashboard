@@ -13,6 +13,7 @@ import Payments from "../Pages/Payments/Payments";
 import AdminProfile from "../Pages/AdminProfile/AdminProfile";
 import UserProfile from "../Pages/UserProfile/UserProfile";
 import ArtistProfile from "../Pages/ArtistProfile/ArtistProfile";
+import BusinessProfile from "../Pages/BusinessProfile/BusinessProfile";
 
 export const router = createBrowserRouter([
   {
@@ -67,6 +68,10 @@ export const router = createBrowserRouter([
       {
         path: "/artist-profile",
         element: <ArtistProfile />,
+      },
+      {
+        path: "/business-profile",
+        element: <BusinessProfile />,
       },
     ],
   },
