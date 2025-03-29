@@ -196,7 +196,7 @@ const ActiveBusiness = () => {
               {/* User Info */}
               <div>
                 <h3 className="font-semibold border-b pb-1">
-                  User Information
+                  Business Information
                 </h3>
                 <p>
                   <strong>Name:</strong> {selectedUser.name}
