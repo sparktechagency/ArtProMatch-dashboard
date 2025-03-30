@@ -5,10 +5,9 @@ import { FiLogOut } from "react-icons/fi";
 import { FaBook, FaUser } from "react-icons/fa";
 import { BiChevronDown } from "react-icons/bi";
 import { Link } from "react-router-dom";
-import { MdDashboard, MdPolicy } from "react-icons/md";
+import { MdDashboard } from "react-icons/md";
 import { FaMoneyCheckAlt } from "react-icons/fa";
-import { FaEdit } from "react-icons/fa";
-import { GrAnalytics } from "react-icons/gr";
+
 const Sidebar = ({ closeDrawer }) => {
   const [active, setActive] = useState("Dashboard");
   const [openDropdown, setOpenDropdown] = useState("");
@@ -67,17 +66,17 @@ const Sidebar = ({ closeDrawer }) => {
       isDropdown: true,
       subItems: [
         {
-          icon: <FaEdit className="h-5 w-5 text-primary" />,
+          // icon: <FaEdit className="h-5 w-5 text-primary" />,
           label: "User Profile",
           Link: "/user-profile",
         },
         {
-          icon: <MdPolicy className="h-5 w-5 text-primary" />,
+          // icon: <MdPolicy className="h-5 w-5 text-primary" />,
           label: "Artist Profile",
           Link: "/artist-profile",
         },
         {
-          icon: <GrAnalytics className="h-5 w-5 text-primary" />,
+          // icon: <GrAnalytics className="h-5 w-5 text-primary" />,
           label: "Business Profile",
           Link: "/business-profile",
         },
@@ -86,16 +85,16 @@ const Sidebar = ({ closeDrawer }) => {
   ];
 
   return (
-    <div className="bg-white h-full md:ml-16">
+    <div className="bg-white h-full">
       <div className="flex flex-col md:h-full">
         <div className="flex flex-col gap-2 md:my-5 mb-10">
           {menuItems.map((item) => (
             <div key={item.label}>
               <div
-                className={`w-72 flex justify-between items-center px-5 py-2 cursor-pointer  ${
+                className={`w-64 flex justify-between items-center px-5 py-2 cursor-pointer  ${
                   active === item.label
-                    ? "bg-[#d3cccd] text-primary font-semibold"
-                    : "bg-white text-black font-semibold"
+                    ? "bg-primary border-2 rounded-xl text-white font-semibold"
+                    : "bg-white text-black font-semibold border-primary border-2 rounded-xl"
                 }`}
                 onClick={() =>
                   item.isDropdown
@@ -119,14 +118,14 @@ const Sidebar = ({ closeDrawer }) => {
               </div>
               {/* Dropdown for sub-items */}
               {item.isDropdown && openDropdown === item.label && (
-                <div className="flex flex-col">
+                <div className="flex flex-col justify-centers items-center">
                   {item.subItems.map((subItem) => (
                     <Link to={subItem.Link} key={subItem.label}>
                       <div
-                        className={`py-2 px-5 cursor-pointer  ${
+                        className={`py-2 px-5 cursor-pointer w-56 mt-2  ${
                           active === subItem.label
-                            ? "text-white bg-primary font-bold"
-                            : "text-black bg-[#efe5c4]"
+                            ? "text-white bg-primary font-bold border-primary border-2 rounded-xl"
+                            : "text-black border-primary border-2 rounded-xl"
                         }`}
                         onClick={() => handleSubItemClick(subItem.label)}
                       >
