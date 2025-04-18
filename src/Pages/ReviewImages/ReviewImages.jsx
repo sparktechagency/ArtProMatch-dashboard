@@ -2,8 +2,8 @@ import { ConfigProvider, Input } from "antd";
 import { useState } from "react";
 import { SearchOutlined } from "@ant-design/icons";
 
-import PendingReport from "../../Components/PageComponents/PendingReport";
 import CheckedReport from "../../Components/PageComponents/CheckedReport";
+import ReviewArtist from "../../Components/PageComponents/ReviewArtist";
 const ReviewImages = () => {
   const [active, setActive] = useState("active");
   const [email, setEmail] = useState("");
@@ -24,7 +24,7 @@ const ReviewImages = () => {
             }`}
             onClick={() => setActive("active")}
           >
-           Artist
+          Review  Artist
           </button>
           <button
             className={`px-4 py-2 rounded-md ${
@@ -34,7 +34,7 @@ const ReviewImages = () => {
             }`}
             onClick={() => setActive("delete")}
           >
-            Business
+             Review Business
           </button>
         </div>
 
@@ -79,7 +79,7 @@ const ReviewImages = () => {
 
       {/* Render corresponding component based on active state */}
       <div className="mt-4">
-        {active === "active" && <PendingReport/>}
+        {active === "active" && <ReviewArtist/>}
         {active === "delete" && <CheckedReport />}
       </div>
     </div>
