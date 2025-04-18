@@ -5,9 +5,10 @@ import { FiLogOut } from "react-icons/fi";
 import { FaBook, FaBusinessTime, FaUser, FaUserTie } from "react-icons/fa";
 import { BiChevronDown } from "react-icons/bi";
 import { Link } from "react-router-dom";
-import { MdDashboard } from "react-icons/md";
+import { MdDashboard, MdReport } from "react-icons/md";
 import { FaMoneyCheckAlt } from "react-icons/fa";
 import { ImProfile } from "react-icons/im";
+import { IoMdImages } from "react-icons/io";
 
 const Sidebar = ({ closeDrawer }) => {
   const [active, setActive] = useState("Dashboard");
@@ -55,21 +56,13 @@ const Sidebar = ({ closeDrawer }) => {
         },
       ],
     },
+    
     {
-      icon: <FaUserTie className="h-5 w-5 text-primary" />,
-      label: "User profile",
-      Link: "/user-profile",
+      icon: <IoMdImages className="h-5 w-5 text-primary" />,
+      label: "Review Images",
+      Link: "/review-images",
     },
-    {
-      icon: <ImProfile className="h-5 w-5 text-primary" />,
-      label: "Artist profile",
-      Link: "/artist-profile",
-    },
-    {
-      icon: <FaBusinessTime className="h-5 w-5 text-primary" />,
-      label: "Business profile",
-      Link: "/business-profile",
-    },
+   
     {
       icon: <FaMoneyCheckAlt className="h-5 w-5 text-primary" />,
       label: "Payments",
@@ -97,6 +90,11 @@ const Sidebar = ({ closeDrawer }) => {
           Link: "/business-profile",
         },
       ],
+    },
+    {
+      icon: <MdReport className="h-5 w-5 text-primary" />,
+      label: "Report",
+      Link: "/report",
     },
   ];
 
