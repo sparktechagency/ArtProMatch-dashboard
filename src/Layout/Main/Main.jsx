@@ -2,13 +2,14 @@
 import { Outlet } from "react-router-dom";
 import Sidebar from "../../Components/Sidebar/Sidebar";
 import { useEffect, useState } from "react";
-import { ConfigProvider, Drawer } from "antd";
+import { ConfigProvider, Drawer, Modal } from "antd";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { FaX } from "react-icons/fa6";
 import { IoIosNotificationsOutline } from "react-icons/io";
 import { Link } from "react-router-dom";
-import brandlogo from "../../assets/image/logo.png";
+import brandlogo from "../../assets/image/Logo.png";
 import user from "../../assets/image/user.png";
+import NotificationModal from "../../Components/PageComponents/NotificationModal/NotificationModal";
 
 const MainLayout = () => {
   const [drawer, setDrawer] = useState(false);
@@ -25,6 +26,20 @@ const MainLayout = () => {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  const [isModalOpenForNotification, setIsModalOpenForNotification] =
+    useState(false);
+  const showModalForNotification = () => {
+    setIsModalOpenForNotification(true);
+  };
+
+  const handleOkForNotification = () => {
+    setIsModalOpenForNotification(false);
+  };
+
+  const handleCancelForNotification = () => {
+    setIsModalOpenForNotification(false);
+  };
 
   return (
     <div>
@@ -78,21 +93,21 @@ const MainLayout = () => {
                     {/* Logo */}
                     <img src={brandlogo} alt="brandlogo" className="h-6 w-6" />
                     {/* Notifications Icon */}
-                    <Link to="/notification">
-                      <div className="relative">
-                        <IoIosNotificationsOutline className="h-10 w-10 bg-white rounded-full text-black p-2" />
-                        <span className="bg-green-500 h-5 w-5 rounded-full flex justify-center items-center absolute top-0 right-0 text-white text-xs">
-                          1
-                        </span>
-                      </div>
-                    </Link>
+                    <div
+                      onClick={showModalForNotification}
+                      className="relative"
+                    >
+                      <IoIosNotificationsOutline className="h-10 w-10 bg-white rounded-full text-black p-2" />
+                      <span className="bg-green-500 h-5 w-5 rounded-full flex justify-center items-center absolute top-0 right-0 text-white text-xs">
+                        1
+                      </span>
+                    </div>
                     {/* User Profile Icon */}
-                    <Link to="/userProfile">
+                    <Link to="/admin-profile">
                       <div className="flex justify-center items-center gap-2">
                         <img
                           src={user}
                           alt="User"
-                          
                           className="h-8 w-8 rounded-full"
                         />
                       </div>
@@ -103,7 +118,7 @@ const MainLayout = () => {
                 {/* Desktop Layout */}
                 {!isMobile && (
                   <div className="w-full flex justify-between items-center  ">
-                    <Link to="/userProfile">
+                    <Link to="/admin-profile">
                       <div className="flex justify-center items-center gap-2">
                         <img
                           src={user}
@@ -119,14 +134,15 @@ const MainLayout = () => {
                     </Link>
                     <div>
                       <div className="flex justify-between items-center gap-5 py-5">
-                        <Link to="/notification">
-                          <div className="relative">
-                            <IoIosNotificationsOutline className="h-10 w-10 bg-white rounded-full text-black p-2" />
-                            <span className="bg-red-500 h-5 w-5 rounded-full flex justify-center items-center absolute top-0 right-0 text-white text-xs">
-                              1
-                            </span>
-                          </div>
-                        </Link>
+                        <div
+                          onClick={showModalForNotification}
+                          className="relative"
+                        >
+                          <IoIosNotificationsOutline className="h-10 w-10 bg-white rounded-full text-black p-2" />
+                          <span className="bg-red-500 h-5 w-5 rounded-full flex justify-center items-center absolute top-0 right-0 text-white text-xs">
+                            1
+                          </span>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -139,6 +155,14 @@ const MainLayout = () => {
           </div>
         </div>
       </ConfigProvider>
+
+      <Modal
+        open={isModalOpenForNotification}
+        onOk={handleOkForNotification}
+        onCancel={handleCancelForNotification}
+      >
+        <NotificationModal></NotificationModal>
+      </Modal>
     </div>
   );
 };
