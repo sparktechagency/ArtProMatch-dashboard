@@ -15,6 +15,7 @@ import UserProfile from "../Pages/UserProfile/UserProfile";
 import ArtistProfile from "../Pages/ArtistProfile/ArtistProfile";
 import BusinessProfile from "../Pages/BusinessProfile/BusinessProfile";
 import Report from "../Pages/Report/Report";
+import ReviewImages from "../Pages/ReviewImages/ReviewImages";
 
 export const router = createBrowserRouter([
   {
@@ -77,6 +78,10 @@ export const router = createBrowserRouter([
       {
         path:'/report',
         element:<Report></Report>
+      },
+      {
+        path:"/review-images",
+        element:<ReviewImages/>
       }
     ],
   },
