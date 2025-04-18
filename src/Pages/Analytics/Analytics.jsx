@@ -1,8 +1,9 @@
+// import DashbaordAnalytics from "./DashboardAnalytics/DashbaordAnalytics";
 
 const Analytics = () => {
     return (
         <div>
-            Analytics
+       {/* <DashbaordAnalytics/> */}
         </div>
     );
 };
