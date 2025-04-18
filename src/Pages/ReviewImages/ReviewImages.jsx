@@ -4,6 +4,7 @@ import { SearchOutlined } from "@ant-design/icons";
 
 import CheckedReport from "../../Components/PageComponents/CheckedReport";
 import ReviewArtist from "../../Components/PageComponents/ReviewArtist";
+import ReviewBusiness from "../../Components/PageComponents/ReviewBusiness";
 const ReviewImages = () => {
   const [active, setActive] = useState("active");
   const [email, setEmail] = useState("");
@@ -80,7 +81,7 @@ const ReviewImages = () => {
       {/* Render corresponding component based on active state */}
       <div className="mt-4">
         {active === "active" && <ReviewArtist/>}
-        {active === "delete" && <CheckedReport />}
+        {active === "delete" && <ReviewBusiness />}
       </div>
     </div>
   );
