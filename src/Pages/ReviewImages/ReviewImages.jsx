@@ -2,7 +2,6 @@ import { ConfigProvider, Input } from "antd";
 import { useState } from "react";
 import { SearchOutlined } from "@ant-design/icons";
 
-import CheckedReport from "../../Components/PageComponents/CheckedReport";
 import ReviewArtist from "../../Components/PageComponents/ReviewArtist";
 import ReviewBusiness from "../../Components/PageComponents/ReviewBusiness";
 const ReviewImages = () => {
