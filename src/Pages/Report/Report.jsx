@@ -24,7 +24,7 @@ const Report = () => {
             }`}
             onClick={() => setActive("active")}
           >
-            Active Users
+            Pending Report
           </button>
           <button
             className={`px-4 py-2 rounded-md ${
@@ -34,7 +34,7 @@ const Report = () => {
             }`}
             onClick={() => setActive("delete")}
           >
-            Delete Users
+         Checked Report
           </button>
         </div>
 
