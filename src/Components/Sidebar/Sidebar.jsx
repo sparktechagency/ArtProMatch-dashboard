@@ -2,12 +2,11 @@
 import { useState } from "react";
 import { FiLogOut } from "react-icons/fi";
 // import { BsGraphUp } from "react-icons/bs";
-import { FaBook, FaBusinessTime, FaUser, FaUserTie } from "react-icons/fa";
+import { FaBook, FaUser} from "react-icons/fa";
 import { BiChevronDown } from "react-icons/bi";
 import { Link } from "react-router-dom";
 import { MdDashboard, MdReport } from "react-icons/md";
 import { FaMoneyCheckAlt } from "react-icons/fa";
-import { ImProfile } from "react-icons/im";
 import { IoMdImages } from "react-icons/io";
 
 const Sidebar = ({ closeDrawer }) => {
