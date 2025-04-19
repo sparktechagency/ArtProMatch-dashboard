@@ -6,7 +6,7 @@ import ActiveBusiness from "../../Components/PageComponents/ActiveBusiness";
 import PendingBusiness from "../../Components/PageComponents/PendingBusiness";
 import DeleteBusiness from "../../Components/PageComponents/DeleteBusiness";
 const BusinessProfile = () => {
-  const [active, setActive] = useState();
+  const [active, setActive] = useState("pending");
   const [email, setEmail] = useState();
   const handleSearch = () => {
     console.log("Searching for:", email);

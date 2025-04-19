@@ -2,11 +2,12 @@
 import { useState } from "react";
 import { FiLogOut } from "react-icons/fi";
 // import { BsGraphUp } from "react-icons/bs";
-import { FaBook, FaUser } from "react-icons/fa";
+import { FaBook, FaUser} from "react-icons/fa";
 import { BiChevronDown } from "react-icons/bi";
 import { Link } from "react-router-dom";
-import { MdDashboard } from "react-icons/md";
+import { MdDashboard, MdReport } from "react-icons/md";
 import { FaMoneyCheckAlt } from "react-icons/fa";
+import { IoMdImages } from "react-icons/io";
 
 const Sidebar = ({ closeDrawer }) => {
   const [active, setActive] = useState("Dashboard");
@@ -54,6 +55,13 @@ const Sidebar = ({ closeDrawer }) => {
         },
       ],
     },
+    
+    {
+      icon: <IoMdImages className="h-5 w-5 text-primary" />,
+      label: "Review Images",
+      Link: "/review-images",
+    },
+   
     {
       icon: <FaMoneyCheckAlt className="h-5 w-5 text-primary" />,
       label: "Payments",
@@ -82,6 +90,11 @@ const Sidebar = ({ closeDrawer }) => {
         },
       ],
     },
+    {
+      icon: <MdReport className="h-5 w-5 text-primary" />,
+      label: "Report",
+      Link: "/report",
+    },
   ];
 
   return (
@@ -93,8 +106,8 @@ const Sidebar = ({ closeDrawer }) => {
               <div
                 className={`w-64 flex justify-between items-center px-5 py-2 cursor-pointer  ${
                   active === item.label
-                    ? "bg-primary border-2 rounded-xl text-white font-semibold"
-                    : "bg-white text-black font-semibold border-primary border-2 rounded-xl"
+                    ? "bg-primary border rounded-xl text-white font-semibold"
+                    : "bg-white text-black font-semibold border-primary border rounded-xl"
                 }`}
                 onClick={() =>
                   item.isDropdown
@@ -124,8 +137,8 @@ const Sidebar = ({ closeDrawer }) => {
                       <div
                         className={`py-2 px-5 cursor-pointer w-56 mt-2  ${
                           active === subItem.label
-                            ? "text-white bg-primary font-bold border-primary border-2 rounded-xl"
-                            : "text-black border-primary border-2 rounded-xl"
+                            ? "text-white bg-primary font-bold border-primary border rounded-xl"
+                            : "text-black border-primary border rounded-xl"
                         }`}
                         onClick={() => handleSubItemClick(subItem.label)}
                       >

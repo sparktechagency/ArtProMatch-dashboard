@@ -1,29 +1,21 @@
+import { ConfigProvider, Input } from "antd";
 import { useState } from "react";
 import { SearchOutlined } from "@ant-design/icons";
-import { ConfigProvider, Input } from "antd";
-import PendingArtist from "../../Components/PageComponents/PendingArtist";
-import ActiveArtist from "../../Components/PageComponents/ActiveArtist";
-import DeleteArtist from "../../Components/PageComponents/DeleteArtist";
-const ArtistProfile = () => {
-  const [active, setActive] = useState("pending");
-  const [email, setEmail] = useState();
+
+import ReviewArtist from "../../Components/PageComponents/ReviewArtist";
+import ReviewBusiness from "../../Components/PageComponents/ReviewBusiness";
+const ReviewImages = () => {
+  const [active, setActive] = useState("active");
+  const [email, setEmail] = useState("");
+
   const handleSearch = () => {
     console.log("Searching for:", email);
   };
+
   return (
     <div>
       <div className="flex justify-between items-center gap-5 mt-4">
         <div className="flex justify-start items-center gap-2">
-          <button
-            className={`px-4 py-2 rounded-md ${
-              active === "pending"
-                ? "bg-primary text-white"
-                : "border border-primary"
-            }`}
-            onClick={() => setActive("pending")}
-          >
-            Pending
-          </button>
           <button
             className={`px-4 py-2 rounded-md ${
               active === "active"
@@ -32,7 +24,7 @@ const ArtistProfile = () => {
             }`}
             onClick={() => setActive("active")}
           >
-            Active
+          Review  Artist
           </button>
           <button
             className={`px-4 py-2 rounded-md ${
@@ -42,7 +34,7 @@ const ArtistProfile = () => {
             }`}
             onClick={() => setActive("delete")}
           >
-            Delete
+             Review Business
           </button>
         </div>
 
@@ -87,12 +79,11 @@ const ArtistProfile = () => {
 
       {/* Render corresponding component based on active state */}
       <div className="mt-4">
-        {active === "pending" && <PendingArtist />}
-        {active === "active" && <ActiveArtist />}
-        {active === "delete" && <DeleteArtist />}
+        {active === "active" && <ReviewArtist/>}
+        {active === "delete" && <ReviewBusiness />}
       </div>
     </div>
   );
 };
 
-export default ArtistProfile;
+export default ReviewImages;
