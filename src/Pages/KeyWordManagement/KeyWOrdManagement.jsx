@@ -1,12 +1,17 @@
-import { ConfigProvider, Input } from "antd";
+import { ConfigProvider, Input, message } from "antd";
 import { useState } from "react";
 import { SearchOutlined } from "@ant-design/icons";
+import { FaTrashAlt } from "react-icons/fa";
 const KeyWOrdManagement = () => {
-      const [email, setEmail] = useState("");
-    
-      const handleSearch = () => {
-        console.log("Searching for:", email);
-      };
+  const [email, setEmail] = useState("");
+
+  const handleSearch = () => {
+    console.log("Searching for:", email);
+  };
+  const keywords = ["keyword1", "keyword2", "keyword3", "keyword4", "keyword5"];
+  const handleDelete = () => {
+    message.success("Keyword deleted successfully!");
+  };
   return (
     <div>
       <div className="flex justify-between items-center  ">
@@ -49,6 +54,22 @@ const KeyWOrdManagement = () => {
             </div>
           </ConfigProvider>
         </div>
+      </div>
+      <div className="mt-10 border border-primary rounded-lg p-4">
+        {keywords.map((keyword, index) => (
+          <div
+            key={index}
+            className="flex justify-between items-center border-b pb-2 mb-2"
+          >
+            <h3 className="text-lg font-semibold">{keyword}</h3>
+            <button className="">
+              <FaTrashAlt
+                onClick={handleDelete}
+                className="text-red-500 h-5 w-5"
+              />
+            </button>
+          </div>
+        ))}
       </div>
     </div>
   );
