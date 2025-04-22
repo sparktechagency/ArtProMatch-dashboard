@@ -21,6 +21,7 @@ const CheckedMessage = () => {
       payment: "Online",
       price: "200",
       method: "Delivery",
+        keyword: "Harmful Content",
       description:
         "A black-and-gray realism tattoo designed to create a bold and lasting impression. The client requested intricate details with shading to enhance depth and texture.",
       images: [tatto, tatto, tatto],
@@ -42,6 +43,7 @@ const CheckedMessage = () => {
       address: "Los Angeles, USA",
       payment: "Cash",
       method: "Pickup",
+        keyword: "Harmful Content",
       price: "200",
       description:
         "A modern and stylish ear and nose piercing service tailored to enhance facial aesthetics. The client preferred a minimalist approach with high-quality titanium jewelry.",
@@ -107,10 +109,14 @@ const CheckedMessage = () => {
       key: "phone",
     },
     {
-      title: "Address",
-      dataIndex: "address",
-      key: "address",
-    },
+        title: "Keyword",
+        dataIndex: "keyword",
+        render: (text, record) => {
+          return (
+              <p className="text-red-500">{record.keyword}</p>
+          );
+        },
+      },
 
     {
       title: "Action",

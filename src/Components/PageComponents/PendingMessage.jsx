@@ -5,6 +5,7 @@ import tatto from "../../assets/image/tatto.jpg";
 import { Button, Modal } from "antd";
 import { FaEye, FaSearch, FaUser } from "react-icons/fa";
 import user from "../../assets/image/user.png";
+
 const PendingMessage = () => {
   const userData = [
     {
@@ -21,6 +22,7 @@ const PendingMessage = () => {
       payment: "Online",
       price: "200",
       method: "Delivery",
+      keyword: "Harmful Content",
       description:
         "A black-and-gray realism tattoo designed to create a bold and lasting impression. The client requested intricate details with shading to enhance depth and texture.",
       images: [tatto, tatto, tatto],
@@ -42,6 +44,7 @@ const PendingMessage = () => {
       address: "Los Angeles, USA",
       payment: "Cash",
       method: "Pickup",
+      keyword: "Harmful Content",
       price: "200",
       description:
         "A modern and stylish ear and nose piercing service tailored to enhance facial aesthetics. The client preferred a minimalist approach with high-quality titanium jewelry.",
@@ -107,9 +110,13 @@ const PendingMessage = () => {
       key: "date",
     },
     {
-      title: "Address",
-      dataIndex: "address",
-      key: "address",
+      title: "Keyword",
+      dataIndex: "keyword",
+      render: (text, record) => {
+        return (
+            <p className="text-red-500">{record.keyword}</p>
+        );
+      },
     },
 
     {
@@ -157,8 +164,6 @@ const PendingMessage = () => {
       >
         {selectedUser && (
           <div className="p-4">
-         
-
             {/* User & Reported Profile */}
             <div className="grid grid-cols-2 gap-4 border p-4 my-4">
               {/* User Info */}
@@ -217,7 +222,7 @@ const PendingMessage = () => {
             </div>
             <div className="flex justify-start items-center gap-2 mt-5">
               <button className="px-4 py-2 border border-green-500 text-green-500  rounded-md">
-               Ignore
+                Ignore
               </button>
               <button className="px-4 py-2 border border-red-500 text-red-500 rounded-md">
                 Warning
