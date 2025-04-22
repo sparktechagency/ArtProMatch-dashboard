@@ -17,6 +17,7 @@ import BusinessProfile from "../Pages/BusinessProfile/BusinessProfile";
 import Report from "../Pages/Report/Report";
 import ReviewImages from "../Pages/ReviewImages/ReviewImages";
 import ReviewMessage from "../Pages/ReviewMessage/ReviewMessage";
+import KeyWOrdManagement from "../Pages/KeyWordManagement/KeyWOrdManagement";
 
 export const router = createBrowserRouter([
   {
@@ -87,6 +88,10 @@ export const router = createBrowserRouter([
       {
         path:"/review-messages",
         element:<ReviewMessage/>
+      },
+      {
+        path:"/keyword-management",
+        element:<KeyWOrdManagement/>
       },
     ],
   },

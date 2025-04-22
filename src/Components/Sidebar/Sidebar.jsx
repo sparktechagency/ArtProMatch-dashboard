@@ -9,6 +9,7 @@ import { MdDashboard, MdReport } from "react-icons/md";
 import { FaMoneyCheckAlt } from "react-icons/fa";
 import { IoMdImages } from "react-icons/io";
 import { FaRegMessage } from "react-icons/fa6";
+import { TbSquareKey } from "react-icons/tb";
 
 const Sidebar = ({ closeDrawer }) => {
   const [active, setActive] = useState("Dashboard");
@@ -66,6 +67,11 @@ const Sidebar = ({ closeDrawer }) => {
       icon: <FaRegMessage className="h-5 w-5 text-primary" />,
       label: "Review Messages",
       Link: "/review-messages",
+    },
+    {
+      icon: <TbSquareKey className="h-5 w-5 text-primary" />,
+      label: "Keyword Management",
+      Link: "/keyword-management",
     },
    
     {
