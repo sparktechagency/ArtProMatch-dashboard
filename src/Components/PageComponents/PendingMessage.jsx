@@ -221,6 +221,14 @@ const PendingMessage = () => {
                 </div>
               </div>
             </div>
+            <div className="flex justify-start items-center gap-2 mt-5">
+              <button className="px-4 py-2 border border-green-500 text-green-500  rounded-md">
+               Ignore
+              </button>
+              <button className="px-4 py-2 border border-red-500 text-red-500 rounded-md">
+                Warning
+              </button>
+            </div>
           </div>
         )}
       </Modal>
