@@ -157,13 +157,7 @@ const PendingMessage = () => {
       >
         {selectedUser && (
           <div className="p-4">
-            {/* Order Header */}
-            {/* <div className="flex justify-between items-center border-b pb-2">
-              <h2 className="text-lg font-semibold">Order {selectedUser.id}</h2>
-              <p className="text-gray-600 text-sm">
-                Order {selectedUser.phone} {selectedUser.time}
-              </p>
-            </div> */}
+         
 
             {/* User & Reported Profile */}
             <div className="grid grid-cols-2 gap-4 border p-4 my-4">
