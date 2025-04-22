@@ -3,8 +3,8 @@ import { Avatar, ConfigProvider, Space, Table } from "antd";
 import { useState } from "react";
 import tatto from "../../assets/image/tatto.jpg";
 import { Button, Modal } from "antd";
-import { FaEye, FaUser } from "react-icons/fa";
-
+import { FaEye, FaSearch, FaUser } from "react-icons/fa";
+import user from "../../assets/image/user.png";
 const PendingMessage = () => {
   const userData = [
     {
@@ -170,7 +170,7 @@ const PendingMessage = () => {
               {/* User Info */}
               <div>
                 <h3 className="font-semibold border-b pb-1">
-                Profile Information
+                  Profile Information
                 </h3>
                 <p>
                   <strong>Name:</strong> {selectedUser.name}
@@ -185,35 +185,41 @@ const PendingMessage = () => {
                   <strong>Address:</strong> {selectedUser["address"]}
                 </p>
               </div>
-
             </div>
 
-            
-
-            {/* Sample Images */}
-            {selectedUser.images && selectedUser.images.length > 0 && (
-              <div className="my-4">
-                <h3 className="font-semibold border-b pb-1">Uploaded Images</h3>
-                <div className="flex gap-2 mt-2">
-                  {selectedUser.images.map((img, index) => (
-                    <img
-                      key={index}
-                      src={img}
-                      alt="Sample"
-                      className="w-24 h-24 object-cover border"
-                    />
-                  ))}
+            {/* message  */}
+            <h3 className="font-semibold border-b pb-1">Review Message</h3>
+            <div className="border p-4 my-4 rounded-lg">
+              <div className="flex gap-2 items-center justify-between">
+                <div className="flex gap-2 items-center">
+                  <img src={user} alt="" className="w-10 h-10 rounded-full" />
+                  <div>
+                    <h3 className="font-semibold">John Doe</h3>
+                    <p>2023-10-02</p>
+                  </div>
+                </div>
+                <FaSearch />
+              </div>
+              <div className="my-5">
+                <div className="flex flex-col gap-2 items-end justify-end">
+                  <div className="flex gap-2 items-center justify-center">
+                    <img src={user} alt="" />
+                    <p className="text-gray-600 mt-2 bg-gray-100 p-2 rounded-e-lg rounded-b-lg">
+                      {selectedUser.description}
+                    </p>
+                  </div>
+                  <p className="text-gray-600 text-sm">2023-10-02</p>
+                </div>
+                <div className="flex flex-col gap-2 items-start justify-end mt-5">
+                  <div className="flex gap-2 items-center justify-center">
+                    <p className="text-gray-600 mt-2 bg-gray-100 p-2 rounded-s-lg rounded-b-lg">
+                      {selectedUser.description}
+                    </p>
+                    <img src={user} alt="" />
+                  </div>
+                  <p className="text-gray-600 text-sm">2023-10-02</p>
                 </div>
               </div>
-            )}
-
-            <div className="flex justify-start items-center gap-2">
-              <button className="px-4 py-2  border border-red-500 text-red-500">
-                Reject
-              </button>
-              <button className="px-4 py-2  bg-green-500 text-white">
-                Accept
-              </button>
             </div>
           </div>
         )}
