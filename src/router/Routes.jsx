@@ -16,6 +16,7 @@ import ArtistProfile from "../Pages/ArtistProfile/ArtistProfile";
 import BusinessProfile from "../Pages/BusinessProfile/BusinessProfile";
 import Report from "../Pages/Report/Report";
 import ReviewImages from "../Pages/ReviewImages/ReviewImages";
+import ReviewMessage from "../Pages/ReviewMessage/ReviewMessage";
 
 export const router = createBrowserRouter([
   {
@@ -82,7 +83,11 @@ export const router = createBrowserRouter([
       {
         path:"/review-images",
         element:<ReviewImages/>
-      }
+      },
+      {
+        path:"/review-messages",
+        element:<ReviewMessage/>
+      },
     ],
   },
 ]);

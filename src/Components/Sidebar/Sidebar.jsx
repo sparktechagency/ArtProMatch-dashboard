@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import { MdDashboard, MdReport } from "react-icons/md";
 import { FaMoneyCheckAlt } from "react-icons/fa";
 import { IoMdImages } from "react-icons/io";
+import { FaRegMessage } from "react-icons/fa6";
 
 const Sidebar = ({ closeDrawer }) => {
   const [active, setActive] = useState("Dashboard");
@@ -60,6 +61,11 @@ const Sidebar = ({ closeDrawer }) => {
       icon: <IoMdImages className="h-5 w-5 text-primary" />,
       label: "Review Images",
       Link: "/review-images",
+    },
+    {
+      icon: <FaRegMessage className="h-5 w-5 text-primary" />,
+      label: "Review Messages",
+      Link: "/review-messages",
     },
    
     {
