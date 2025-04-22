@@ -1,9 +1,23 @@
-import { ConfigProvider, Input, message } from "antd";
+import { ConfigProvider, Form, Input, message, Modal } from "antd";
 import { useState } from "react";
 import { SearchOutlined } from "@ant-design/icons";
 import { FaTrashAlt } from "react-icons/fa";
 const KeyWOrdManagement = () => {
   const [email, setEmail] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+  const onfinish = () => {
+    console.log("Form submitted successfully!");
+  };
 
   const handleSearch = () => {
     console.log("Searching for:", email);
@@ -15,7 +29,10 @@ const KeyWOrdManagement = () => {
   return (
     <div>
       <div className="flex justify-between items-center  ">
-        <button className="bg-primary text-white px-4 py-2 rounded-md">
+        <button
+          onClick={showModal}
+          className="bg-primary text-white px-4 py-2 rounded-md"
+        >
           Add Keyword
         </button>
         <div>
@@ -71,6 +88,40 @@ const KeyWOrdManagement = () => {
           </div>
         ))}
       </div>
+
+      <Modal
+        open={isModalOpen}
+        onOk={handleOk}
+        onCancel={handleCancel}
+        title="Add Keyword"
+        footer={null}
+      >
+        <Form onFinish={onfinish} name="add-keyword" layout="vertical">
+          <Form.Item
+            label="Keyword"
+            name="keyword"
+            rules={[
+              {
+                required: true,
+                message: "Please input the keyword!",
+              },
+            ]}
+          >
+            <Input placeholder="Enter keyword" />
+          </Form.Item>
+          <div className="flex justify-center items-center mb-4">
+            <Form.Item>
+              <button
+                onClick={handleOk}
+                type="submit"
+                className="bg-primary text-white px-4 py-2 rounded-md"
+              >
+                Add Keyword
+              </button>
+            </Form.Item>
+          </div>
+        </Form>
+      </Modal>
     </div>
   );
 };
