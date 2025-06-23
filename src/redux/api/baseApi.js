@@ -1,17 +1,18 @@
+/* eslint-disable no-unused-vars */
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { BASE_URL } from "../../utils/baseUrl";
 import { message } from "antd";
 
-
 const baseQuery = fetchBaseQuery({
-  baseUrl: `${BASE_URL}/v1`,
+  baseUrl: `${BASE_URL}`,
   credentials: "include",
   prepareHeaders: (headers, { getState }) => {
     const token = getState().auth.token;
-    //i can also get token from localstorage :
+    // const token = localStorage.getItem("token");
+    console.log("Token:", token);
 
     if (token) {
-      headers.set("Authoriation:", `Bearer${token}`);
+      headers.set("Authoriation", `Bearer ${token}`);
     }
     return headers;
   },

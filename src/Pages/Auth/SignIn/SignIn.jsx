@@ -13,24 +13,25 @@ const SignIn = () => {
 
   const [login] = useLoginMutation();
 
-  const onFinish = (values) => {
-    const credentials = {
-      email: values.email,
-      password: values.password,
-    };
-
-    try {
-      const res = login(credentials).unwrap();
-      if (res?.success) {
-        message.success("Login successful");
-        localStorage.setItem("token", res?.data?.token);
-        localStorage.setItem("user", JSON.stringify(res?.data?.user));
-        navigate("/");
-      }
-    } catch (error) {
-      message.error(error?.data?.message || "Login failed, please try again");
-    }
+const onFinish = async (values) => {
+  const credentials = {
+    email: values.email,
+    password: values.password,
   };
+
+  try {
+    const res = await login(credentials).unwrap();
+    console.log("Login response:", res);
+    if (res?.data?.accessToken) {
+      localStorage.setItem("token", res?.data?.accessToken);
+      message?.success("Login successful");
+      navigate("/");
+    }
+  } catch (error) {
+    // message.error(error?.message );
+    console.error("Login error:", error);
+  }
+}
   return (
     <div className="bg-[ffffff]">
       <div className="container mx-auto">
