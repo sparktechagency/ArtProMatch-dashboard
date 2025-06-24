@@ -21,7 +21,6 @@ const onFinish = async (values) => {
 
   try {
     const res = await login(credentials).unwrap();
-    console.log("Login response:", res);
     if (res?.data?.accessToken) {
       localStorage.setItem("token", res?.data?.accessToken);
       message?.success("Login successful");
