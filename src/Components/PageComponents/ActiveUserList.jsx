@@ -6,53 +6,11 @@ import { Button, Modal } from "antd";
 import { FaEye, FaUser } from "react-icons/fa";
 import { FiUserCheck } from "react-icons/fi";
 import { SearchOutlined } from "@ant-design/icons";
+import { useGetAllClientsQuery } from "../../redux/features/usersApi/usersApi";
 const ActiveUserList = () => {
-  const userData = [
-    {
-      id: "#1239",
-      name: "Mr. Mahmud",
-      email: "mr101@mail.ru",
-      profileImage: <FaUser />,
-      date: "2024-03-27",
-      time: "10:00 AM",
-      "artist-name": "John Doe",
-      service: "Tattoo",
-      phone: "9876543210",
-      address: "New York, America",
-      payment: "Online",
-      price: "200",
-      method: "Delivery",
-      description:
-        "A black-and-gray realism tattoo designed to create a bold and lasting impression. The client requested intricate details with shading to enhance depth and texture.",
-      images: [tatto, tatto, tatto],
-      orderItems: [
-        { item: "Oral Tattoo (Small)", price: 130 },
-        { item: "Realism Tattoo", price: 70 },
-      ],
-    },
-    {
-      id: "#1240",
-      name: "Ms. Sarah",
-      email: "sarah99@mail.com",
-      profileImage: <FaUser />,
-      date: "2024-03-28",
-      time: "02:30 PM",
-      "artist-name": "Jane Smith",
-      service: "Piercing",
-      phone: "1234567890",
-      address: "Los Angeles, USA",
-      payment: "Cash",
-      method: "Pickup",
-      price: "200",
-      description:
-        "A modern and stylish ear and nose piercing service tailored to enhance facial aesthetics. The client preferred a minimalist approach with high-quality titanium jewelry.",
-      images: [tatto, tatto],
-      orderItems: [
-        { item: "Ear Piercing", price: 50 },
-        { item: "Nose Piercing", price: 40 },
-      ],
-    },
-  ];
+  const { data: clientsData } = useGetAllClientsQuery();
+  console.log("data:", clientsData?.data);
+  const userData = clientsData?.data
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
