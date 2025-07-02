@@ -1,83 +1,19 @@
 /* eslint-disable no-unused-vars */
-import { Avatar, ConfigProvider, Input, Space, Table } from "antd";
+import { Avatar, ConfigProvider, Space, Table } from "antd";
 import { useState } from "react";
-import tatto from "../../assets/image/tatto.jpg";
 import { Button, Modal } from "antd";
-import { FaEye, FaUser } from "react-icons/fa";
-import { FiUserCheck } from "react-icons/fi";
-import { SearchOutlined } from "@ant-design/icons";
+
+import {
+  useApproveBusinessMutation,
+  useGetAllBusinessQuery,
+} from "../../redux/features/usersApi/usersApi";
+import { BASE_URL } from "../../utils/baseUrl";
 const PendingBusiness = () => {
-  const userData = [
-    {
-      id: "#1239",
-      name: "Mr. Mahmud",
-      email: "mr101@mail.ru",
-      profileImage: <FaUser />,
-      date: "2024-03-27",
-      time: "10:00 AM",
-      "artist-name": "John Doe",
-      service: "Tattoo",
-      phone: "9876543210",
-      address: "New York, America",
-      payment: "Online",
-      price: "200",
-      method: "Delivery",
-      description:
-        "A black-and-gray realism tattoo designed to create a bold and lasting impression. The client requested intricate details with shading to enhance depth and texture.",
-      images: [tatto, tatto, tatto],
-      orderItems: [
-        { item: "Oral Tattoo (Small)", price: 130 },
-        { item: "Realism Tattoo", price: 70 },
-      ],
-      businessName: "Rivera Ink Studio",
-    },
-    {
-      id: "#1240",
-      name: "Ms. Sarah",
-      email: "sarah99@mail.com",
-      profileImage: <FaUser />,
-      date: "2024-03-28",
-      time: "02:30 PM",
-      "artist-name": "Jane Smith",
-      service: "Piercing",
-      phone: "1234567890",
-      address: "Los Angeles, USA",
-      payment: "Cash",
-      method: "Pickup",
-      price: "200",
-      description:
-        "A modern and stylish ear and nose piercing service tailored to enhance facial aesthetics. The client preferred a minimalist approach with high-quality titanium jewelry.",
-      images: [tatto, tatto],
-      orderItems: [
-        { item: "Ear Piercing", price: 50 },
-        { item: "Nose Piercing", price: 40 },
-      ],
-      businessName: "Rivera Ink Studio",
-    },
-    {
-      id: "#1240",
-      name: "Ms. Sarah",
-      email: "sarah99@mail.com",
-      profileImage: <FaUser />,
-      date: "2024-03-28",
-      time: "02:30 PM",
-      "artist-name": "Jane Smith",
-      service: "Piercing",
-      phone: "1234567890",
-      address: "Los Angeles, USA",
-      payment: "Cash",
-      method: "Pickup",
-      price: "200",
-      description:
-        "A modern and stylish ear and nose piercing service tailored to enhance facial aesthetics. The client preferred a minimalist approach with high-quality titanium jewelry.",
-      images: [tatto, tatto],
-      orderItems: [
-        { item: "Ear Piercing", price: 50 },
-        { item: "Nose Piercing", price: 40 },
-      ],
-      businessName: "Rivera Ink Studio",
-    },
-  ];
+  const { data: businessData } = useGetAllBusinessQuery();
+  // console.log("data:", businessData?.data);
+  const userData = businessData?.data;
+
+  const [approveBusiness] = useApproveBusinessMutation();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
@@ -101,6 +37,9 @@ const PendingBusiness = () => {
     console.log(record);
   };
 
+  const handleApprove = (_id) => {
+    console.log("_id:", _id);
+  };
   const columns = [
     {
       title: "Sl No",
@@ -118,7 +57,7 @@ const PendingBusiness = () => {
             className="shadow-md bg-primary"
             src={record?.profileImage}
           />
-          <span>{record.name}</span>
+          <span>{record?.auth.fullName}</span>
         </div>
       ),
     },
@@ -126,16 +65,21 @@ const PendingBusiness = () => {
       title: "Email",
       dataIndex: "email",
       key: "email",
+      render: (_, record) => (
+        <div className="flex items-center gap-2">
+          <span>{record?.auth.email}</span>
+        </div>
+      ),
     },
     {
       title: "Contact No",
       dataIndex: "phone",
       key: "phone",
-    },
-    {
-      title: "Address",
-      dataIndex: "address",
-      key: "address",
+      render: (_, record) => (
+        <div className="flex items-center gap-2">
+          <span>{record?.auth.phoneNumber}</span>
+        </div>
+      ),
     },
 
     {
@@ -154,10 +98,9 @@ const PendingBusiness = () => {
           }}
         >
           <Space size="middle">
-            <Button
-              onClick={() => showModal(record)}
-              icon={<FaEye className="text-primary" />}
-            />
+            <Button onClick={() => handleApprove(record._id)}>Approve</Button>
+            <Button>Delete</Button>
+            <Button onClick={() => showModal(record)}>View</Button>
           </Space>
         </ConfigProvider>
       ),
@@ -182,104 +125,153 @@ const PendingBusiness = () => {
         width={600}
       >
         {selectedUser && (
-          <div className="p-4">
-            {/* Order Header */}
-            {/* <div className="flex justify-between items-center border-b pb-2">
-              <h2 className="text-lg font-semibold">Order {selectedUser.id}</h2>
-              <p className="text-gray-600 text-sm">
-                Order {selectedUser.date} {selectedUser.time}
-              </p>
-            </div> */}
-
-            {/* User & Delivery Info */}
-            <div className="grid grid-cols-2 gap-4 border p-4 my-4">
-              {/* User Info */}
+          <div className="p-4 space-y-6">
+            {/* User Info */}
+            <div className="grid grid-cols-2 gap-4 border p-4">
               <div>
-                <h3 className="font-semibold border-b pb-1">
+                <h3 className="font-bold text-lg border-b pb-1">
                   User Information
                 </h3>
                 <p>
-                  <strong>Name:</strong> {selectedUser.name}
+                  <strong>Name:</strong> {selectedUser.auth?.fullName}
                 </p>
                 <p>
-                  <strong>Phone:</strong> {selectedUser.phone}
+                  <strong>Phone:</strong> {selectedUser.auth?.phoneNumber}
                 </p>
                 <p>
-                  <strong>Email:</strong> {selectedUser.email}
+                  <strong>Email:</strong> {selectedUser.auth?.email}
                 </p>
                 <p>
-                  <strong>Address:</strong> {selectedUser["address"]}
-                </p>
-                <p>
-                  <strong>Business Name:</strong> {selectedUser["businessName"]}
+                  <strong>City:</strong> {selectedUser.city}
                 </p>
               </div>
-
-              {/* Delivery Info */}
-              {/* <div>
-                <h3 className="font-semibold border-b pb-1">Delivery Info</h3>
+              <div>
+                <h3 className="font-bold text-lg border-b pb-1">
+                  Business Information
+                </h3>
                 <p>
-                  <strong>Address:</strong> {selectedUser.address}
+                  <strong>Studio Name:</strong> {selectedUser.studioName}
                 </p>
                 <p>
-                  <strong>Payment:</strong> {selectedUser.payment}
+                  <strong>Business Type:</strong> {selectedUser.businessType}
                 </p>
                 <p>
-                  <strong>Method:</strong> {selectedUser.method}
+                  <strong>Services Offered:</strong>{" "}
+                  {selectedUser.servicesOffered.join(", ")}
                 </p>
-              </div> */}
+                <p>
+                  <strong>Active:</strong>{" "}
+                  {selectedUser.isActive ? "Yes" : "No"}
+                </p>
+                <p>
+                  <strong>Verified:</strong>{" "}
+                  {selectedUser.isVerified ? "Yes" : "No"}
+                </p>
+              </div>
             </div>
 
-            {/* Description */}
-            {/* <div className="border p-3 my-4">
-              <h3 className="font-semibold border-b pb-1">
-                Description About Tattoo Idea
+            {/* Contact */}
+            <div className="border p-4">
+              <h3 className="font-bold text-lg border-b pb-1">
+                Contact Details
               </h3>
-              <p className="text-gray-600 text-sm">
-                {selectedUser.description}
+              <p>
+                <strong>Phone:</strong> {selectedUser.contact?.phone}
               </p>
-            </div> */}
+              <p>
+                <strong>Email:</strong> {selectedUser.contact?.email}
+              </p>
+            </div>
 
-            {/* Sample Images */}
-            {selectedUser.images && selectedUser.images.length > 0 && (
-              <div className="my-4">
-                <h3 className="font-semibold border-b pb-1">
-                  Verify ID With Selfie
-                </h3>
-                <div className="flex gap-2 mt-2">
-                  {selectedUser.images.map((img, index) => (
-                    <img
-                      key={index}
-                      src={img}
-                      alt="Sample"
-                      className="w-24 h-24 object-cover border"
-                    />
-                  ))}
+            {/* Location */}
+            <div className="border p-4">
+              <h3 className="font-bold text-lg border-b pb-1">
+                Location Coordinates
+              </h3>
+              <p>
+                <strong>Latitude:</strong>{" "}
+                {selectedUser.location?.coordinates[1]}
+              </p>
+              <p>
+                <strong>Longitude:</strong>{" "}
+                {selectedUser.location?.coordinates[0]}
+              </p>
+            </div>
+
+            {/* Operating Hours */}
+            <div className="border p-4">
+              <h3 className="font-bold text-lg border-b pb-1">
+                Operating Hours
+              </h3>
+              <div className="grid grid-cols-2 gap-4">
+                {Object.entries(selectedUser.operatingHours).map(
+                  ([day, slots]) => (
+                    <div key={day}>
+                      <strong>{day}:</strong>{" "}
+                      {slots.map((s, i) => (
+                        <span key={i}>
+                          {s.start} - {s.end}
+                          {i < slots.length - 1 ? ", " : ""}
+                        </span>
+                      ))}
+                    </div>
+                  )
+                )}
+              </div>
+            </div>
+
+            {/* Uploaded Documents */}
+            <div className="border p-4">
+              <h3 className="font-bold text-lg border-b pb-1">
+                Uploaded Documents
+              </h3>
+              <div className="flex gap-4 flex-wrap mt-2">
+                <div>
+                  <p className="font-semibold">Registration Certificate:</p>
+                  <img
+                    src={`${BASE_URL}/${selectedUser.registrationCertificate}`}
+                    alt="Registration"
+                    className="w-32 h-32 object-cover border"
+                  />
+                </div>
+                <div>
+                  <p className="font-semibold">Tax ID / Equivalent:</p>
+                  <img
+                    src={`${BASE_URL}/${selectedUser.taxIdOrEquivalent}`}
+                    alt="Tax ID"
+                    className="w-32 h-32 object-cover border"
+                  />
+                </div>
+                <div>
+                  <p className="font-semibold">Studio License:</p>
+                  <img
+                    src={`${BASE_URL}/${selectedUser.studioLicense}`}
+                    alt="Studio License"
+                    className="w-32 h-32 object-cover border"
+                  />
                 </div>
               </div>
-            )}
+            </div>
 
-            {/* Order Items */}
-            {/* <div className="border p-3 my-4">
-              <h3 className="font-semibold border-b pb-1">Order</h3>
-              {selectedUser.orderItems.map((item, index) => (
-                <div key={index} className="flex justify-between text-sm my-1">
-                  <p>1 × {item.item}</p>
-                  <p className="font-semibold">${item.price}</p>
-                </div>
-              ))}
-              <hr className="my-2" />
-              <div className="flex justify-between font-semibold">
-                <p>Subtotal</p>
-                <p>
-                  $
-                  {selectedUser.orderItems.reduce(
-                    (total, item) => total + item.price,
-                    0
-                  )}
-                </p>
-              </div>
-            </div> */}
+            {/* Additional Metadata */}
+            <div className="border p-4">
+              <h3 className="font-bold text-lg border-b pb-1">Other Info</h3>
+              <p>
+                <strong>Profile Views:</strong> {selectedUser.profileViews}
+              </p>
+              <p>
+                <strong>Is Deleted:</strong>{" "}
+                {selectedUser.isDeleted ? "Yes" : "No"}
+              </p>
+              <p>
+                <strong>Created At:</strong>{" "}
+                {new Date(selectedUser.createdAt).toLocaleString()}
+              </p>
+              <p>
+                <strong>Updated At:</strong>{" "}
+                {new Date(selectedUser.updatedAt).toLocaleString()}
+              </p>
+            </div>
           </div>
         )}
       </Modal>

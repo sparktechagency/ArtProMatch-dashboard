@@ -9,7 +9,7 @@ import { SearchOutlined } from "@ant-design/icons";
 import { useGetAllClientsQuery } from "../../redux/features/usersApi/usersApi";
 const ActiveUserList = () => {
   const { data: clientsData } = useGetAllClientsQuery();
-  console.log("data:", clientsData?.data);
+  // console.log("data:", clientsData?.data);
   const userData = clientsData?.data;
 
   const [isModalOpen, setIsModalOpen] = useState(false);

@@ -8,7 +8,26 @@ const usersApi = baseApi.injectEndpoints({
         method: "GET",
       }),
     }),
+
+    getAllBusiness: builder.query({
+      query: () => ({
+        url: "/api/v1/admin/fetch-business",
+        method: "GET",
+      }),
+    }),
+
+    approveBusiness: builder.mutation({
+      query: ({ _id, data }) => ({
+        url: `/api/v1/admin/verified-business/${_id}`,
+        method: "GET",
+        body: data,
+      }),
+    }),
   }),
 });
 
-export const { useGetAllClientsQuery } = usersApi;
+export const {
+  useGetAllClientsQuery,
+  useGetAllBusinessQuery,
+  useApproveBusinessMutation,
+} = usersApi;
