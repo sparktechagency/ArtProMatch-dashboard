@@ -9,7 +9,7 @@ import { SearchOutlined } from "@ant-design/icons";
 import { useGetAllBusinessQuery } from "../../redux/features/usersApi/usersApi";
 const ActiveBusiness = () => {
   const { data: businessData } = useGetAllBusinessQuery();
-  console.log("data:", businessData?.data);
+  // console.log("data:", businessData?.data);
   const userData = businessData?.data;
 
   const [isModalOpen, setIsModalOpen] = useState(false);
