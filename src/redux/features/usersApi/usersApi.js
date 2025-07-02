@@ -8,7 +8,14 @@ const usersApi = baseApi.injectEndpoints({
         method: "GET",
       }),
     }),
+
+    getAllBusiness: builder.query({
+      query: () => ({
+        url: "/api/v1/admin/fetch-business",
+        method: "GET",
+      }),
+    }),
   }),
 });
 
-export const { useGetAllClientsQuery } = usersApi;
+export const { useGetAllClientsQuery, useGetAllBusinessQuery } = usersApi;
