@@ -7,7 +7,7 @@ const usersApi = baseApi.injectEndpoints({
         url: "/api/v1/admin/fetch-client",
         method: "GET",
       }),
-         invalidatesTags:["verified-busines"]
+      invalidatesTags: ["verified-busines"],
     }),
 
     getAllBusiness: builder.query({
@@ -15,7 +15,14 @@ const usersApi = baseApi.injectEndpoints({
         url: "/api/v1/admin/fetch-business",
         method: "GET",
       }),
-      invalidatesTags:["verified-busines"]
+      invalidatesTags: ["verified-busines"],
+    }),
+    getAllArtist: builder.query({
+      query: () => ({
+        url: "/api/v1/admin/fetch-artists",
+        method: "GET",
+      }),
+      invalidatesTags: ["verified-artist"],
     }),
 
     approveBusiness: builder.mutation({
@@ -23,7 +30,14 @@ const usersApi = baseApi.injectEndpoints({
         url: `/api/v1/admin/verified-business/${_id}`,
         method: "PATCH",
       }),
-      providesTags:["verified-busines"]
+      providesTags: ["verified-busines"],
+    }),
+    approveArtist: builder.mutation({
+      query: ({ _id }) => ({
+        url: `/api/v1/admin/verified-artist/${_id}`,
+        method: "PATCH",
+      }),
+      providesTags: ["verified-artist"],
     }),
   }),
 });
@@ -32,4 +46,6 @@ export const {
   useGetAllClientsQuery,
   useGetAllBusinessQuery,
   useApproveBusinessMutation,
+  useGetAllArtistQuery,
+  useApproveArtistMutation
 } = usersApi;

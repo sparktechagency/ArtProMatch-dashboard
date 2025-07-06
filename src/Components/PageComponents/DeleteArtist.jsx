@@ -1,38 +1,17 @@
 /* eslint-disable no-unused-vars */
-import { Avatar, ConfigProvider, Input, Space, Table } from "antd";
+import { Avatar, ConfigProvider, Space, Table } from "antd";
 import { useState } from "react";
-import tatto from "../../assets/image/tatto.jpg";
 import { Button, Modal } from "antd";
-import { FaEye, FaUser } from "react-icons/fa";
-import { FiUserCheck } from "react-icons/fi";
-import { SearchOutlined } from "@ant-design/icons";
+
+import { useApproveArtistMutation, useGetAllArtistQuery } from "../../redux/features/usersApi/usersApi";
+import Swal from "sweetalert2";
+import { BASE_URL } from "../../utils/baseUrl";
 const DeleteArtist = () => {
-  const userData = [
-    {
-      id: "#1240",
-      name: "Ms. Sarah",
-      email: "sarah99@mail.com",
-      profileImage: <FaUser />,
-      date: "2024-03-28",
-      time: "02:30 PM",
-      "artist-name": "Jane Smith",
-      service: "Piercing",
-      phone: "1234567890",
-      address: "Los Angeles, USA",
-      payment: "Cash",
-      method: "Pickup",
-      price: "200",
-      description:
-        "A modern and stylish ear and nose piercing service tailored to enhance facial aesthetics. The client preferred a minimalist approach with high-quality titanium jewelry.",
-      images: [tatto, tatto],
-      orderItems: [
-        { item: "Ear Piercing", price: 50 },
-        { item: "Nose Piercing", price: 40 },
-      ],
-      deleteReason:
-        "Valo lage Nai ,Ti Delete Kore dichi.Onek Time waste hoy. Amar Moner Moto service pai nai.",
-    },
-  ];
+const { data: artistData } = useGetAllArtistQuery();
+ const { data: approveArtist } = useApproveArtistMutation();
+  const userData = artistData?.data?.filter(
+    (artist) => artist.isDeleted === true
+  );
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
@@ -55,8 +34,25 @@ const DeleteArtist = () => {
   const handleSession = (record) => {
     console.log(record);
   };
-
-  const columns = [
+ const handleApprove = async (_id) => {
+    try {
+      const res = await approveArtist({ _id }).unwrap();
+      if (res.success) {
+        Swal.fire({
+          title: "Artist Profile is Approved.",
+          icon: "success",
+        });
+      }
+    } catch (error) {
+      console.error("Approval failed:", error);
+      Swal.fire({
+        title: "Error",
+        text: error?.data?.message || "Something went wrong!",
+        icon: "error",
+      });
+    }
+  };
+   const columns = [
     {
       title: "Sl No",
       dataIndex: "slno",
@@ -73,7 +69,7 @@ const DeleteArtist = () => {
             className="shadow-md bg-primary"
             src={record?.profileImage}
           />
-          <span>{record.name}</span>
+          <span>{record?.auth.fullName}</span>
         </div>
       ),
     },
@@ -81,16 +77,21 @@ const DeleteArtist = () => {
       title: "Email",
       dataIndex: "email",
       key: "email",
+      render: (_, record) => (
+        <div className="flex items-center gap-2">
+          <span>{record?.auth.email}</span>
+        </div>
+      ),
     },
     {
       title: "Contact No",
       dataIndex: "phone",
       key: "phone",
-    },
-    {
-      title: "Address",
-      dataIndex: "address",
-      key: "address",
+      render: (_, record) => (
+        <div className="flex items-center gap-2">
+          <span>{record?.auth.phoneNumber}</span>
+        </div>
+      ),
     },
 
     {
@@ -109,10 +110,9 @@ const DeleteArtist = () => {
           }}
         >
           <Space size="middle">
-            <Button
-              onClick={() => showModal(record)}
-              icon={<FaEye className="text-primary" />}
-            />
+            <Button onClick={() => handleApprove(record._id)}>Approve</Button>
+            <Button>Delete</Button>
+            <Button onClick={() => showModal(record)}>View</Button>
           </Space>
         </ConfigProvider>
       ),
@@ -136,105 +136,75 @@ const DeleteArtist = () => {
         footer={null}
         width={600}
       >
-        {selectedUser && (
-          <div className="p-4">
-            {/* Order Header */}
-            {/* <div className="flex justify-between items-center border-b pb-2">
-              <h2 className="text-lg font-semibold">Order {selectedUser.id}</h2>
-              <p className="text-gray-600 text-sm">
-                Order {selectedUser.date} {selectedUser.time}
-              </p>
-            </div> */}
+       {selectedUser && (
+  <div className="p-4 space-y-6">
+    {/* User Info */}
+    <div className="grid grid-cols-2 gap-4 border p-4">
+      <div>
+        <h3 className="font-bold text-lg border-b pb-1">User Information</h3>
+        <p><strong>Name:</strong> {selectedUser.auth?.fullName}</p>
+        <p><strong>Phone:</strong> {selectedUser.auth?.phoneNumber}</p>
+        <p><strong>Email:</strong> {selectedUser.auth?.email}</p>
+        <p><strong>City:</strong> {selectedUser.city?.replace(/"/g, "")}</p>
+      </div>
+      <div>
+        <h3 className="font-bold text-lg border-b pb-1">Profile Status</h3>
+        <p><strong>Type:</strong> {selectedUser.type}</p>
+        <p><strong>Expertise:</strong> {selectedUser.expertise?.join(", ")}</p>
+        <p><strong>Active:</strong> {selectedUser.isActive ? "Yes" : "No"}</p>
+        <p><strong>Verified:</strong> {selectedUser.isVerified ? "Yes" : "No"}</p>
+        <p><strong>Deleted:</strong> {selectedUser.isDeleted ? "Yes" : "No"}</p>
+      </div>
+    </div>
 
-            {/* User & Delivery Info */}
-            <div className="grid grid-cols-1 gap-4 border p-4 my-4">
-              {/* User Info */}
-              <div>
-                <h3 className="font-semibold border-b pb-1">
-                  User Information
-                </h3>
-                <p>
-                  <strong>Name:</strong> {selectedUser.name}
-                </p>
-                <p>
-                  <strong>Phone:</strong> {selectedUser.phone}
-                </p>
-                <p>
-                  <strong>Email:</strong> {selectedUser.email}
-                </p>
-                <p>
-                  <strong>Address:</strong> {selectedUser["address"]}
-                </p>
-                <p>
-                  <strong>Delete Reason:</strong> {selectedUser["deleteReason"]}
-                </p>
-              </div>
+    {/* Location */}
+    <div className="border p-4">
+      <h3 className="font-bold text-lg border-b pb-1">Location Coordinates</h3>
+      <p><strong>Latitude:</strong> {selectedUser.location?.coordinates[1]}</p>
+      <p><strong>Longitude:</strong> {selectedUser.location?.coordinates[0]}</p>
+    </div>
 
-              {/* Delivery Info */}
-              {/* <div>
-                <h3 className="font-semibold border-b pb-1">Delivery Info</h3>
-                <p>
-                  <strong>Address:</strong> {selectedUser.address}
-                </p>
-                <p>
-                  <strong>Payment:</strong> {selectedUser.payment}
-                </p>
-                <p>
-                  <strong>Method:</strong> {selectedUser.method}
-                </p>
-              </div> */}
-            </div>
+    {/* Uploaded Documents */}
+    <div className="border p-4">
+      <h3 className="font-bold text-lg border-b pb-1">Uploaded Documents</h3>
+      <div className="flex gap-4 flex-wrap mt-2">
+        <div>
+          <p className="font-semibold">ID Card Front:</p>
+          <img
+            src={`${BASE_URL}/${selectedUser.idCardFront?.replace(/\\/g, "/")}`}
+            alt="ID Front"
+            className="w-32 h-32 object-cover border"
+          />
+        </div>
+        <div>
+          <p className="font-semibold">ID Card Back:</p>
+          <img
+            src={`${BASE_URL}/${selectedUser.idCardBack?.replace(/\\/g, "/")}`}
+            alt="ID Back"
+            className="w-32 h-32 object-cover border"
+          />
+        </div>
+        <div>
+          <p className="font-semibold">Selfie with ID:</p>
+          <img
+            src={`${BASE_URL}/${selectedUser.selfieWithId?.replace(/\\/g, "/")}`}
+            alt="Selfie"
+            className="w-32 h-32 object-cover border"
+          />
+        </div>
+      </div>
+    </div>
 
-            {/* Description */}
-            {/* <div className="border p-3 my-4">
-              <h3 className="font-semibold border-b pb-1">
-                Description About Tattoo Idea
-              </h3>
-              <p className="text-gray-600 text-sm">
-                {selectedUser.description}
-              </p>
-            </div> */}
+    {/* Additional Metadata */}
+    <div className="border p-4">
+      <h3 className="font-bold text-lg border-b pb-1">Other Info</h3>
+      <p><strong>Profile Views:</strong> {selectedUser.profileViews}</p>
+      <p><strong>Created At:</strong> {new Date(selectedUser.createdAt).toLocaleString()}</p>
+      <p><strong>Updated At:</strong> {new Date(selectedUser.updatedAt).toLocaleString()}</p>
+    </div>
+  </div>
+)}
 
-            {/* Sample Images */}
-            {/* {selectedUser.images && selectedUser.images.length > 0 && (
-              <div className="my-4">
-                <h3 className="font-semibold border-b pb-1">Sample Images</h3>
-                <div className="flex gap-2 mt-2">
-                  {selectedUser.images.map((img, index) => (
-                    <img
-                      key={index}
-                      src={img}
-                      alt="Sample"
-                      className="w-24 h-24 object-cover border"
-                    />
-                  ))}
-                </div>
-              </div>
-            )} */}
-
-            {/* Order Items */}
-            {/* <div className="border p-3 my-4">
-              <h3 className="font-semibold border-b pb-1">Order</h3>
-              {selectedUser.orderItems.map((item, index) => (
-                <div key={index} className="flex justify-between text-sm my-1">
-                  <p>1 × {item.item}</p>
-                  <p className="font-semibold">${item.price}</p>
-                </div>
-              ))}
-              <hr className="my-2" />
-              <div className="flex justify-between font-semibold">
-                <p>Subtotal</p>
-                <p>
-                  $
-                  {selectedUser.orderItems.reduce(
-                    (total, item) => total + item.price,
-                    0
-                  )}
-                </p>
-              </div>
-            </div> */}
-          </div>
-        )}
       </Modal>
     </div>
   );
