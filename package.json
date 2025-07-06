@@ -23,7 +23,9 @@
     "react-router-dom": "^6.27.0",
     "recharts": "^2.15.1",
     "redux-persist": "^6.0.0",
-    "sort-by": "^1.2.0"
+    "sort-by": "^1.2.0",
+    "sweetalert": "^2.1.2",
+    "sweetalert2": "^11.22.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.13.0",

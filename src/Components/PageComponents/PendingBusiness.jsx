@@ -2,12 +2,12 @@
 import { Avatar, ConfigProvider, Space, Table } from "antd";
 import { useState } from "react";
 import { Button, Modal } from "antd";
-
 import {
   useApproveBusinessMutation,
   useGetAllBusinessQuery,
 } from "../../redux/features/usersApi/usersApi";
 import { BASE_URL } from "../../utils/baseUrl";
+import Swal from "sweetalert2";
 const PendingBusiness = () => {
   const { data: businessData } = useGetAllBusinessQuery();
   // console.log("data:", businessData?.data);
@@ -37,9 +37,26 @@ const PendingBusiness = () => {
     console.log(record);
   };
 
-  const handleApprove = (_id) => {
-    console.log("_id:", _id);
-  };
+ const handleApprove = async (_id) => {
+  try {
+    const res = await approveBusiness({ _id }).unwrap();
+    if (res.success) {
+      Swal.fire({
+        title: "Business Profile is Approved.",
+        icon: "success",
+      });
+    }
+  } catch (error) {
+    console.error("Approval failed:", error);
+    Swal.fire({
+      title: "Error",
+      text: error?.data?.message || "Something went wrong!",
+      icon: "error",
+    });
+  }
+};
+
+
   const columns = [
     {
       title: "Sl No",
