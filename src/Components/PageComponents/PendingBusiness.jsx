@@ -11,7 +11,12 @@ import Swal from "sweetalert2";
 const PendingBusiness = () => {
   const { data: businessData } = useGetAllBusinessQuery();
   // console.log("data:", businessData?.data);
-  const userData = businessData?.data;
+
+
+
+  // const userData = businessData?.data;
+  const userData = businessData?.data?.filter((user) => user.isActive === false);
+
 
   const [approveBusiness] = useApproveBusinessMutation();
 

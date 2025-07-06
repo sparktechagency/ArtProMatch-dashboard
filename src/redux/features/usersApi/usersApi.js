@@ -7,6 +7,7 @@ const usersApi = baseApi.injectEndpoints({
         url: "/api/v1/admin/fetch-client",
         method: "GET",
       }),
+         invalidatesTags:["verified-busines"]
     }),
 
     getAllBusiness: builder.query({
@@ -14,14 +15,15 @@ const usersApi = baseApi.injectEndpoints({
         url: "/api/v1/admin/fetch-business",
         method: "GET",
       }),
+      invalidatesTags:["verified-busines"]
     }),
 
     approveBusiness: builder.mutation({
       query: ({ _id }) => ({
         url: `/api/v1/admin/verified-business/${_id}`,
         method: "PATCH",
-        // body: data,
       }),
+      providesTags:["verified-busines"]
     }),
   }),
 });
