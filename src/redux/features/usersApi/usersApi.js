@@ -17,10 +17,10 @@ const usersApi = baseApi.injectEndpoints({
     }),
 
     approveBusiness: builder.mutation({
-      query: ({ _id, data }) => ({
+      query: ({ _id }) => ({
         url: `/api/v1/admin/verified-business/${_id}`,
-        method: "GET",
-        body: data,
+        method: "PATCH",
+        // body: data,
       }),
     }),
   }),

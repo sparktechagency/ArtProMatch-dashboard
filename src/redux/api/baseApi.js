@@ -7,12 +7,14 @@ const baseQuery = fetchBaseQuery({
   baseUrl: `${BASE_URL}`,
   credentials: "include",
   prepareHeaders: (headers, { getState }) => {
-    const token = getState().auth.token;
-    // const token = localStorage.getItem("token");
-    console.log("Token:", token);
+    // const token = getState().auth.token;
+    const token = localStorage.getItem("token");
+    // console.log("Token:", token);
 
     if (token) {
-      headers.set("Authoriation", `Bearer ${token}`);
+      // headers.set("Authoriation", `Bearer ${token}`);
+      headers.set("Authorization", `Bearer ${token}`);
+
     }
     return headers;
   },
