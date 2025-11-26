@@ -1,62 +1,62 @@
-/* eslint-disable no-unused-vars */
-import { Avatar, ConfigProvider, Input, Space, Table } from "antd";
-import { useState } from "react";
-import tatto from "../../../assets/image/tatto.jpg";
-import { Button, Modal } from "antd";
-import { FaEye, FaUser } from "react-icons/fa";
-import { FiUserCheck } from "react-icons/fi";
-import { SearchOutlined } from "@ant-design/icons";
-const ScheduledOrder = () => {
+import { Avatar, ConfigProvider, Input, Space, Table } from 'antd';
+import { useState } from 'react';
+import tatto from '../../../assets/image/tatto.jpg';
+import { Button, Modal } from 'antd';
+import { FaEye, FaUser } from 'react-icons/fa';
+import { FiUserCheck } from 'react-icons/fi';
+import { SearchOutlined } from '@ant-design/icons';
+
+const CompletedOrders = () => {
   const userData = [
     {
-      id: "#1239",
-      name: "Mr. Mahmud",
-      email: "mr101@mail.ru",
+      id: '#1239',
+      name: 'Mr. Mahmud',
+      email: 'mr101@mail.ru',
       profileImage: <FaUser />,
-      date: "2024-03-27",
-      time: "10:00 AM",
-      "artist-name": "John Doe",
-      service: "Tattoo",
-      phone: "9876543210",
-      address: "New York, America",
-      payment: "Online",
-      method: "Delivery",
+      date: '2024-03-27',
+      time: '10:00 AM',
+      'artist-name': 'John Doe',
+      service: 'Tattoo',
+      phone: '9876543210',
+      address: 'New York, America',
+      payment: 'Online',
+      method: 'Delivery',
       description:
-        "A black-and-gray realism tattoo designed to create a bold and lasting impression. The client requested intricate details with shading to enhance depth and texture.",
+        'A black-and-gray realism tattoo designed to create a bold and lasting impression. The client requested intricate details with shading to enhance depth and texture.',
       images: [tatto, tatto, tatto],
       orderItems: [
-        { item: "Oral Tattoo (Small)", price: 130 },
-        { item: "Realism Tattoo", price: 70 },
+        { item: 'Oral Tattoo (Small)', price: 130 },
+        { item: 'Realism Tattoo', price: 70 },
       ],
     },
     {
-      id: "#1240",
-      name: "Ms. Sarah",
-      email: "sarah99@mail.com",
+      id: '#1240',
+      name: 'Ms. Sarah',
+      email: 'sarah99@mail.com',
       profileImage: <FaUser />,
-      date: "2024-03-28",
-      time: "02:30 PM",
-      "artist-name": "Jane Smith",
-      service: "Piercing",
-      phone: "1234567890",
-      address: "Los Angeles, USA",
-      payment: "Cash",
-      method: "Pickup",
+      date: '2024-03-28',
+      time: '02:30 PM',
+      'artist-name': 'Jane Smith',
+      service: 'Piercing',
+      phone: '1234567890',
+      address: 'Los Angeles, USA',
+      payment: 'Cash',
+      method: 'Pickup',
       description:
-        "A modern and stylish ear and nose piercing service tailored to enhance facial aesthetics. The client preferred a minimalist approach with high-quality titanium jewelry.",
+        'A modern and stylish ear and nose piercing service tailored to enhance facial aesthetics. The client preferred a minimalist approach with high-quality titanium jewelry.',
       images: [tatto, tatto],
       orderItems: [
-        { item: "Ear Piercing", price: 50 },
-        { item: "Nose Piercing", price: 40 },
+        { item: 'Ear Piercing', price: 50 },
+        { item: 'Nose Piercing', price: 40 },
       ],
     },
   ];
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState('');
 
-  const showModal = (record) => {
+  const showModal = record => {
     setSelectedUser(record);
     setIsModalOpen(true);
   };
@@ -70,20 +70,20 @@ const ScheduledOrder = () => {
     // refetc();
   };
 
-  const handleSession = (record) => {
+  const handleSession = record => {
     console.log(record);
   };
 
   const columns = [
     {
-      title: "Sl No",
-      dataIndex: "slno",
-      key: "slno",
+      title: 'Sl No',
+      dataIndex: 'slno',
+      key: 'slno',
       render: (text, record, index) => index + 1,
     },
     {
-      title: "Name",
-      key: "name",
+      title: 'Name',
+      key: 'name',
       render: (_, record) => (
         <div className="flex items-center gap-2">
           <Avatar
@@ -96,42 +96,42 @@ const ScheduledOrder = () => {
       ),
     },
     {
-      title: "Email",
-      dataIndex: "email",
-      key: "email",
+      title: 'Email',
+      dataIndex: 'email',
+      key: 'email',
     },
     {
-      title: "Order Date",
-      dataIndex: "date",
-      key: "date",
+      title: 'Order Date',
+      dataIndex: 'date',
+      key: 'date',
     },
     {
-      title: "Time",
-      dataIndex: "time",
-      key: "time",
+      title: 'Time',
+      dataIndex: 'time',
+      key: 'time',
     },
     {
-      title: "Artist Name",
-      dataIndex: "artist-name",
-      key: "artist-name",
+      title: 'Artist Name',
+      dataIndex: 'artist-name',
+      key: 'artist-name',
     },
     {
-      title: "Service",
-      dataIndex: "service",
-      key: "service",
+      title: 'Service',
+      dataIndex: 'service',
+      key: 'service',
     },
 
     {
-      title: "Action",
-      key: "action",
+      title: 'Action',
+      key: 'action',
       render: (_, record) => (
         <ConfigProvider
           theme={{
             components: {
               Button: {
-                defaultHoverBorderColor: "rgb(47,84,235)",
-                defaultHoverColor: "rgb(47,84,235)",
-                defaultBorderColor: "rgb(47,84,235)",
+                defaultHoverBorderColor: 'rgb(47,84,235)',
+                defaultHoverColor: 'rgb(47,84,235)',
+                defaultBorderColor: 'rgb(47,84,235)',
               },
             },
           }}
@@ -156,7 +156,7 @@ const ScheduledOrder = () => {
     <div className="">
       <div className="flex flex-col md:flex-row justify-between md:items-center mb-10">
         <h3 className="text-xl md:text-2xl font-semibold text-textColor px-2 md:px-0">
-          Scheduled Order
+          Completed Order
         </h3>
         <div className="mt-4 md:mt-0 flex justify-between items-center gap-2">
           <div>
@@ -165,8 +165,8 @@ const ScheduledOrder = () => {
                 components: {
                   Input: {
                     borderRadius: 0,
-                    hoverBorderColor: "none",
-                    activeBorderColor: "none",
+                    hoverBorderColor: 'none',
+                    activeBorderColor: 'none',
                   },
                 },
               }}
@@ -177,11 +177,11 @@ const ScheduledOrder = () => {
                   allowClear
                   size="large"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={e => setEmail(e.target.value)}
                   onPressEnter={handleSearch}
                   prefix={
                     <SearchOutlined
-                      style={{ cursor: "pointer" }}
+                      style={{ cursor: 'pointer' }}
                       onClick={handleSearch}
                     />
                   }
@@ -240,7 +240,7 @@ const ScheduledOrder = () => {
                   <strong>Email:</strong> {selectedUser.email}
                 </p>
                 <p>
-                  <strong>Artist:</strong> {selectedUser["artist-name"]}
+                  <strong>Artist:</strong> {selectedUser['artist-name']}
                 </p>
               </div>
 
@@ -314,4 +314,4 @@ const ScheduledOrder = () => {
   );
 };
 
-export default ScheduledOrder;
+export default CompletedOrders;

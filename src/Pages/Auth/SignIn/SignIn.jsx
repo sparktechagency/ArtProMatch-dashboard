@@ -1,9 +1,9 @@
-import { Checkbox, Form, Input, message, Typography } from "antd";
-import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
-import { IoIosLock } from "react-icons/io";
-import { FaLockOpen } from "react-icons/fa";
-import { useLoginMutation } from "../../../redux/features/auth/authApi";
+import { Checkbox, Form, Input, message, Typography } from 'antd';
+import { Link, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { IoIosLock } from 'react-icons/io';
+import { FaLockOpen } from 'react-icons/fa';
+import { useLoginMutation } from '../../../redux/features/auth/authApi';
 const SignIn = () => {
   const [showpassword, setShowpassword] = useState(false);
   const navigate = useNavigate();
@@ -13,24 +13,24 @@ const SignIn = () => {
 
   const [login] = useLoginMutation();
 
-const onFinish = async (values) => {
-  const credentials = {
-    email: values.email,
-    password: values.password,
-  };
+  const onFinish = async values => {
+    const credentials = {
+      email: values.email,
+      password: values.password,
+    };
 
-  try {
-    const res = await login(credentials).unwrap();
-    if (res?.data?.accessToken) {
-      localStorage.setItem("token", res?.data?.accessToken);
-      message?.success("Login successful");
-      navigate("/");
+    try {
+      const res = await login(credentials).unwrap();
+      if (res?.data?.accessToken) {
+        localStorage.setItem('token', res?.data?.accessToken);
+        message?.success('Login successful');
+        navigate('/');
+      }
+    } catch (error) {
+      // message.error(error?.message );
+      console.error('Login error:', error);
     }
-  } catch (error) {
-    // message.error(error?.message );
-    console.error("Login error:", error);
-  }
-}
+  };
   return (
     <div className="bg-[ffffff]">
       <div className="container mx-auto">
@@ -53,7 +53,7 @@ const onFinish = async (values) => {
                     Login to Account
                   </h2>
                   <Typography.Text className="text-black text-center text-base ">
-                    {" "}
+                    {' '}
                     Please enter your name, email and password to continue
                   </Typography.Text>
                 </div>
@@ -65,7 +65,7 @@ const onFinish = async (values) => {
                 >
                   <Input
                     required
-                    style={{ padding: "6px" }}
+                    style={{ padding: '6px' }}
                     className=" text-md"
                     placeholder="Your Email"
                   />
@@ -77,9 +77,9 @@ const onFinish = async (values) => {
                   <div className="relative flex justify-center items-center">
                     <Input
                       required
-                      style={{ padding: "6px" }}
+                      style={{ padding: '6px' }}
                       className=" text-md"
-                      type={showpassword ? "password" : "text"}
+                      type={showpassword ? 'password' : 'text'}
                       placeholder="Password"
                     />
                     <div className="flex justify-center absolute right-0 px-3">
@@ -102,7 +102,7 @@ const onFinish = async (values) => {
                       Remember Password
                     </Checkbox>
                   </Form.Item>
-                  <Link to="/forgate-password" className=" ">
+                  <Link to="/forgot-password" className=" ">
                     <p className="text-blue-600  ">Forgate Password</p>
                   </Link>
                 </div>

@@ -1,16 +1,15 @@
-import { ConfigProvider, Input } from "antd";
-import { useState } from "react";
-import { SearchOutlined } from "@ant-design/icons";
-import ActiveUserList from "../../Components/PageComponents/ActiveUserList";
-import DeleteUserList from "../../Components/PageComponents/DeleteUserList";
+import { ConfigProvider, Input } from 'antd';
+import { useState } from 'react';
+import { SearchOutlined } from '@ant-design/icons';
+import PendingMessage from '../../Components/PageComponents/PendingMessage';
+import CheckedMessage from '../../Components/PageComponents/CheckedMessage';
 
-const UserProfile = () => {
-  const [active, setActive] = useState("active");
-  const [email, setEmail] = useState("");
+const ReviewMessage = () => {
+  const [active, setActive] = useState('active');
+  const [email, setEmail] = useState('');
 
-  
   const handleSearch = () => {
-    console.log("Searching for:", email);
+    console.log('Searching for:', email);
   };
 
   return (
@@ -19,23 +18,23 @@ const UserProfile = () => {
         <div className="flex justify-start items-center gap-2">
           <button
             className={`px-4 py-2 rounded-md ${
-              active === "active"
-                ? "bg-primary text-white"
-                : "border border-primary"
+              active === 'active'
+                ? 'bg-primary text-white'
+                : 'border border-primary'
             }`}
-            onClick={() => setActive("active")}
+            onClick={() => setActive('active')}
           >
-            Active Users
+            Pending
           </button>
           <button
             className={`px-4 py-2 rounded-md ${
-              active === "delete"
-                ? "bg-primary text-white"
-                : "border border-primary"
+              active === 'delete'
+                ? 'bg-primary text-white'
+                : 'border border-primary'
             }`}
-            onClick={() => setActive("delete")}
+            onClick={() => setActive('delete')}
           >
-            Delete Users
+            Checked
           </button>
         </div>
 
@@ -46,8 +45,8 @@ const UserProfile = () => {
               components: {
                 Input: {
                   borderRadius: 0,
-                  hoverBorderColor: "none",
-                  activeBorderColor: "none",
+                  hoverBorderColor: 'none',
+                  activeBorderColor: 'none',
                 },
               },
             }}
@@ -58,11 +57,11 @@ const UserProfile = () => {
                 allowClear
                 size="large"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={e => setEmail(e.target.value)}
                 onPressEnter={handleSearch}
                 prefix={
                   <SearchOutlined
-                    style={{ cursor: "pointer" }}
+                    style={{ cursor: 'pointer' }}
                     onClick={handleSearch}
                   />
                 }
@@ -80,11 +79,11 @@ const UserProfile = () => {
 
       {/* Render corresponding component based on active state */}
       <div className="mt-4">
-        {active === "active" && <ActiveUserList />}
-        {active === "delete" && <DeleteUserList />}
+        {active === 'active' && <PendingMessage />}
+        {active === 'delete' && <CheckedMessage />}
       </div>
     </div>
   );
 };
 
-export default UserProfile;
+export default ReviewMessage;

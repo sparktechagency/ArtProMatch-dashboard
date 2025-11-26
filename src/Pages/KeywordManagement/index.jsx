@@ -1,9 +1,10 @@
-import { ConfigProvider, Form, Input, message, Modal } from "antd";
-import { useState } from "react";
-import { SearchOutlined } from "@ant-design/icons";
-import { FaTrashAlt } from "react-icons/fa";
-const KeyWOrdManagement = () => {
-  const [email, setEmail] = useState("");
+import { ConfigProvider, Form, Input, message, Modal } from 'antd';
+import { useState } from 'react';
+import { SearchOutlined } from '@ant-design/icons';
+import { FaTrashAlt } from 'react-icons/fa';
+
+const KeywordManagement = () => {
+  const [email, setEmail] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const showModal = () => {
@@ -15,17 +16,21 @@ const KeyWOrdManagement = () => {
   const handleOk = () => {
     setIsModalOpen(false);
   };
+
   const onfinish = () => {
-    console.log("Form submitted successfully!");
+    console.log('Form submitted successfully!');
   };
 
   const handleSearch = () => {
-    console.log("Searching for:", email);
+    console.log('Searching for:', email);
   };
-  const keywords = ["keyword1", "keyword2", "keyword3", "keyword4", "keyword5"];
+
+  const keywords = ['keyword1', 'keyword2', 'keyword3', 'keyword4', 'keyword5'];
+
   const handleDelete = () => {
-    message.success("Keyword deleted successfully!");
+    message.success('Keyword deleted successfully!');
   };
+
   return (
     <div>
       <div className="flex justify-between items-center  ">
@@ -41,8 +46,8 @@ const KeyWOrdManagement = () => {
               components: {
                 Input: {
                   borderRadius: 0,
-                  hoverBorderColor: "none",
-                  activeBorderColor: "none",
+                  hoverBorderColor: 'none',
+                  activeBorderColor: 'none',
                 },
               },
             }}
@@ -53,11 +58,11 @@ const KeyWOrdManagement = () => {
                 allowClear
                 size="large"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={e => setEmail(e.target.value)}
                 onPressEnter={handleSearch}
                 prefix={
                   <SearchOutlined
-                    style={{ cursor: "pointer" }}
+                    style={{ cursor: 'pointer' }}
                     onClick={handleSearch}
                   />
                 }
@@ -103,7 +108,7 @@ const KeyWOrdManagement = () => {
             rules={[
               {
                 required: true,
-                message: "Please input the keyword!",
+                message: 'Please input the keyword!',
               },
             ]}
           >
@@ -126,4 +131,4 @@ const KeyWOrdManagement = () => {
   );
 };
 
-export default KeyWOrdManagement;
+export default KeywordManagement;

@@ -1,97 +1,95 @@
-import { createBrowserRouter } from "react-router-dom";
-import MainLayout from "../Layout/Main/Main";
-import Analytics from "../Pages/Analytics/Analytics";
-import SignIn from "../Pages/Auth/SignIn/SignIn";
-import ForgatePassword from "../Pages/Auth/ForgatePassword/ForgatePassword";
-import ResetPass from "../Pages/Auth/ResetPass/ResetPass";
-import Newpass from "../Pages/Auth/NewPass/Newpass";
-import VerifyPass from "../Pages/Auth/VerifyPass/VerifyPass";
-
-import ScheduledOrder from "../Pages/Orders/ScheduledOrder/ScheduledOrder";
-import CompleteadOrders from "../Pages/Orders/CompleteadOrders/CompleteadOrders";
-import Payments from "../Pages/Payments/Payments";
-import AdminProfile from "../Pages/AdminProfile/AdminProfile";
-import UserProfile from "../Pages/UserProfile/UserProfile";
-import ArtistProfile from "../Pages/ArtistProfile/ArtistProfile";
-import BusinessProfile from "../Pages/BusinessProfile/BusinessProfile";
-import Report from "../Pages/Report/Report";
-import ReviewImages from "../Pages/ReviewImages/ReviewImages";
-import ReviewMessage from "../Pages/ReviewMessage/ReviewMessage";
-import KeyWOrdManagement from "../Pages/KeyWordManagement/KeyWOrdManagement";
+import { createBrowserRouter } from 'react-router-dom';
+import MainLayout from '../Layout/Main/Main';
+import Analytics from '../Pages/Analytics';
+import SignIn from '../Pages/Auth/SignIn/SignIn';
+import ForgotPassword from '../Pages/Auth/ForgatePassword/ForgatePassword';
+import ResetPassword from '../Pages/Auth/ResetPass/ResetPass';
+import Newpassword from '../Pages/Auth/NewPass/Newpass';
+import VerifyPassword from '../Pages/Auth/VerifyPass/VerifyPass';
+import ScheduledOrders from '../Pages/Orders/ScheduledOrders';
+import CompletedOrders from '../Pages/Orders/CompletedOrders';
+import Payments from '../Pages/Payments';
+import AdminProfile from '../Pages/AdminProfile';
+import UserProfile from '../Pages/UserProfile';
+import ArtistProfile from '../Pages/ArtistProfile';
+import BusinessProfile from '../Pages/BusinessProfile';
+import Report from '../Pages/Report';
+import ReviewImages from '../Pages/ReviewImages';
+import ReviewMessage from '../Pages/ReviewMessage';
+import KeywordManagement from '../Pages/KeywordManagement';
 
 export const router = createBrowserRouter([
   {
-    path: "/sign-in",
-    element: <SignIn></SignIn>,
-  },
-
-  {
-    path: "/forgate-password",
-    element: <ForgatePassword></ForgatePassword>,
+    path: '/sign-in',
+    element: <SignIn />,
   },
   {
-    path: "/varification",
-    element: <VerifyPass></VerifyPass>,
+    path: '/forgot-password',
+    element: <ForgotPassword />,
   },
   {
-    path: "/reset-password",
-    element: <ResetPass></ResetPass>,
+    path: '/varification',
+    element: <VerifyPassword />,
   },
   {
-    path: "/new-password",
-    element: <Newpass></Newpass>,
+    path: '/reset-password',
+    element: <ResetPassword />,
   },
   {
-    path: "/",
+    path: '/new-password',
+    element: <Newpassword />,
+  },
+  {
+    path: '/',
     element: <MainLayout />,
     children: [
       {
-        path: "/",
+        path: '/',
         element: <Analytics />,
       },
       {
-        path: "/scheduled",
-        element: <ScheduledOrder />,
+        path: '/scheduled',
+        element: <ScheduledOrders />,
       },
       {
-        path: "/completed",
-        element: <CompleteadOrders />,
+        path: '/completed',
+        element: <CompletedOrders />,
       },
       {
-        path: "/payments",
+        path: '/payments',
         element: <Payments />,
       },
       {
-        path: "/admin-profile",
+        path: '/admin-profile',
         element: <AdminProfile />,
       },
       {
-        path: "/user-profile",
+        path: '/user-profile',
         element: <UserProfile />,
       },
       {
-        path: "/artist-profile",
+        path: '/artist-profile',
         element: <ArtistProfile />,
       },
       {
-        path: "/business-profile",
+        path: '/business-profile',
         element: <BusinessProfile />,
       },
       {
-        path:'/report',
-        element:<Report></Report>
+        path: '/report',
+        element: <Report />,
       },
       {
-        path:"/review-images",
-        element:<ReviewImages/>
+        path: '/review-images',
+        element: <ReviewImages />,
       },
       {
-        path:"/review-messages",
-        element:<ReviewMessage/>
+        path: '/review-messages',
+        element: <ReviewMessage />,
       },
       {
-        path:"/keyword-management",
-        element:<KeyWOrdManagement/>
+        path: '/keyword-management',
+        element: <KeywordManagement />,
       },
     ],
   },

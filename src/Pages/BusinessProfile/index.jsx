@@ -1,14 +1,15 @@
-import { ConfigProvider, Input } from "antd";
-import { useState } from "react";
-import { SearchOutlined } from "@ant-design/icons";
-import PendingMessage from "../../Components/PageComponents/PendingMessage";
-import CheckedMessage from "../../Components/PageComponents/CheckedMessage";
-const ReviewMessage = () => {
-  const [active, setActive] = useState("active");
-  const [email, setEmail] = useState("");
+import { useState } from 'react';
+import { SearchOutlined } from '@ant-design/icons';
+import { ConfigProvider, Input } from 'antd';
+import ActiveBusiness from '../../Components/PageComponents/ActiveBusiness';
+import PendingBusiness from '../../Components/PageComponents/PendingBusiness';
+import DeleteBusiness from '../../Components/PageComponents/DeleteBusiness';
 
+const BusinessProfile = () => {
+  const [active, setActive] = useState('pending');
+  const [email, setEmail] = useState();
   const handleSearch = () => {
-    console.log("Searching for:", email);
+    console.log('Searching for:', email);
   };
 
   return (
@@ -17,23 +18,33 @@ const ReviewMessage = () => {
         <div className="flex justify-start items-center gap-2">
           <button
             className={`px-4 py-2 rounded-md ${
-              active === "active"
-                ? "bg-primary text-white"
-                : "border border-primary"
+              active === 'pending'
+                ? 'bg-primary text-white'
+                : 'border border-primary'
             }`}
-            onClick={() => setActive("active")}
+            onClick={() => setActive('pending')}
           >
             Pending
           </button>
           <button
             className={`px-4 py-2 rounded-md ${
-              active === "delete"
-                ? "bg-primary text-white"
-                : "border border-primary"
+              active === 'active'
+                ? 'bg-primary text-white'
+                : 'border border-primary'
             }`}
-            onClick={() => setActive("delete")}
+            onClick={() => setActive('active')}
           >
-            Checked
+            Active
+          </button>
+          <button
+            className={`px-4 py-2 rounded-md ${
+              active === 'delete'
+                ? 'bg-primary text-white'
+                : 'border border-primary'
+            }`}
+            onClick={() => setActive('delete')}
+          >
+            Delete
           </button>
         </div>
 
@@ -44,8 +55,8 @@ const ReviewMessage = () => {
               components: {
                 Input: {
                   borderRadius: 0,
-                  hoverBorderColor: "none",
-                  activeBorderColor: "none",
+                  hoverBorderColor: 'none',
+                  activeBorderColor: 'none',
                 },
               },
             }}
@@ -56,11 +67,11 @@ const ReviewMessage = () => {
                 allowClear
                 size="large"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={e => setEmail(e.target.value)}
                 onPressEnter={handleSearch}
                 prefix={
                   <SearchOutlined
-                    style={{ cursor: "pointer" }}
+                    style={{ cursor: 'pointer' }}
                     onClick={handleSearch}
                   />
                 }
@@ -78,11 +89,12 @@ const ReviewMessage = () => {
 
       {/* Render corresponding component based on active state */}
       <div className="mt-4">
-        {active === "active" && <PendingMessage />}
-        {active === "delete" && <CheckedMessage />}
+        {active === 'pending' && <PendingBusiness />}
+        {active === 'active' && <ActiveBusiness />}
+        {active === 'delete' && <DeleteBusiness />}
       </div>
     </div>
   );
 };
 
-export default ReviewMessage;
+export default BusinessProfile;

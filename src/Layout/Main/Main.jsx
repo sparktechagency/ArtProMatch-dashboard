@@ -1,15 +1,14 @@
-/* eslint-disable no-unused-vars */
-import { Outlet } from "react-router-dom";
-import Sidebar from "../../Components/Sidebar/Sidebar";
-import { useEffect, useState } from "react";
-import { ConfigProvider, Drawer, Modal } from "antd";
-import { GiHamburgerMenu } from "react-icons/gi";
-import { FaX } from "react-icons/fa6";
-import { IoIosNotificationsOutline } from "react-icons/io";
-import { Link } from "react-router-dom";
-import brandlogo from "../../assets/image/Logo.png";
-import user from "../../assets/image/user.png";
-import NotificationModal from "../../Components/PageComponents/NotificationModal/NotificationModal";
+import { Outlet } from 'react-router-dom';
+import Sidebar from '../../Components/Sidebar/Sidebar';
+import { useEffect, useState } from 'react';
+import { ConfigProvider, Drawer, Modal } from 'antd';
+import { GiHamburgerMenu } from 'react-icons/gi';
+import { FaX } from 'react-icons/fa6';
+import { IoIosNotificationsOutline } from 'react-icons/io';
+import { Link } from 'react-router-dom';
+import brandlogo from '../../assets/image/Logo.png';
+import user from '../../assets/image/user.png';
+import NotificationModal from '../../Components/PageComponents/NotificationModal/NotificationModal';
 
 const MainLayout = () => {
   const [drawer, setDrawer] = useState(false);
@@ -23,8 +22,8 @@ const MainLayout = () => {
       setIsMobile(window.innerWidth < 768);
       if (window.innerWidth >= 768) closeDrawer();
     };
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   const [isModalOpenForNotification, setIsModalOpenForNotification] =
@@ -80,7 +79,7 @@ const MainLayout = () => {
             </div>
           )}
 
-          <div className={` flex-1 bg-[#f3f4f6] ${isMobile ? "p-4 " : "p-0"}`}>
+          <div className={` flex-1 bg-[#f3f4f6] ${isMobile ? 'p-4 ' : 'p-0'}`}>
             <div className="bg-[#f3f4f6] h-16">
               <div className="h-20 flex justify-between items-center px-2 gap-2">
                 {isMobile && (
@@ -126,7 +125,7 @@ const MainLayout = () => {
                           className="h-12 w-12 rounded-full"
                         />
                         <div>
-                          {" "}
+                          {' '}
                           <p className="text-sm text-primary">Welcome</p>
                           <h1 className="text-lg font-bold">Mr Robert</h1>
                         </div>
