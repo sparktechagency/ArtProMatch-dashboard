@@ -1,10 +1,11 @@
-import { Form, Typography } from 'antd';
+import { Form, Input } from 'antd';
 import { Link } from 'react-router-dom';
 
-const ResetPassword = () => {
+const ForgotPassword = () => {
   const onFinish = values => {
     console.log('Received values of form: ', values);
   };
+
   return (
     <div className="bg-[ffffff]">
       <div className="container mx-auto">
@@ -12,7 +13,7 @@ const ResetPassword = () => {
           {/* <div className="w-full md:w-[50%] px-3 mt-10">
                         <img src={brandlogo} alt="brandlogo" className="h-full w-full object-cover" />
                     </div> */}
-          <div className="w-full  ">
+          <div className="w-full">
             <div className="py-16 md:py-0 h-[100vh] w-full flex items-center justify-center ">
               <Form
                 name="login"
@@ -24,21 +25,31 @@ const ResetPassword = () => {
               >
                 <div className="mb-4 text-center">
                   <h2 className=" text-center text-2xl md:text-3xl font-bold mb-6">
-                    Password reset
+                    Forget Password
                   </h2>
-                  <Typography.Text className="text-neutral-500 mb-4">
-                    Your password has been successfully reset. click confirm to
-                    set a new password
-                  </Typography.Text>
                 </div>
 
+                <Form.Item
+                  name="email"
+                  label={
+                    <p className="text-md font-semibold">Email Address :</p>
+                  }
+                >
+                  <Input
+                    required
+                    style={{ padding: '6px' }}
+                    className=" text-md"
+                    placeholder="esteban_schiller@gmail.com"
+                  />
+                </Form.Item>
+
                 <Form.Item className="text-center">
-                  <Link to="/new-password">
+                  <Link to="/varification">
                     <button
                       className="bg-primary text-center w-full  p-2 font-semibold    text-white px-10 py-2 rounded-md shadow-lg"
                       type="submit"
                     >
-                      Confirm
+                      Send a code
                     </button>
                   </Link>
                 </Form.Item>
@@ -51,4 +62,4 @@ const ResetPassword = () => {
   );
 };
 
-export default ResetPassword;
+export default ForgotPassword;

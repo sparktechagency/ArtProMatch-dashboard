@@ -1,36 +1,67 @@
-import { Checkbox, Form, Input, message, Typography } from 'antd';
-import { Link, useNavigate } from 'react-router-dom';
+import { Checkbox, Form, Input, Typography } from 'antd';
+import { Link, useNavigate, Navigate } from 'react-router-dom';
 import { useState } from 'react';
 import { IoIosLock } from 'react-icons/io';
 import { FaLockOpen } from 'react-icons/fa';
 import { useLoginMutation } from '../../../redux/features/auth/authApi';
-const SignIn = () => {
+import { verifyToken } from '../../../utils/verifyToken';
+import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
+import { selectUser, setUser } from '../../../redux/features/auth/authSlice';
+import { toast } from 'sonner';
+import { useLocation } from 'react-router-dom';
+import { TbFidgetSpinner } from 'react-icons/tb';
+
+const LogIn = () => {
+  const dispatch = useAppDispatch();
   const [showpassword, setShowpassword] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || '/';
+  const user = useAppSelector(selectUser);
+
+  // togglePasswordVisibility
   const togglePasswordVisibility = () => {
     setShowpassword(!showpassword);
   };
 
-  const [login] = useLoginMutation();
+  const [login, { isLoading }] = useLoginMutation();
 
-  const onFinish = async values => {
+  // handleLogin
+  const handleLogin = async values => {
     const credentials = {
       email: values.email,
       password: values.password,
+      fcmToken: 'no_fcm_token',
     };
 
     try {
       const res = await login(credentials).unwrap();
-      if (res?.data?.accessToken) {
-        localStorage.setItem('token', res?.data?.accessToken);
-        message?.success('Login successful');
-        navigate('/');
+
+      if (res?.success) {
+        const user = verifyToken(res.data.accessToken);
+        dispatch(
+          setUser({
+            user: user,
+            accessToken: res.data.accessToken,
+            refreshToken: res.data.refreshToken,
+          })
+        );
+
+        toast.success(res?.message);
+
+        setTimeout(() => {
+          navigate(from, { replace: true });
+        }, 10);
       }
     } catch (error) {
-      // message.error(error?.message );
       console.error('Login error:', error);
     }
   };
+
+  if (user) {
+    return <Navigate to="/"></Navigate>;
+  }
+
   return (
     <div className="bg-[ffffff]">
       <div className="container mx-auto">
@@ -44,7 +75,7 @@ const SignIn = () => {
                 name="login"
                 initialValues={{ remember: true }}
                 style={{ maxWidth: 550 }}
-                onFinish={onFinish}
+                onFinish={handleLogin}
                 layout="vertical"
                 className="bg-[#eae6e6]  py-28 mx-4 md:mx-0 px-6 md:px-10 rounded-2xl w-[450px] border-2 shadow-xl"
               >
@@ -61,13 +92,13 @@ const SignIn = () => {
                 <Form.Item
                   name="email"
                   label={<p className=" text-md">Email</p>}
-                  style={{}}
                 >
                   <Input
                     required
                     style={{ padding: '6px' }}
                     className=" text-md"
                     placeholder="Your Email"
+                    defaultValue="admin@gmail.com"
                   />
                 </Form.Item>
                 <Form.Item
@@ -81,6 +112,7 @@ const SignIn = () => {
                       className=" text-md"
                       type={showpassword ? 'password' : 'text'}
                       placeholder="Password"
+                      defaultValue="Password123@"
                     />
                     <div className="flex justify-center absolute right-0 px-3">
                       <button onClick={togglePasswordVisibility} type="button">
@@ -108,10 +140,18 @@ const SignIn = () => {
                 </div>
                 <Form.Item className="text-center my-10">
                   <button
+                    disabled={isLoading}
                     className="bg-primary text-center w-full  p-2 font-semibold    text-white px-10 py-2 rounded-md shadow-lg"
                     type="submit"
                   >
-                    Login
+                    {isLoading ? (
+                      <span className="flex items-center justify-center gap-2 text-white">
+                        <TbFidgetSpinner className="h-5 w-5 animate-spin" />
+                        <span>Logging in...</span>
+                      </span>
+                    ) : (
+                      'Login'
+                    )}
                   </button>
                 </Form.Item>
               </Form>
@@ -123,4 +163,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default LogIn;

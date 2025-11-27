@@ -5,7 +5,7 @@ import { FaLockOpen } from 'react-icons/fa';
 import { useState } from 'react';
 import { IoIosLock } from 'react-icons/io';
 
-const Newpassword = () => {
+const NewPassword = () => {
   const [showpassword, setShowpassword] = useState('false');
   const [showConfirmpassword, setShowConfirmPassword] = useState('false');
   const togglePasswordVisibility = () => {
@@ -115,4 +115,4 @@ const Newpassword = () => {
   );
 };
 
-export default Newpassword;
+export default NewPassword;

@@ -1,11 +1,11 @@
 import { createBrowserRouter } from 'react-router-dom';
 import MainLayout from '../Layout/Main/Main';
 import Analytics from '../Pages/Analytics';
-import SignIn from '../Pages/Auth/SignIn/SignIn';
-import ForgotPassword from '../Pages/Auth/ForgatePassword/ForgatePassword';
-import ResetPassword from '../Pages/Auth/ResetPass/ResetPass';
-import Newpassword from '../Pages/Auth/NewPass/Newpass';
-import VerifyPassword from '../Pages/Auth/VerifyPass/VerifyPass';
+import LogIn from '../Pages/Auth/LogIn';
+import ForgotPassword from '../Pages/Auth/ForgotPassword';
+import ResetPassword from '../Pages/Auth/ResetPassword';
+import NewPassword from '../Pages/Auth/NewPassword';
+import VerifyPassword from '../Pages/Auth/VerifyPassword';
 import ScheduledOrders from '../Pages/Orders/ScheduledOrders';
 import CompletedOrders from '../Pages/Orders/CompletedOrders';
 import Payments from '../Pages/Payments';
@@ -17,11 +17,12 @@ import Report from '../Pages/Report';
 import ReviewImages from '../Pages/ReviewImages';
 import ReviewMessage from '../Pages/ReviewMessage';
 import KeywordManagement from '../Pages/KeywordManagement';
+import PrivateRoute from './PrivateRoute';
 
 export const router = createBrowserRouter([
   {
-    path: '/sign-in',
-    element: <SignIn />,
+    path: '/login',
+    element: <LogIn />,
   },
   {
     path: '/forgot-password',
@@ -37,11 +38,16 @@ export const router = createBrowserRouter([
   },
   {
     path: '/new-password',
-    element: <Newpassword />,
+    element: <NewPassword />,
   },
   {
     path: '/',
-    element: <MainLayout />,
+
+    element: (
+      <PrivateRoute>
+        <MainLayout />
+      </PrivateRoute>
+    ),
     children: [
       {
         path: '/',

@@ -1,30 +1,54 @@
-import { Avatar, Upload, ConfigProvider, Input, Form, message } from "antd";
-import { useState } from "react";
-import { FaCamera, FaLockOpen } from "react-icons/fa";
-import { IoIosLock } from "react-icons/io";
-import user from "../../assets/image/user.png";
-import { FaUserEdit } from "react-icons/fa";
-import { MdOutlineCancel } from "react-icons/md";
+import { Avatar, Upload, ConfigProvider, Input, Form } from 'antd';
+import { useEffect, useMemo, useState } from 'react';
+import { FaCamera, FaLockOpen } from 'react-icons/fa';
+import { IoIosLock } from 'react-icons/io';
+import userDefaultImage from '../../assets/image/user.png';
+import { FaUserEdit } from 'react-icons/fa';
+import { MdOutlineCancel } from 'react-icons/md';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+import { selectUser, setUser } from '../../redux/features/auth/authSlice';
+import { getCleanImageUrl } from '../../utils/getCleanImageUrl';
+import { useUpdateProfileMutation } from '../../redux/features/auth/authApi';
+import { verifyToken } from '../../utils/verifyToken';
+import { toast } from 'sonner';
+import { TbFidgetSpinner } from 'react-icons/tb';
 
 const AdminProfile = () => {
-  const [profilePic, setProfilePic] = useState(user);
+  const user = useAppSelector(selectUser);
+  const dispatch = useAppDispatch();
+  const [profilePic, setProfilePic] = useState(() =>
+    user?.image ? getCleanImageUrl(user.image) : userDefaultImage
+  );
   const [isEditing, setIsEditing] = useState(false);
-  const [activeTab, setActiveTab] = useState("Edit Profile");
+  const [activeTab, setActiveTab] = useState('Edit Profile');
   const [form] = Form.useForm();
 
-  const [userData, setUserData] = useState({
-    name: "John Doe",
-    contact: "123-456-7890",
-    address: "79/A Joker Vila, Gotham City",
-  });
+  const [updateProfile, { isLoading }] = useUpdateProfileMutation();
 
-  const [currentPassword, setCurrentPassword] = useState(false);
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const togglePasswordVisibility = (type) => {
-    if (type === "current") setCurrentPassword(!currentPassword);
-    else if (type === "new") setShowNewPassword(!showNewPassword);
+  useEffect(() => {
+    if (user?.image) {
+      setProfilePic(getCleanImageUrl(user.image));
+    }
+  }, [user?.image]);
+
+  useEffect(() => {
+    if (user) {
+      form.setFieldsValue({
+        fullName: user.fullName ?? user.name ?? '',
+        email: user.email ?? '',
+        phone: user.contact ?? user.phone ?? '',
+        address: user.stringLocation ?? '',
+      });
+    }
+  }, [form, user]);
+
+  const togglePasswordVisibility = type => {
+    if (type === 'current') setShowCurrentPassword(!showCurrentPassword);
+    else if (type === 'new') setShowNewPassword(!showNewPassword);
     else setShowConfirmPassword(!showConfirmPassword);
   };
 
@@ -32,185 +56,310 @@ const AdminProfile = () => {
     setIsEditing(!isEditing);
   };
 
-  const onFinish = (values) => {
-    setUserData({
-      name: values.name,
-      contact: values.contact,
-      address: values.address,
-    });
-    setIsEditing(false);
-    message.success("Profile updated successfully!");
+  // handleUpdateProfile
+  const handleUpdateProfile = async values => {
+    const data = {
+      fullName: values.fullName,
+      // stringLocation: values.address,
+    };
+
+    try {
+      const res = await updateProfile(data).unwrap();
+
+      console.log({ res });
+
+      if (res?.success) {
+        const user = verifyToken(res.data.accessToken);
+
+        dispatch(
+          setUser({
+            user: user,
+            accessToken: res.data.accessToken,
+          })
+        );
+
+        setIsEditing(false);
+        toast.success('Profile updated successfully!');
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+    }
   };
 
-  const onChangePassword = (values) => {
-    console.log("Password Change Request: ", values);
-    message.success("Password changed successfully!");
+  const onChangePassword = values => {
+    console.log('Password Change Request: ', values);
+    toast.success('Password changed successfully!');
   };
+
+  const profileDetails = useMemo(
+    () => [
+      { label: 'Full Name', value: user?.fullName ?? user?.name ?? 'Not set' },
+      { label: 'Email', value: user?.email ?? 'Not set' },
+      // {
+      //   label: 'Contact Number',
+      //   value: user?.contact ?? user?.phone ?? 'Not set',
+      // },
+      { label: 'Address', value: user?.stringLocation ?? 'Not set' },
+      { label: 'Role', value: user?.role ?? 'Not set' },
+    ],
+    [user]
+  );
+
+  const displayedAvatar = profilePic || userDefaultImage;
+  const displayName = user?.fullName ?? user?.name ?? 'Administrator';
+  const displayTagline = user?.role
+    ? `${user.role} • Steady Hands`
+    : 'Team Member';
 
   return (
-    <div className="mx-2">
+    <div className="min-h-screen bg-gradient-to-br from-primary/10 via-white to-secondary/10 px-4 py-8 sm:px-6 lg:px-10">
       {/* Profile Header */}
-      <div className="flex flex-col justify-center items-center py-5">
-        <div className="flex flex-col items-center text-center mb-10 py-6 bg-primary w-full">
+      <section className="relative mx-auto w-full max-w-6xl overflow-hidden rounded-3xl bg-white shadow-xl">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(129,106,107,0.25),transparent_60%)]" />
+        <div className="relative flex flex-col items-center gap-6 px-6 pb-10 pt-12 text-center sm:px-10 lg:flex-row lg:items-end lg:gap-12 lg:text-left">
           <div className="relative">
             <Avatar
-              size={140}
-              src={profilePic}
-              className="border-4 border-neutral-600 shadow-xl"
+              size={160}
+              src={displayedAvatar}
+              className="border-4 border-white shadow-2xl"
             />
             {isEditing && (
               <Upload
                 showUploadList={false}
-                onChange={(e) =>
-                  setProfilePic(URL.createObjectURL(e.file.originFileObj))
-                }
-                className="absolute bottom-2 right-2 bg-white px-2 py-1 rounded-full cursor-pointer"
+                accept="image/*"
+                onChange={e => {
+                  const file = e?.file?.originFileObj;
+                  if (file) {
+                    setProfilePic(URL.createObjectURL(file));
+                  }
+                }}
+                className="absolute bottom-2 right-2 cursor-pointer rounded-full bg-white p-2 shadow-md transition hover:scale-105"
               >
-                <FaCamera className="text-primary h-5 w-5" />
+                <FaCamera className="h-5 w-5 text-primary" />
               </Upload>
             )}
           </div>
-          <h1 className="text-4xl font-bold my-6">{userData.name}</h1>
+
+          <div className="flex-1 space-y-4">
+            <div className="space-y-2">
+              <h1 className="text-3xl font-semibold text-neutral-800 sm:text-4xl">
+                {displayName}
+              </h1>
+              <p className="text-sm uppercase tracking-[0.35em] text-primary/60">
+                Profile Overview
+              </p>
+              <p className="text-sm text-primary/80">{displayTagline}</p>
+            </div>
+
+            <div className="grid gap-3 sm:grid-cols-2">
+              {profileDetails.slice(0, 4).map(detail => (
+                <div
+                  key={detail.label}
+                  className="rounded-2xl border border-primary/10 bg-primary/5 px-4 py-3 text-left"
+                >
+                  <p className="text-xs uppercase tracking-wide text-primary/60">
+                    {detail.label}
+                  </p>
+                  <p className="text-sm font-medium text-neutral-700">
+                    {detail.value}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <button
+            onClick={toggleEditMode}
+            className="flex items-center gap-2 rounded-2xl bg-primary px-5 py-3 text-sm font-semibold text-white shadow-md transition hover:bg-primary/90"
+          >
+            {isEditing ? (
+              <>
+                <MdOutlineCancel className="h-5 w-5" />
+                Cancel
+              </>
+            ) : (
+              <>
+                <FaUserEdit className="h-5 w-5" />
+                Edit Profile
+              </>
+            )}
+          </button>
         </div>
-      </div>
+      </section>
 
       {/* Tabs for Edit Profile and Change Password */}
-      <div className="my-6 flex justify-center items-center gap-5 text-xl font-semibold">
-        <p
-          onClick={() => setActiveTab("Edit Profile")}
-          className={`cursor-pointer ${
-            activeTab === "Edit Profile"
-              ? "text-primary border-b-2 border-primary pb-1"
-              : "text-gray-500"
-          }`}
-        >
-          Edit Profile
-        </p>
-        <p
-          onClick={() => setActiveTab("Change Password")}
-          className={`cursor-pointer ${
-            activeTab === "Change Password"
-              ? "text-primary border-b-2 border-primary pb-1"
-              : "text-gray-500"
-          }`}
-        >
-          Change Password
-        </p>
+      <div className="mx-auto mt-10 flex w-full max-w-4xl justify-center gap-3 rounded-full bg-white/60 p-2 shadow-inner">
+        {[
+          { key: 'Edit Profile', label: 'Profile Details' },
+          { key: 'Change Password', label: 'Password Settings' },
+        ].map(tab => (
+          <button
+            key={tab.key}
+            onClick={() => setActiveTab(tab.key)}
+            className={`w-full rounded-full px-5 py-2 text-sm font-semibold transition ${
+              activeTab === tab.key
+                ? 'bg-primary text-white shadow'
+                : 'text-primary/70 hover:bg-primary/10'
+            }`}
+          >
+            {tab.label}
+          </button>
+        ))}
       </div>
 
       {/* Content based on active tab */}
-      {activeTab === "Edit Profile" && (
-        <div className="p-5 bg-white shadow-md rounded-md">
-          <div className="flex items-center justify-center">
-            <p className="text-center font-bold text-xl my-6 text-gray-700">
-              Edit your Profile
-            </p>
-            <button
-              onClick={toggleEditMode}
-              className="bg-primary text-white px-4 py-2 rounded-md shadow-md hover:bg-primary-dark ml-3"
-            >
-              {isEditing ? (
-                <MdOutlineCancel className="h-6" />
-              ) : (
-                <FaUserEdit className="h-6" />
-              )}
-            </button>
-          </div>
+      {activeTab === 'Edit Profile' && (
+        <section className="mx-auto mt-8 w-full max-w-5xl rounded-3xl bg-white/95 p-8 shadow-lg backdrop-blur">
           {!isEditing ? (
-            <div className="w-[40%] mx-auto">
-              <p className="text-md mb-2">
-                <strong>Name:</strong> {userData.name}
-              </p>
-              <p className="text-md mb-2">
-                <strong>Contact:</strong> {userData.contact}
-              </p>
-              <p className="text-md mb-2">
-                <strong>Address:</strong> {userData.address}
-              </p>
+            <div className="grid gap-6 sm:grid-cols-2">
+              {profileDetails.map(detail => (
+                <div
+                  key={detail.label}
+                  className="rounded-2xl border border-primary/15 bg-primary/5 px-5 py-4 shadow-sm"
+                >
+                  <p className="text-xs uppercase tracking-wide text-primary/60">
+                    {detail.label}
+                  </p>
+                  <p className="text-base font-medium text-neutral-700">
+                    {detail.value}
+                  </p>
+                </div>
+              ))}
             </div>
           ) : (
             <ConfigProvider>
               <Form
                 form={form}
-                initialValues={userData}
-                onFinish={onFinish}
+                onFinish={handleUpdateProfile}
                 layout="vertical"
-                style={{ maxWidth: 800 }}
-                className="mx-auto"
+                className="grid gap-6 md:grid-cols-2"
               >
-                <Form.Item name="name" label={<p className="text-md">Name</p>}>
-                  <Input required placeholder="Your Name" />
+                <Form.Item
+                  name="fullName"
+                  label={
+                    <p className="text-sm font-semibold text-neutral-600">
+                      Full Name
+                    </p>
+                  }
+                  rules={[
+                    { required: true, message: 'Please enter your name' },
+                  ]}
+                >
+                  <Input size="large" placeholder="Your Name" />
                 </Form.Item>
                 <Form.Item
-                  name="contact"
-                  label={<p className="text-md">Contact Number</p>}
+                  name="email"
+                  label={
+                    <p className="text-sm font-semibold text-neutral-600">
+                      Email Address (Read-Only)
+                    </p>
+                  }
+                  rules={[
+                    { required: true, message: 'Please enter your email' },
+                  ]}
                 >
-                  <Input required placeholder="Contact Number" />
+                  <Input
+                    size="large"
+                    placeholder="Email"
+                    type="email"
+                    readOnly
+                  />
                 </Form.Item>
+                {/* <Form.Item
+                  name="phone"
+                  label={
+                    <p className="text-sm font-semibold text-neutral-600">
+                      Contact Number
+                    </p>
+                  }
+                >
+                  <Input size="large" placeholder="Contact Number" />
+                </Form.Item> */}
                 <Form.Item
                   name="address"
-                  label={<p className="text-md">Address</p>}
+                  label={
+                    <p className="text-sm font-semibold text-neutral-600">
+                      Address
+                    </p>
+                  }
                 >
-                  <Input required placeholder="Address" />
+                  <Input size="large" placeholder="Address" />
                 </Form.Item>
-                <Form.Item className="text-center">
+                <Form.Item className="md:col-span-2">
                   <button
+                    disabled={isLoading}
                     type="submit"
-                    className="w-full bg-primary text-white px-10 py-2 rounded-md shadow-lg"
+                    className="w-full rounded-2xl bg-primary px-10 py-3 text-sm font-semibold text-white shadow-md transition hover:bg-primary/90"
                   >
-                    Save Changes
+                    {isLoading ? (
+                      <span className="flex items-center justify-center gap-2 text-white">
+                        <TbFidgetSpinner className="h-5 w-5 animate-spin" />
+                        <span>Saving...</span>
+                      </span>
+                    ) : (
+                      'Save Changes'
+                    )}
                   </button>
                 </Form.Item>
               </Form>
             </ConfigProvider>
           )}
-        </div>
+        </section>
       )}
 
-      {activeTab === "Change Password" && (
-        <div className="p-5 bg-white shadow-md rounded-md">
-          <p className="text-center font-bold text-xl my-6 text-gray-700">
-            Change your Password
+      {activeTab === 'Change Password' && (
+        <section className="mx-auto mt-8 w-full max-w-3xl rounded-3xl bg-white/95 p-8 shadow-lg backdrop-blur">
+          <p className="text-center text-lg font-semibold text-neutral-700">
+            Update your password to keep your account secure
           </p>
           <ConfigProvider>
             <Form
               onFinish={onChangePassword}
               layout="vertical"
-              style={{ maxWidth: 800 }}
-              className="mx-auto"
+              className="mt-6 space-y-6"
             >
               <Form.Item
                 name="currentPassword"
-                label={<p className="text-md">Current Password</p>}
+                label={
+                  <p className="text-sm font-semibold text-neutral-600">
+                    Current Password
+                  </p>
+                }
               >
                 <div className="relative">
                   <Input
-                    type={currentPassword ? "text" : "password"}
+                    size="large"
+                    type={showCurrentPassword ? 'text' : 'password'}
                     placeholder="Enter current password"
                   />
                   <button
                     type="button"
-                    onClick={() => togglePasswordVisibility("current")}
-                    className="absolute right-2 top-2"
+                    onClick={() => togglePasswordVisibility('current')}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-primary"
                   >
-                    {currentPassword ? <FaLockOpen /> : <IoIosLock />}
+                    {showCurrentPassword ? <FaLockOpen /> : <IoIosLock />}
                   </button>
                 </div>
               </Form.Item>
 
               <Form.Item
                 name="newPassword"
-                label={<p className="text-md">New Password</p>}
+                label={
+                  <p className="text-sm font-semibold text-neutral-600">
+                    New Password
+                  </p>
+                }
               >
                 <div className="relative">
                   <Input
-                    type={showNewPassword ? "text" : "password"}
+                    size="large"
+                    type={showNewPassword ? 'text' : 'password'}
                     placeholder="Enter new password"
                   />
                   <button
                     type="button"
-                    onClick={() => togglePasswordVisibility("new")}
-                    className="absolute right-2 top-2"
+                    onClick={() => togglePasswordVisibility('new')}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-primary"
                   >
                     {showNewPassword ? <FaLockOpen /> : <IoIosLock />}
                   </button>
@@ -219,34 +368,39 @@ const AdminProfile = () => {
 
               <Form.Item
                 name="confirmPassword"
-                label={<p className="text-md">Confirm Password</p>}
+                label={
+                  <p className="text-sm font-semibold text-neutral-600">
+                    Confirm Password
+                  </p>
+                }
               >
                 <div className="relative">
                   <Input
-                    type={showConfirmPassword ? "text" : "password"}
+                    size="large"
+                    type={showConfirmPassword ? 'text' : 'password'}
                     placeholder="Confirm new password"
                   />
                   <button
                     type="button"
-                    onClick={() => togglePasswordVisibility("confirm")}
-                    className="absolute right-2 top-2"
+                    onClick={() => togglePasswordVisibility('confirm')}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-primary"
                   >
                     {showConfirmPassword ? <FaLockOpen /> : <IoIosLock />}
                   </button>
                 </div>
               </Form.Item>
 
-              <Form.Item className="text-center">
+              <Form.Item>
                 <button
                   type="submit"
-                  className="w-full bg-primary text-white px-10 py-2 rounded-md shadow-lg hover:bg-primary-dark"
+                  className="w-full rounded-2xl bg-primary px-10 py-3 text-sm font-semibold text-white shadow-md transition hover:bg-primary/90"
                 >
                   Save Changes
                 </button>
               </Form.Item>
             </Form>
           </ConfigProvider>
-        </div>
+        </section>
       )}
     </div>
   );
