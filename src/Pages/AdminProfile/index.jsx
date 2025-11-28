@@ -8,7 +8,10 @@ import { MdOutlineCancel } from 'react-icons/md';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { selectUser, setUser } from '../../redux/features/auth/authSlice';
 import { getCleanImageUrl } from '../../utils/getCleanImageUrl';
-import { useUpdateProfileMutation } from '../../redux/features/auth/authApi';
+import {
+  useUpdateProfileMutation,
+  useUpdateProfilePhotoMutation,
+} from '../../redux/features/auth/authApi';
 import { verifyToken } from '../../utils/verifyToken';
 import { toast } from 'sonner';
 import { TbFidgetSpinner } from 'react-icons/tb';
@@ -24,6 +27,8 @@ const AdminProfile = () => {
   const [form] = Form.useForm();
 
   const [updateProfile, { isLoading }] = useUpdateProfileMutation();
+  const [updateProfilePhoto, { isLoading: isUploadingPhoto }] =
+    useUpdateProfilePhotoMutation();
 
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
@@ -46,38 +51,72 @@ const AdminProfile = () => {
     }
   }, [form, user]);
 
+  // togglePasswordVisibility
   const togglePasswordVisibility = type => {
     if (type === 'current') setShowCurrentPassword(!showCurrentPassword);
     else if (type === 'new') setShowNewPassword(!showNewPassword);
     else setShowConfirmPassword(!showConfirmPassword);
   };
 
+  // toggleEditMode
   const toggleEditMode = () => {
     setIsEditing(!isEditing);
+  };
+
+  // handleProfilePhotoUpload
+  const handleProfilePhotoUpload = async file => {
+    if (!file) return false;
+
+    const previewUrl = URL.createObjectURL(file);
+    setProfilePic(previewUrl);
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+      const res = await updateProfilePhoto(formData).unwrap();
+
+      if (res?.success) {
+        const updatedUser = verifyToken(res.data.accessToken);
+        dispatch(
+          setUser({
+            user: updatedUser,
+            accessToken: res.data.accessToken,
+          })
+        );
+        toast.success('Profile photo updated successfully!');
+      }
+    } catch (error) {
+      console.error('Profile photo update error:', error);
+      toast.error('Failed to update profile photo');
+      if (user?.image) {
+        setProfilePic(getCleanImageUrl(user.image));
+      } else {
+        setProfilePic(userDefaultImage);
+      }
+    }
+
+    return false;
   };
 
   // handleUpdateProfile
   const handleUpdateProfile = async values => {
     const data = {
       fullName: values.fullName,
-      // stringLocation: values.address,
+      stringLocation: values.address,
     };
 
     try {
       const res = await updateProfile(data).unwrap();
 
-      console.log({ res });
-
       if (res?.success) {
-        const user = verifyToken(res.data.accessToken);
-
+        const updatedUser = verifyToken(res.data.accessToken);
         dispatch(
           setUser({
-            user: user,
+            user: updatedUser,
             accessToken: res.data.accessToken,
           })
         );
-
         setIsEditing(false);
         toast.success('Profile updated successfully!');
       }
@@ -86,7 +125,8 @@ const AdminProfile = () => {
     }
   };
 
-  const onChangePassword = values => {
+  //onChangePassword
+  const handleChangePassword = values => {
     console.log('Password Change Request: ', values);
     toast.success('Password changed successfully!');
   };
@@ -123,21 +163,22 @@ const AdminProfile = () => {
               src={displayedAvatar}
               className="border-4 border-white shadow-2xl"
             />
-            {isEditing && (
-              <Upload
-                showUploadList={false}
-                accept="image/*"
-                onChange={e => {
-                  const file = e?.file?.originFileObj;
-                  if (file) {
-                    setProfilePic(URL.createObjectURL(file));
-                  }
-                }}
-                className="absolute bottom-2 right-2 cursor-pointer rounded-full bg-white p-2 shadow-md transition hover:scale-105"
-              >
-                <FaCamera className="h-5 w-5 text-primary" />
-              </Upload>
+
+            {isUploadingPhoto && (
+              <div className="absolute inset-0 flex items-center justify-center rounded-full bg-black/40 text-white">
+                <TbFidgetSpinner className="h-8 w-8 animate-spin" />
+              </div>
             )}
+
+            <Upload
+              showUploadList={false}
+              accept="image/*"
+              beforeUpload={handleProfilePhotoUpload}
+              disabled={isUploadingPhoto}
+              className="absolute bottom-2 right-2 cursor-pointer rounded-full bg-white p-2 shadow-md transition hover:scale-105"
+            >
+              <FaCamera className="h-5 w-5 text-primary" />
+            </Upload>
           </div>
 
           <div className="flex-1 space-y-4">
@@ -314,7 +355,7 @@ const AdminProfile = () => {
           </p>
           <ConfigProvider>
             <Form
-              onFinish={onChangePassword}
+              onFinish={handleChangePassword}
               layout="vertical"
               className="mt-6 space-y-6"
             >

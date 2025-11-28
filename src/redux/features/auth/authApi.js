@@ -9,7 +9,7 @@ const authApi = baseApi.injectEndpoints({
         method: 'POST',
         body: credentials,
       }),
-      invalidatesTags: ['Auth'],
+      // invalidatesTags: ['Auth'],
     }),
 
     // updateProfile
@@ -19,9 +19,23 @@ const authApi = baseApi.injectEndpoints({
         method: 'PATCH',
         body: credentials,
       }),
-      invalidatesTags: ['Auth'],
+      // invalidatesTags: ['Auth'],
+    }),
+
+    // updateProfilePhoto
+    updateProfilePhoto: builder.mutation({
+      query: formData => ({
+        url: '/auth/update-profile-photo',
+        method: 'PUT',
+        body: formData,
+      }),
+      // invalidatesTags: ['Auth'],
     }),
   }),
 });
 
-export const { useLoginMutation, useUpdateProfileMutation } = authApi;
+export const {
+  useLoginMutation,
+  useUpdateProfileMutation,
+  useUpdateProfilePhotoMutation,
+} = authApi;
