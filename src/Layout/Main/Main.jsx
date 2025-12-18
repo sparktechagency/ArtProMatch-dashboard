@@ -1,12 +1,16 @@
 import { Link, Outlet, useNavigate } from 'react-router-dom';
 import Sidebar from '../../Components/Sidebar/Sidebar';
 import { useEffect, useState } from 'react';
-import { ConfigProvider, Drawer, Modal } from 'antd';
+import {
+  ConfigProvider,
+  Drawer,
+  //  Modal
+} from 'antd';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { FaX } from 'react-icons/fa6';
-import { IoIosNotificationsOutline } from 'react-icons/io';
+// import { IoIosNotificationsOutline } from 'react-icons/io';
 import brandlogo from '../../assets/image/Logo.png';
-import NotificationModal from '../../Components/PageComponents/NotificationModal/NotificationModal';
+// import NotificationModal from '../../Components/PageComponents/NotificationModal/NotificationModal';
 import { useAppSelector } from '../../redux/hooks';
 import { selectUser } from '../../redux/features/auth/authSlice';
 import { getCleanImageUrl } from '../../utils/getCleanImageUrl';
@@ -37,19 +41,20 @@ const MainLayout = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const [isModalOpenForNotification, setIsModalOpenForNotification] =
-    useState(false);
-  const showModalForNotification = () => {
-    setIsModalOpenForNotification(true);
-  };
+  // const [isModalOpenForNotification, setIsModalOpenForNotification] =
+  //   useState(false);
 
-  const handleOkForNotification = () => {
-    setIsModalOpenForNotification(false);
-  };
+  // const showModalForNotification = () => {
+  //   setIsModalOpenForNotification(true);
+  // };
 
-  const handleCancelForNotification = () => {
-    setIsModalOpenForNotification(false);
-  };
+  // const handleOkForNotification = () => {
+  //   setIsModalOpenForNotification(false);
+  // };
+
+  // const handleCancelForNotification = () => {
+  //   setIsModalOpenForNotification(false);
+  // };
 
   return (
     <div>
@@ -150,7 +155,7 @@ const MainLayout = () => {
                     </p>
                   </div>
                   <div className="flex items-center gap-2">
-                    <button
+                    {/* <button
                       onClick={showModalForNotification}
                       className="relative inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-white text-primary shadow-sm transition hover:bg-primary/10"
                     >
@@ -158,7 +163,7 @@ const MainLayout = () => {
                       <span className="absolute -top-1 -right-1 inline-flex h-5 w-5 items-center justify-center rounded-full bg-green-500 text-[10px] font-semibold text-white">
                         1
                       </span>
-                    </button>
+                    </button> */}
                     <Link to="/admin-profile">
                       <img
                         src={getCleanImageUrl(user?.image)}
@@ -181,7 +186,7 @@ const MainLayout = () => {
                     </h2>
                   </div>
                   <div className="flex items-center gap-4">
-                    <button
+                    {/* <button
                       onClick={showModalForNotification}
                       className="relative inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-white text-primary shadow-sm transition hover:bg-primary/10"
                     >
@@ -189,7 +194,7 @@ const MainLayout = () => {
                       <span className="absolute -top-1 -right-1 inline-flex h-5 w-5 items-center justify-center rounded-full bg-green-500 text-[10px] font-semibold text-white">
                         1
                       </span>
-                    </button>
+                    </button> */}
                     <Link to="/admin-profile">
                       <div className="flex items-center gap-3 rounded-2xl bg-white/60 px-3 py-2 shadow-sm">
                         <img
@@ -218,13 +223,13 @@ const MainLayout = () => {
         </div>
       </ConfigProvider>
 
-      <Modal
+      {/* <Modal
         open={isModalOpenForNotification}
         onOk={handleOkForNotification}
         onCancel={handleCancelForNotification}
       >
         <NotificationModal />
-      </Modal>
+      </Modal> */}
     </div>
   );
 };
