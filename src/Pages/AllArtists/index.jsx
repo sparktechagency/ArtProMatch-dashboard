@@ -3,7 +3,10 @@ import { useState } from 'react';
 import { Button, Modal } from 'antd';
 import { FaEye } from 'react-icons/fa';
 // import { SearchOutlined } from '@ant-design/icons';
-import { useGetAllArtistsQuery } from '../../redux/features/usersApis';
+import {
+  useApproveArtistMutation,
+  useGetAllArtistsQuery,
+} from '../../redux/features/usersApis';
 import { getCleanImageUrl } from '../../utils/getCleanImageUrl';
 
 const AllArtists = () => {
@@ -12,11 +15,14 @@ const AllArtists = () => {
   // const [nameInput, setNameInput] = useState('');
   // const [searchName, setSearchName] = useState('');
 
-  const { data, isLoading, isError } = useGetAllArtistsQuery({
+  const { data, isLoading, isError, refetch } = useGetAllArtistsQuery({
     page,
     limit,
     // name: searchName,
   });
+
+  const [approveArtist] = useApproveArtistMutation();
+  const [approvingId, setApprovingId] = useState(null);
 
   const meta = data?.meta;
   const artistRows = data?.data || [];
@@ -199,6 +205,102 @@ const AllArtists = () => {
               onClick={() => showModal(record)}
               icon={<FaEye className="text-primary" />}
             />
+
+            {!record?.auth?.isActive && (
+              <Button
+                type="primary"
+                loading={approvingId === record?._id}
+                disabled={approvingId === record?._id}
+                onClick={() => {
+                  Modal.confirm({
+                    title: 'Approve this artist?',
+                    content: (
+                      <div className="flex items-center gap-3">
+                        <Avatar
+                          size={44}
+                          className="shadow-md bg-primary"
+                          src={getCleanImageUrl(record?.auth?.image)}
+                        >
+                          {getInitials(record?.auth?.fullName)}
+                        </Avatar>
+                        <div className="flex flex-col">
+                          <span className="font-medium">
+                            {record?.auth?.fullName || '-'}
+                          </span>
+                          <span className="text-sm text-gray-600">
+                            {record?.auth?.email || '-'}
+                          </span>
+                          <span className="text-sm text-gray-600">
+                            {record?.auth?.phoneNumber || '-'}
+                          </span>
+                        </div>
+                      </div>
+                    ),
+                    okText: 'Approve',
+                    cancelText: 'Cancel',
+                    onOk: async () => {
+                      setApprovingId(record?._id);
+                      try {
+                        await approveArtist({ _id: record?._id }).unwrap();
+                        await refetch();
+                      } finally {
+                        setApprovingId(null);
+                      }
+                    },
+                  });
+                }}
+              >
+                Approve
+              </Button>
+            )}
+
+            {record?.auth?.isActive && (
+              <Button
+                danger
+                loading={approvingId === record?._id}
+                disabled={approvingId === record?._id}
+                onClick={() => {
+                  Modal.confirm({
+                    title: 'Unapprove this artist?',
+                    content: (
+                      <div className="flex items-center gap-3">
+                        <Avatar
+                          size={44}
+                          className="shadow-md bg-primary"
+                          src={getCleanImageUrl(record?.auth?.image)}
+                        >
+                          {getInitials(record?.auth?.fullName)}
+                        </Avatar>
+                        <div className="flex flex-col">
+                          <span className="font-medium">
+                            {record?.auth?.fullName || '-'}
+                          </span>
+                          <span className="text-sm text-gray-600">
+                            {record?.auth?.email || '-'}
+                          </span>
+                          <span className="text-sm text-gray-600">
+                            {record?.auth?.phoneNumber || '-'}
+                          </span>
+                        </div>
+                      </div>
+                    ),
+                    okText: 'Unapprove',
+                    cancelText: 'Cancel',
+                    onOk: async () => {
+                      setApprovingId(record?._id);
+                      try {
+                        await approveArtist({ _id: record?._id }).unwrap();
+                        await refetch();
+                      } finally {
+                        setApprovingId(null);
+                      }
+                    },
+                  });
+                }}
+              >
+                Unapprove
+              </Button>
+            )}
           </Space>
         </ConfigProvider>
       ),

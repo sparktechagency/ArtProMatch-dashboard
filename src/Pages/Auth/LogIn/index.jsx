@@ -137,7 +137,7 @@ const LogIn = () => {
                     </Checkbox>
                   </Form.Item>
                   <Link to="/forgot-password" className=" ">
-                    <p className="text-blue-600  ">Forgate Password</p>
+                    <p className="text-blue-600  ">Forget Password</p>
                   </Link>
                 </div>
                 <Form.Item className="text-center my-10">

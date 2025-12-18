@@ -47,10 +47,18 @@ const usersApi = baseApi.injectEndpoints({
       },
     }),
 
+    // approveArtist
+    approveArtist: builder.mutation({
+      query: ({ _id }) => ({
+        url: `/admin/verify-artist/${_id}`,
+        method: 'PATCH',
+        // body: data,
+      }),
+    }),
     // approveBusiness
     approveBusiness: builder.mutation({
       query: ({ _id }) => ({
-        url: `/admin/verified-business/${_id}`,
+        url: `/admin/verify-business/${_id}`,
         method: 'PATCH',
         // body: data,
       }),
@@ -62,5 +70,6 @@ export const {
   useGetAllClientsQuery,
   useGetAllArtistsQuery,
   useGetAllBusinessesQuery,
+  useApproveArtistMutation,
   useApproveBusinessMutation,
 } = usersApi;

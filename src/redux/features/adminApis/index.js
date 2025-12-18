@@ -26,6 +26,21 @@ const adminApi = baseApi.injectEndpoints({
       }),
     }),
 
+    // getAllServices
+    getAllServices: builder.query({
+      query: ({ page = 1, limit = 50 } = {}) => {
+        const params = new URLSearchParams();
+        params.set('page', String(page));
+        params.set('limit', String(limit));
+        // if (name) params.set('name', name);
+
+        return {
+          url: `/admin/services?${params.toString()}`,
+          method: 'GET',
+        };
+      },
+    }),
+
     // getAllBookings
     getAllBookings: builder.query({
       query: ({ page = 1, limit = 50 } = {}) => {
@@ -139,6 +154,7 @@ export const {
   useFetchDashboardPageQuery,
   useGetYearlyAppointmentStatsQuery,
   useGetYearlyRevenueStatsQuery,
+  useGetAllServicesQuery,
   useGetAllBookingsQuery,
   useGetAllPaymentHistoriesQuery,
   useGetAllSecretReviewsQuery,

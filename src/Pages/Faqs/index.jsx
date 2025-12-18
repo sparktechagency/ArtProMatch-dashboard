@@ -15,15 +15,15 @@ const Faqs = () => {
   const [searchTermInput, setSearchTermInput] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedFaq, setSelectedFaq] = useState(null);
+  const [isViewModalOpen, setIsViewModalOpen] = useState(false);
+  const [selectedFaqForView, setSelectedFaqForView] = useState(null);
 
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-  const [createForm] = Form.useForm();
+  const [createFaqForm] = Form.useForm();
 
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [editingFaq, setEditingFaq] = useState(null);
-  const [editForm] = Form.useForm();
+  const [faqForEditing, setFaqForEditing] = useState(null);
+  const [editFaqForm] = Form.useForm();
 
   const { data, isLoading, isError, refetch } = useGetAllFaqsQuery({
     page,
@@ -59,25 +59,28 @@ const Faqs = () => {
   };
 
   const showModal = record => {
-    setSelectedFaq(record);
-    setIsModalOpen(true);
+    setSelectedFaqForView(record);
+    setIsViewModalOpen(true);
   };
 
   const handleCancel = () => {
-    setIsModalOpen(false);
-    setSelectedFaq(null);
+    setIsViewModalOpen(false);
+    setSelectedFaqForView(null);
   };
 
+  // showCreateModal
   const showCreateModal = () => {
-    createForm.resetFields();
+    // createForm.resetFields();
     setIsCreateModalOpen(true);
   };
 
+  // handleCreateCancel
   const handleCreateCancel = () => {
     setIsCreateModalOpen(false);
-    createForm.resetFields();
+    // createForm.resetFields();
   };
 
+  // handleCreateSubmit
   const handleCreateSubmit = async values => {
     try {
       const res = await createFaq({
@@ -100,8 +103,8 @@ const Faqs = () => {
   };
 
   const showEditModal = record => {
-    setEditingFaq(record);
-    editForm.setFieldsValue({
+    setFaqForEditing(record);
+    editFaqForm.setFieldsValue({
       question: record?.question ?? '',
       answer: record?.answer ?? '',
     });
@@ -110,16 +113,16 @@ const Faqs = () => {
 
   const handleEditCancel = () => {
     setIsEditModalOpen(false);
-    setEditingFaq(null);
-    editForm.resetFields();
+    setFaqForEditing(null);
+    editFaqForm.resetFields();
   };
 
   const handleEditSubmit = async values => {
-    if (!editingFaq?._id) return;
+    if (!faqForEditing?._id) return;
 
     try {
       const res = await updateFaq({
-        _id: editingFaq._id,
+        _id: faqForEditing._id,
         data: {
           question: values.question,
           answer: values.answer,
@@ -151,10 +154,10 @@ const Faqs = () => {
           const res = await deleteFaq({ _id: record?._id }).unwrap();
           if (res?.success) {
             toast.success(res?.message ?? 'FAQ deleted successfully');
-            if (selectedFaq?._id === record?._id) {
+            if (selectedFaqForView?._id === record?._id) {
               handleCancel();
             }
-            if (editingFaq?._id === record?._id) {
+            if (faqForEditing?._id === record?._id) {
               handleEditCancel();
             }
             refetch();
@@ -361,46 +364,48 @@ const Faqs = () => {
       </div>
 
       <Modal
-        open={isModalOpen}
+        open={isViewModalOpen}
         onCancel={handleCancel}
         footer={null}
         width={700}
       >
-        {selectedFaq && (
+        {selectedFaqForView && (
           <div className="p-2">
             <div className="flex justify-between items-center border-b pb-2">
               <h2 className="text-lg font-semibold">
-                FAQ Id: {selectedFaq?._id}
+                FAQ Id: {selectedFaqForView?._id}
               </h2>
               <p className="text-gray-600 text-sm">
-                {formatDate(selectedFaq?.createdAt)}
+                {formatDate(selectedFaqForView?.createdAt)}
               </p>
             </div>
 
             <div className="border p-3 my-4">
               <h3 className="font-semibold border-b pb-1">Question</h3>
               <p className="text-gray-800 text-sm">
-                {selectedFaq?.question || '-'}
+                {selectedFaqForView?.question || '-'}
               </p>
             </div>
 
             <div className="border p-3 my-4">
               <h3 className="font-semibold border-b pb-1">Answer</h3>
               <p className="text-gray-700 text-sm whitespace-pre-line">
-                {selectedFaq?.answer || '-'}
+                {selectedFaqForView?.answer || '-'}
               </p>
             </div>
 
             <div className="border p-3 my-4">
               <h3 className="font-semibold border-b pb-1">Status</h3>
               <div className="mt-2">
-                {publishedTag(Boolean(selectedFaq?.isPublished))}
+                {publishedTag(Boolean(selectedFaqForView?.isPublished))}
               </div>
               <p className="text-gray-600 text-sm mt-2">
-                <strong>Created:</strong> {formatDate(selectedFaq?.createdAt)}
+                <strong>Created:</strong>{' '}
+                {formatDate(selectedFaqForView?.createdAt)}
               </p>
               <p className="text-gray-600 text-sm">
-                <strong>Updated:</strong> {formatDate(selectedFaq?.updatedAt)}
+                <strong>Updated:</strong>{' '}
+                {formatDate(selectedFaqForView?.updatedAt)}
               </p>
             </div>
           </div>
@@ -417,15 +422,15 @@ const Faqs = () => {
         <div className="p-2">
           <div className="flex justify-between items-center border-b pb-2">
             <h2 className="text-lg font-semibold">
-              Edit FAQ Id: {editingFaq?._id}
+              Edit FAQ Id: {faqForEditing?._id}
             </h2>
             <p className="text-gray-600 text-sm">
-              {formatDate(editingFaq?.updatedAt)}
+              {formatDate(faqForEditing?.updatedAt)}
             </p>
           </div>
 
           <Form
-            form={editForm}
+            form={editFaqForm}
             layout="vertical"
             className="mt-4"
             onFinish={handleEditSubmit}
@@ -481,7 +486,7 @@ const Faqs = () => {
           </div>
 
           <Form
-            form={createForm}
+            form={createFaqForm}
             layout="vertical"
             className="mt-4"
             onFinish={handleCreateSubmit}

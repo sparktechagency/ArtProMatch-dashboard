@@ -1,20 +1,31 @@
 /* eslint-disable react/prop-types */
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { FiLogOut } from 'react-icons/fi';
-import { FaBook, FaUser } from 'react-icons/fa';
+import { FaBook } from 'react-icons/fa';
 import { BiChevronDown } from 'react-icons/bi';
 import { NavLink, useLocation } from 'react-router-dom';
-import { MdDashboard, MdPrivacyTip, MdReport } from 'react-icons/md';
+import {
+  MdDashboard,
+  MdMonetizationOn,
+  MdPrivacyTip,
+  // MdReport
+} from 'react-icons/md';
 import { FaMoneyCheckAlt } from 'react-icons/fa';
 // import { IoMdImages } from 'react-icons/io';
-import { FaComputerMouse, FaRegMessage, FaUsersLine } from 'react-icons/fa6';
-import { TbSquareKey } from 'react-icons/tb';
+import {
+  FaComputerMouse,
+  FaRegMessage,
+  FaUsersLine,
+  // FaUser,
+} from 'react-icons/fa6';
+// import { TbSquareKey } from 'react-icons/tb';
 import { logout, selectUser } from '../../redux/features/auth/authSlice';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { getCleanImageUrl } from '../../utils/getCleanImageUrl';
 import { BsFillQuestionSquareFill } from 'react-icons/bs';
-import { FcAbout } from 'react-icons/fc';
+import { FcAbout, FcBusiness } from 'react-icons/fc';
 import { HiReceiptRefund } from 'react-icons/hi';
+import { RiServiceLine } from 'react-icons/ri';
 
 const Sidebar = ({ onClose }) => {
   const [openDropdown, setOpenDropdown] = useState('');
@@ -31,25 +42,31 @@ const Sidebar = ({ onClose }) => {
         path: '/',
       },
       {
-        key: 'all-clients',
+        key: 'clients',
         icon: <FaUsersLine className="h-5 w-5" />,
-        label: 'All Clients',
-        path: '/all-clients',
+        label: 'Clients',
+        path: '/clients',
       },
       {
-        key: 'all-artists',
-        icon: <FaUsersLine className="h-5 w-5" />,
-        label: 'All Artists',
-        path: '/all-artists',
+        key: 'artists',
+        icon: <MdMonetizationOn className="h-5 w-5" />,
+        label: 'Artists',
+        path: '/artists',
       },
       {
-        key: 'all-businesses',
-        icon: <FaUsersLine className="h-5 w-5" />,
-        label: 'All Businesses',
-        path: '/all-businesses',
+        key: 'businesses',
+        icon: <FcBusiness className="h-5 w-5" />,
+        label: 'Businesses',
+        path: '/businesses',
       },
       {
-        key: 'orders-booking',
+        key: 'services',
+        icon: <RiServiceLine className="h-5 w-5" />,
+        label: 'Services',
+        path: '/services',
+      },
+      {
+        key: 'bookings',
         icon: <FaBook className="h-5 w-5" />,
         label: 'Bookings',
         path: '/bookings',
@@ -104,40 +121,40 @@ const Sidebar = ({ onClose }) => {
         path: '/refund-policy',
       },
 
-      {
-        key: 'keyword-management',
-        icon: <TbSquareKey className="h-5 w-5" />,
-        label: 'Keyword Management',
-        path: '/keyword-management',
-      },
-      {
-        key: 'user-management',
-        icon: <FaUser className="h-5 w-5" />,
-        label: 'User Management',
-        children: [
-          {
-            key: 'user-profile',
-            label: 'User Profile',
-            path: '/user-profile',
-          },
-          {
-            key: 'artist-profile',
-            label: 'Artist Profile',
-            path: '/artist-profile',
-          },
-          {
-            key: 'business-profile',
-            label: 'Business Profile',
-            path: '/business-profile',
-          },
-        ],
-      },
-      {
-        key: 'report',
-        icon: <MdReport className="h-5 w-5" />,
-        label: 'Report',
-        path: '/report',
-      },
+      // {
+      //   key: 'keyword-management',
+      //   icon: <TbSquareKey className="h-5 w-5" />,
+      //   label: 'Keyword Management',
+      //   path: '/keyword-management',
+      // },
+      // {
+      //   key: 'user-management',
+      //   icon: <FaUser className="h-5 w-5" />,
+      //   label: 'User Management',
+      //   children: [
+      //     {
+      //       key: 'user-profile',
+      //       label: 'User Profile',
+      //       path: '/user-profile',
+      //     },
+      //     {
+      //       key: 'artist-profile',
+      //       label: 'Artist Profile',
+      //       path: '/artist-profile',
+      //     },
+      //     {
+      //       key: 'business-profile',
+      //       label: 'Business Profile',
+      //       path: '/business-profile',
+      //     },
+      //   ],
+      // },
+      // {
+      //   key: 'report',
+      //   icon: <MdReport className="h-5 w-5" />,
+      //   label: 'Report',
+      //   path: '/report',
+      // },
     ],
     []
   );

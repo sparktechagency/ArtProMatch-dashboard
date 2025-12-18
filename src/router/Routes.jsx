@@ -8,13 +8,13 @@ import NewPassword from '../Pages/Auth/NewPassword';
 import VerifyPassword from '../Pages/Auth/VerifyPassword';
 import Payments from '../Pages/Payments';
 import AdminProfile from '../Pages/AdminProfile';
-import UserProfile from '../Pages/UserProfile';
-import ArtistProfile from '../Pages/ArtistProfile';
-import BusinessProfile from '../Pages/BusinessProfile';
-import Report from '../Pages/Report';
+// import UserProfile from '../Pages/UserProfile';
+// import ArtistProfile from '../Pages/ArtistProfile';
+// import BusinessProfile from '../Pages/BusinessProfile';
+// import Report from '../Pages/Report';
 // import ReviewImages from '../Pages/ReviewImages';
 import ReviewMessages from '../Pages/ReviewMessages';
-import KeywordManagement from '../Pages/KeywordManagement';
+// import KeywordManagement from '../Pages/KeywordManagement';
 import PrivateRoute from './PrivateRoute';
 import Bookings from '../Pages/Bookings';
 import AllClients from '../Pages/AllClients';
@@ -25,6 +25,7 @@ import AboutUsPage from '../Pages/AboutUsPage';
 import PrivacyPolicyPage from '../Pages/PrivacyPolicyPage';
 import TermsAndConditionsPage from '../Pages/TermsAndConditionsPage';
 import RefundPolicyPage from '../Pages/RefundPolicyPage';
+import Services from '../Pages/Services';
 
 export const router = createBrowserRouter([
   {
@@ -61,16 +62,20 @@ export const router = createBrowserRouter([
         element: <Analytics />,
       },
       {
-        path: '/all-clients',
+        path: '/clients',
         element: <AllClients />,
       },
       {
-        path: '/all-artists',
+        path: '/artists',
         element: <AllArtists />,
       },
       {
-        path: '/all-businesses',
+        path: '/businesses',
         element: <AllBusinesses />,
+      },
+      {
+        path: '/services',
+        element: <Services />,
       },
       {
         path: '/bookings',
@@ -112,26 +117,26 @@ export const router = createBrowserRouter([
         path: '/admin-profile',
         element: <AdminProfile />,
       },
-      {
-        path: '/user-profile',
-        element: <UserProfile />,
-      },
-      {
-        path: '/artist-profile',
-        element: <ArtistProfile />,
-      },
-      {
-        path: '/business-profile',
-        element: <BusinessProfile />,
-      },
-      {
-        path: '/report',
-        element: <Report />,
-      },
-      {
-        path: '/keyword-management',
-        element: <KeywordManagement />,
-      },
+      // {
+      //   path: '/keyword-management',
+      //   element: <KeywordManagement />,
+      // },
+      // {
+      //   path: '/user-profile',
+      //   element: <UserProfile />,
+      // },
+      // {
+      //   path: '/artist-profile',
+      //   element: <ArtistProfile />,
+      // },
+      // {
+      //   path: '/business-profile',
+      //   element: <BusinessProfile />,
+      // },
+      // {
+      //   path: '/report',
+      //   element: <Report />,
+      // },
     ],
   },
 ]);
