@@ -4,14 +4,17 @@ import { FiLogOut } from 'react-icons/fi';
 import { FaBook, FaUser } from 'react-icons/fa';
 import { BiChevronDown } from 'react-icons/bi';
 import { NavLink, useLocation } from 'react-router-dom';
-import { MdDashboard, MdReport } from 'react-icons/md';
+import { MdDashboard, MdPrivacyTip, MdReport } from 'react-icons/md';
 import { FaMoneyCheckAlt } from 'react-icons/fa';
-import { IoMdImages } from 'react-icons/io';
-import { FaRegMessage } from 'react-icons/fa6';
+// import { IoMdImages } from 'react-icons/io';
+import { FaComputerMouse, FaRegMessage, FaUsersLine } from 'react-icons/fa6';
 import { TbSquareKey } from 'react-icons/tb';
 import { logout, selectUser } from '../../redux/features/auth/authSlice';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { getCleanImageUrl } from '../../utils/getCleanImageUrl';
+import { BsFillQuestionSquareFill } from 'react-icons/bs';
+import { FcAbout } from 'react-icons/fc';
+import { HiReceiptRefund } from 'react-icons/hi';
 
 const Sidebar = ({ onClose }) => {
   const [openDropdown, setOpenDropdown] = useState('');
@@ -28,28 +31,41 @@ const Sidebar = ({ onClose }) => {
         path: '/',
       },
       {
-        key: 'orders-booking',
-        icon: <FaBook className="h-5 w-5" />,
-        label: 'Order & Booking',
-        children: [
-          {
-            key: 'scheduled',
-            label: 'Scheduled',
-            path: '/scheduled',
-          },
-          {
-            key: 'completed',
-            label: 'Completed',
-            path: '/completed',
-          },
-        ],
+        key: 'all-clients',
+        icon: <FaUsersLine className="h-5 w-5" />,
+        label: 'All Clients',
+        path: '/all-clients',
       },
       {
-        key: 'review-images',
-        icon: <IoMdImages className="h-5 w-5" />,
-        label: 'Review Images',
-        path: '/review-images',
+        key: 'all-artists',
+        icon: <FaUsersLine className="h-5 w-5" />,
+        label: 'All Artists',
+        path: '/all-artists',
       },
+      {
+        key: 'all-businesses',
+        icon: <FaUsersLine className="h-5 w-5" />,
+        label: 'All Businesses',
+        path: '/all-businesses',
+      },
+      {
+        key: 'orders-booking',
+        icon: <FaBook className="h-5 w-5" />,
+        label: 'Bookings',
+        path: '/bookings',
+      },
+      {
+        key: 'payments',
+        icon: <FaMoneyCheckAlt className="h-5 w-5" />,
+        label: 'Payments',
+        path: '/payments',
+      },
+      // {
+      //   key: 'review-images',
+      //   icon: <IoMdImages className="h-5 w-5" />,
+      //   label: 'Review Images',
+      //   path: '/review-images',
+      // },
       {
         key: 'review-messages',
         icon: <FaRegMessage className="h-5 w-5" />,
@@ -57,16 +73,42 @@ const Sidebar = ({ onClose }) => {
         path: '/review-messages',
       },
       {
+        key: 'faqs',
+        icon: <BsFillQuestionSquareFill className="h-5 w-5" />,
+        label: 'Faqs',
+        path: '/faqs',
+      },
+
+      {
+        key: 'about-us',
+        icon: <FcAbout className="h-5 w-5" />,
+        label: 'About Us',
+        path: '/about-us',
+      },
+      {
+        key: 'privacy-policy',
+        icon: <MdPrivacyTip className="h-5 w-5" />,
+        label: 'Privacy Policy',
+        path: '/privacy-policy',
+      },
+      {
+        key: 'terms-and-conditions',
+        icon: <FaComputerMouse className="h-5 w-5" />,
+        label: 'Terms & Conditions',
+        path: '/terms-and-conditions',
+      },
+      {
+        key: 'refund-policy',
+        icon: <HiReceiptRefund className="h-5 w-5" />,
+        label: 'Refund Policy',
+        path: '/refund-policy',
+      },
+
+      {
         key: 'keyword-management',
         icon: <TbSquareKey className="h-5 w-5" />,
         label: 'Keyword Management',
         path: '/keyword-management',
-      },
-      {
-        key: 'payments',
-        icon: <FaMoneyCheckAlt className="h-5 w-5" />,
-        label: 'Payments',
-        path: '/payments',
       },
       {
         key: 'user-management',

@@ -1,5 +1,5 @@
-/* eslint-disable no-unused-vars */
-import { DatePicker } from "antd";
+import React from 'react';
+import { DatePicker } from 'antd';
 import {
   XAxis,
   YAxis,
@@ -9,40 +9,38 @@ import {
   Legend,
   Bar,
   ResponsiveContainer,
-} from "recharts";
-import dayjs from "dayjs";
-import { useState } from "react";
+} from 'recharts';
+import dayjs from 'dayjs';
+import { useState } from 'react';
+import { useGetYearlyRevenueStatsQuery } from '../../redux/features/adminApis';
 
 const RevinueStats = () => {
-  const [selectedYear, setselectedYear] = useState(dayjs().year());
-  const [selectedMonth, setselectedMonth] = useState(dayjs().month() + 1);
+  const [selectedYear, setSelectedYear] = useState(dayjs().format('YYYY'));
 
-  // Mock data
-  const mockData = [
-    { name: "Jan", User: 100 },
-    { name: "Feb", User: 45 },
-    { name: "Mar", User: 35 }, // March
-    { name: "Apr", User: 100 },
-    { name: "May", User: 20 }, // May
-    { name: "Jun", User: 80 },
-    { name: "Jul", User: 70 },
-    { name: "Aug", User: 40 }, // August
-    { name: "Sep", User: 60 },
-    { name: "Oct", User: 50 },
-    { name: "Nov", User: 30 }, // November
-    { name: "Dec", User: 10 },
-  ];
+  const { data, isLoading, isError } =
+    useGetYearlyRevenueStatsQuery(selectedYear);
 
-  const maxValue = Math.max(...mockData.map((item) => item.User));
-  const normalizeData = mockData.map((item) => ({
-    ...item,
-    User: (item.User / maxValue) * 100,
-  }));
+  // Transform API data to match chart format
+  const chartData = React.useMemo(() => {
+    if (!data?.data) return [];
 
-  const onChange = (date, dateString) => {
-    console.log(date, dateString);
-    setselectedYear(dateString.split("-")[0]);
-    setselectedMonth(dateString.split("-")[1]);
+    return data.data.map(item => ({
+      name: new Date(0, item.month - 1).toLocaleString('default', {
+        month: 'short',
+      }),
+      Earning: item.earning || 0,
+    }));
+  }, [data]);
+
+  if (isLoading) return <div>Loading revenue data...</div>;
+  if (isError) return <div>Error loading revenue data</div>;
+
+  const onChange = (_, dateString) => {
+    setSelectedYear(dateString || dayjs().format('YYYY'));
+  };
+
+  const disableFutureYears = current => {
+    return current && current.year() > dayjs().year();
   };
 
   return (
@@ -55,26 +53,34 @@ const RevinueStats = () => {
           </h1>
           <DatePicker
             onChange={onChange}
-            defaultValue={dayjs(dayjs(), "YYYY-MM")}
-            format={"YYYY-MM"}
-            picker="month"
+            value={dayjs(selectedYear, 'YYYY')}
+            format={'YYYY'}
+            picker="year"
+            disabledDate={disableFutureYears}
             className="w-full md:w-auto"
           />
         </div>
 
         {/* Chart Section */}
-        <div className="mt-6" style={{ height: "300px" }}>
+        <div className="mt-6" style={{ height: '300px' }}>
           <ResponsiveContainer width="100%" height="100%">
             <BarChart
-              data={normalizeData} // Use normalized data
+              data={chartData}
               margin={{ top: 10, right: 20, left: 0, bottom: 0 }}
             >
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="name" interval={0} /> {/* Force all labels */}
-              <YAxis domain={[0, 100]} tickFormatter={(value) => `${value}%`} />
-              <Tooltip formatter={(value) => `${value.toFixed(2)}%`} />
+              <YAxis />
+              <Tooltip
+                formatter={value => [`$${value.toFixed(2)}`, 'Earnings']}
+              />
               <Legend />
-              <Bar dataKey="User" fill="#816a6b" barSize={20} />
+              <Bar
+                dataKey="Earning"
+                name="Earnings"
+                fill="#816a6b"
+                barSize={20}
+              />
             </BarChart>
           </ResponsiveContainer>
         </div>

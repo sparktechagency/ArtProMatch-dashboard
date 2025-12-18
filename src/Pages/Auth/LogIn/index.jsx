@@ -98,6 +98,7 @@ const LogIn = () => {
                     style={{ padding: '6px' }}
                     className=" text-md"
                     placeholder="Your Email"
+                    autoComplete="email"
                     defaultValue="admin@gmail.com"
                   />
                 </Form.Item>
@@ -112,6 +113,7 @@ const LogIn = () => {
                       className=" text-md"
                       type={showpassword ? 'password' : 'text'}
                       placeholder="Password"
+                      autoComplete="current-password"
                       defaultValue="Password123@"
                     />
                     <div className="flex justify-center absolute right-0 px-3">

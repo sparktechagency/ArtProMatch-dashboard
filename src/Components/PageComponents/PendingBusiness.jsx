@@ -4,13 +4,13 @@ import { useState } from 'react';
 import { Button, Modal } from 'antd';
 import {
   useApproveBusinessMutation,
-  useGetAllBusinessQuery,
-} from '../../redux/features/usersApi/usersApi';
+  useGetAllBusinessesQuery,
+} from '../../redux/features/usersApis';
 import Swal from 'sweetalert2';
 import { getCleanImageUrl } from '../../utils/getCleanImageUrl';
 
 const PendingBusiness = () => {
-  const { data: businessData } = useGetAllBusinessQuery();
+  const { data: businessData } = useGetAllBusinessesQuery();
   const userData = businessData?.data;
 
   const [approveBusiness] = useApproveBusinessMutation();

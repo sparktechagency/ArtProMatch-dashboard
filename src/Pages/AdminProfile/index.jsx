@@ -11,6 +11,7 @@ import { getCleanImageUrl } from '../../utils/getCleanImageUrl';
 import {
   useUpdateProfileMutation,
   useUpdateProfilePhotoMutation,
+  useChangePasswordMutation,
 } from '../../redux/features/auth/authApi';
 import { verifyToken } from '../../utils/verifyToken';
 import { toast } from 'sonner';
@@ -25,10 +26,13 @@ const AdminProfile = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [activeTab, setActiveTab] = useState('Edit Profile');
   const [form] = Form.useForm();
+  const [passwordForm] = Form.useForm();
 
   const [updateProfile, { isLoading }] = useUpdateProfileMutation();
   const [updateProfilePhoto, { isLoading: isUploadingPhoto }] =
     useUpdateProfilePhotoMutation();
+  const [changePassword, { isLoading: isChangingPassword }] =
+    useChangePasswordMutation();
 
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
@@ -126,11 +130,41 @@ const AdminProfile = () => {
   };
 
   //onChangePassword
-  const handleChangePassword = values => {
-    console.log('Password Change Request: ', values);
-    toast.success('Password changed successfully!');
+  const handleChangePassword = async values => {
+    const { oldPassword, newPassword, confirmPassword } = values;
+
+    if (newPassword !== confirmPassword) {
+      toast.error('New password and Confirm Password do not match!');
+      return;
+    }
+
+    try {
+      const res = await changePassword({
+        oldPassword,
+        newPassword,
+      }).unwrap();
+
+      if (res?.success) {
+        const updatedUser = verifyToken(res.data.accessToken);
+        dispatch(
+          setUser({
+            user: updatedUser,
+            accessToken: res.data.accessToken,
+            refreshToken: res.data.refreshToken,
+          })
+        );
+        toast.success(res?.message);
+        passwordForm.resetFields();
+      }
+    } catch (error) {
+      console.error('Password change error:', error);
+      const errorMessage =
+        error?.data?.message ?? 'Failed to change password. Please try again.';
+      toast.error(errorMessage);
+    }
   };
 
+  // profileDetails
   const profileDetails = useMemo(
     () => [
       { label: 'Full Name', value: user?.fullName ?? user?.name ?? 'Not set' },
@@ -355,23 +389,31 @@ const AdminProfile = () => {
           </p>
           <ConfigProvider>
             <Form
+              form={passwordForm}
               onFinish={handleChangePassword}
               layout="vertical"
               className="mt-6 space-y-6"
             >
               <Form.Item
-                name="currentPassword"
+                name="oldPassword"
                 label={
                   <p className="text-sm font-semibold text-neutral-600">
                     Current Password
                   </p>
                 }
+                rules={[
+                  {
+                    required: true,
+                    message: 'Please enter your current password!',
+                  },
+                ]}
               >
                 <div className="relative">
                   <Input
                     size="large"
                     type={showCurrentPassword ? 'text' : 'password'}
                     placeholder="Enter current password"
+                    autoComplete="current-password"
                   />
                   <button
                     type="button"
@@ -390,12 +432,16 @@ const AdminProfile = () => {
                     New Password
                   </p>
                 }
+                rules={[
+                  { required: true, message: 'Please enter a new password!' },
+                ]}
               >
                 <div className="relative">
                   <Input
                     size="large"
                     type={showNewPassword ? 'text' : 'password'}
                     placeholder="Enter new password"
+                    autoComplete="new-password"
                   />
                   <button
                     type="button"
@@ -414,12 +460,30 @@ const AdminProfile = () => {
                     Confirm Password
                   </p>
                 }
+                dependencies={['newPassword']}
+                rules={[
+                  {
+                    required: true,
+                    message: 'Please confirm your new password',
+                  },
+                  ({ getFieldValue }) => ({
+                    validator(_, value) {
+                      if (!value || getFieldValue('newPassword') === value) {
+                        return Promise.resolve();
+                      }
+                      return Promise.reject(
+                        new Error('Passwords do not match!')
+                      );
+                    },
+                  }),
+                ]}
               >
                 <div className="relative">
                   <Input
                     size="large"
                     type={showConfirmPassword ? 'text' : 'password'}
                     placeholder="Confirm new password"
+                    autoComplete="new-password"
                   />
                   <button
                     type="button"
@@ -433,10 +497,18 @@ const AdminProfile = () => {
 
               <Form.Item>
                 <button
+                  disabled={isChangingPassword}
                   type="submit"
                   className="w-full rounded-2xl bg-primary px-10 py-3 text-sm font-semibold text-white shadow-md transition hover:bg-primary/90"
                 >
-                  Save Changes
+                  {isChangingPassword ? (
+                    <span className="flex items-center justify-center gap-2 text-white">
+                      <TbFidgetSpinner className="h-5 w-5 animate-spin" />
+                      <span>Updating...</span>
+                    </span>
+                  ) : (
+                    'Update'
+                  )}
                 </button>
               </Form.Item>
             </Form>

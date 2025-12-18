@@ -10,27 +10,27 @@ import {
 } from 'recharts';
 import dayjs from 'dayjs';
 import { useState } from 'react';
+import { useGetYearlyAppointmentStatsQuery } from '../../redux/features/adminApis';
 
 const AppointmentSummery = () => {
   const [selectedYear, setSelectedYear] = useState(dayjs().format('YYYY'));
 
-  // Mock data
-  const mockData = [
-    { name: 'Jan', earnings: 10 },
-    { name: 'Feb', earnings: 20 },
-    { name: 'Mar', earnings: 30 },
-    { name: 'Apr', earnings: 70 },
-    { name: 'May', earnings: 65 },
-    { name: 'Jun', earnings: 40 },
-    { name: 'Jul', earnings: 30 },
-    { name: 'Aug', earnings: 45 },
-    { name: 'Sep', earnings: 40 },
-    { name: 'Oct', earnings: 60 },
-    { name: 'Nov', earnings: 80 },
-    { name: 'Dec', earnings: 90 },
-  ];
+  const { data, isLoading, isError } =
+    useGetYearlyAppointmentStatsQuery(selectedYear);
 
-  const onChange = (date, dateString) => {
+  // Transform API data to match chart format
+  const chartData =
+    data?.data?.map(item => ({
+      name: new Date(0, item.month - 1).toLocaleString('default', {
+        month: 'short',
+      }),
+      appointments: item.appointment,
+    })) || [];
+
+  if (isLoading) return <div>Loading...</div>;
+  if (isError) return <div>Error loading appointment data</div>;
+
+  const onChange = (_, dateString) => {
     setSelectedYear(dateString || dayjs().format('YYYY'));
   };
 
@@ -60,7 +60,7 @@ const AppointmentSummery = () => {
         <div className="mt-6" style={{ height: '300px' }}>
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart
-              data={mockData}
+              data={chartData}
               margin={{
                 top: 10,
                 right: 20,
@@ -69,21 +69,28 @@ const AppointmentSummery = () => {
               }}
             >
               <defs>
-                <linearGradient id="colorEarnings" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#816a6b" stopOpacity={0.8} />
-                  <stop offset="95%" stopColor="#816a6b" stopOpacity={0} />
+                <linearGradient
+                  id="colorAppointments"
+                  x1="0"
+                  y1="0"
+                  x2="0"
+                  y2="1"
+                >
+                  <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8} />
+                  <stop offset="95%" stopColor="#8884d8" stopOpacity={0} />
                 </linearGradient>
               </defs>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="name" />
-              <YAxis tickFormatter={value => `${value}%`} />
+              <YAxis tickFormatter={value => `${value}`} />
               <Tooltip />
               <Area
                 type="monotone"
-                dataKey="earnings"
-                stroke="#816a6b"
-                fillOpacity={1}
-                fill="url(#colorEarnings)"
+                dataKey="appointments"
+                name="Appointments"
+                stroke="#8884d8"
+                fill="#8884d8"
+                fillOpacity={0.3}
               />
             </AreaChart>
           </ResponsiveContainer>
