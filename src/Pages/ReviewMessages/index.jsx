@@ -151,7 +151,7 @@ const ReviewMessages = () => {
       key: 'serviceAvgRating',
       render: value => (
         <Tag color={ratingColor(value)}>
-          {typeof value === 'number' ? value : '-'}
+          {typeof value === 'number' ? value.toFixed(2) : '-'}
         </Tag>
       ),
     },
@@ -176,7 +176,7 @@ const ReviewMessages = () => {
       ),
     },
     {
-      title: 'Message',
+      title: 'Secret Message',
       dataIndex: 'description',
       key: 'description',
       render: value => <span className="text-gray-700">{value || '-'}</span>,
@@ -386,7 +386,7 @@ const ReviewMessages = () => {
                           color={ratingColor(selectedReview?.serviceAvgRating)}
                         >
                           {typeof selectedReview?.serviceAvgRating === 'number'
-                            ? selectedReview.serviceAvgRating
+                            ? selectedReview.serviceAvgRating?.toFixed(2)
                             : '-'}
                         </Tag>
                       </p>
@@ -412,8 +412,15 @@ const ReviewMessages = () => {
               </div>
             </div>
 
+            {/* <div className="border p-3 my-4">
+              <h3 className="font-semibold border-b pb-1">Review</h3>
+              <p className="text-gray-700 text-sm">
+                {selectedReview?.bookingReview || '-'}
+              </p>
+            </div> */}
+
             <div className="border p-3 my-4">
-              <h3 className="font-semibold border-b pb-1">Message</h3>
+              <h3 className="font-semibold border-b pb-1">Secret Message</h3>
               <p className="text-gray-700 text-sm">
                 {selectedReview?.description || '-'}
               </p>
@@ -448,6 +455,14 @@ const ReviewMessages = () => {
                         className="capitalize"
                       >
                         {selectedReview?.bookingPaymentStatus || '-'}
+                      </Tag>
+                    </p>
+                    <p className="text-gray-700">
+                      <strong>Rating:</strong>{' '}
+                      <Tag color={ratingColor(selectedReview?.bookingRating)}>
+                        {typeof selectedReview?.bookingRating === 'number'
+                          ? selectedReview.bookingRating?.toFixed(2)
+                          : '-'}
                       </Tag>
                     </p>
                   </div>
