@@ -23,3 +23,12 @@ dist-ssr
 *.sln
 *.sw?
 .vercel
+.env
+.env.local
+
+
+
+package-lock.json
+pnpm-lock.yaml
+bun.lock
+yarn.lock

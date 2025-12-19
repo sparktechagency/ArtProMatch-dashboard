@@ -1,16 +1,51 @@
-import { baseApi } from "../../api/baseApi";
+import { baseApi } from '../../api/baseApi';
 
 const authApi = baseApi.injectEndpoints({
-  endpoints: (builder) => ({
+  endpoints: builder => ({
+    // login
     login: builder.mutation({
-      query: (credentials) => ({
-        url: "/api/v1/auth/signin",
-        method: "POST",
+      query: credentials => ({
+        url: '/auth/signin',
+        method: 'POST',
         body: credentials,
       }),
-      invalidatesTags: ["Auth"],
+      // invalidatesTags: ['Auth'],
+    }),
+
+    // updateProfile
+    updateProfile: builder.mutation({
+      query: credentials => ({
+        url: '/auth/update-auth-data',
+        method: 'PATCH',
+        body: credentials,
+      }),
+      // invalidatesTags: ['Auth'],
+    }),
+
+    // updateProfilePhoto
+    updateProfilePhoto: builder.mutation({
+      query: formData => ({
+        url: '/auth/update-profile-photo',
+        method: 'PUT',
+        body: formData,
+      }),
+      // invalidatesTags: ['Auth'],
+    }),
+
+    // changePassword
+    changePassword: builder.mutation({
+      query: credentials => ({
+        url: '/auth/change-password',
+        method: 'PATCH',
+        body: credentials,
+      }),
     }),
   }),
 });
 
-export const { useLoginMutation } = authApi;
+export const {
+  useLoginMutation,
+  useUpdateProfileMutation,
+  useUpdateProfilePhotoMutation,
+  useChangePasswordMutation,
+} = authApi;

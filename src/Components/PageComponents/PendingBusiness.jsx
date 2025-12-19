@@ -1,25 +1,24 @@
 /* eslint-disable no-unused-vars */
-import { Avatar, ConfigProvider, Space, Table } from "antd";
-import { useState } from "react";
-import { Button, Modal } from "antd";
+import { Avatar, ConfigProvider, Space, Table } from 'antd';
+import { useState } from 'react';
+import { Button, Modal } from 'antd';
 import {
   useApproveBusinessMutation,
-  useGetAllBusinessQuery,
-} from "../../redux/features/usersApi/usersApi";
-import { BASE_URL } from "../../utils/baseUrl";
-import Swal from "sweetalert2";
+  useGetAllBusinessesQuery,
+} from '../../redux/features/usersApis';
+import Swal from 'sweetalert2';
+import { getCleanImageUrl } from '../../utils/getCleanImageUrl';
+
 const PendingBusiness = () => {
-  const { data: businessData } = useGetAllBusinessQuery();
-  // console.log("data:", businessData?.data);
+  const { data: businessData } = useGetAllBusinessesQuery();
   const userData = businessData?.data;
 
   const [approveBusiness] = useApproveBusinessMutation();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
-  const [email, setEmail] = useState("");
 
-  const showModal = (record) => {
+  const showModal = record => {
     setSelectedUser(record);
     setIsModalOpen(true);
   };
@@ -33,40 +32,39 @@ const PendingBusiness = () => {
     // refetc();
   };
 
-  const handleSession = (record) => {
+  const handleSession = record => {
     console.log(record);
   };
 
- const handleApprove = async (_id) => {
-  try {
-    const res = await approveBusiness({ _id }).unwrap();
-    if (res.success) {
+  const handleApprove = async _id => {
+    try {
+      const res = await approveBusiness({ _id }).unwrap();
+      if (res.success) {
+        Swal.fire({
+          title: 'Business Profile is Approved.',
+          icon: 'success',
+        });
+      }
+    } catch (error) {
+      console.error('Approval failed:', error);
       Swal.fire({
-        title: "Business Profile is Approved.",
-        icon: "success",
+        title: 'Error',
+        text: error?.data?.message || 'Something went wrong!',
+        icon: 'error',
       });
     }
-  } catch (error) {
-    console.error("Approval failed:", error);
-    Swal.fire({
-      title: "Error",
-      text: error?.data?.message || "Something went wrong!",
-      icon: "error",
-    });
-  }
-};
-
+  };
 
   const columns = [
     {
-      title: "Sl No",
-      dataIndex: "slno",
-      key: "slno",
+      title: 'Sl No',
+      dataIndex: 'slno',
+      key: 'slno',
       render: (text, record, index) => index + 1,
     },
     {
-      title: "Name",
-      key: "name",
+      title: 'Name',
+      key: 'name',
       render: (_, record) => (
         <div className="flex items-center gap-2">
           <Avatar
@@ -79,9 +77,9 @@ const PendingBusiness = () => {
       ),
     },
     {
-      title: "Email",
-      dataIndex: "email",
-      key: "email",
+      title: 'Email',
+      dataIndex: 'email',
+      key: 'email',
       render: (_, record) => (
         <div className="flex items-center gap-2">
           <span>{record?.auth.email}</span>
@@ -89,9 +87,9 @@ const PendingBusiness = () => {
       ),
     },
     {
-      title: "Contact No",
-      dataIndex: "phone",
-      key: "phone",
+      title: 'Contact No',
+      dataIndex: 'phone',
+      key: 'phone',
       render: (_, record) => (
         <div className="flex items-center gap-2">
           <span>{record?.auth.phoneNumber}</span>
@@ -100,16 +98,16 @@ const PendingBusiness = () => {
     },
 
     {
-      title: "Action",
-      key: "action",
+      title: 'Action',
+      key: 'action',
       render: (_, record) => (
         <ConfigProvider
           theme={{
             components: {
               Button: {
-                defaultHoverBorderColor: "rgb(47,84,235)",
-                defaultHoverColor: "rgb(47,84,235)",
-                defaultBorderColor: "rgb(47,84,235)",
+                defaultHoverBorderColor: 'rgb(47,84,235)',
+                defaultHoverColor: 'rgb(47,84,235)',
+                defaultBorderColor: 'rgb(47,84,235)',
               },
             },
           }}
@@ -173,16 +171,16 @@ const PendingBusiness = () => {
                   <strong>Business Type:</strong> {selectedUser.businessType}
                 </p>
                 <p>
-                  <strong>Services Offered:</strong>{" "}
-                  {selectedUser.servicesOffered.join(", ")}
+                  <strong>Services Offered:</strong>{' '}
+                  {selectedUser.servicesOffered.join(', ')}
                 </p>
                 <p>
-                  <strong>Active:</strong>{" "}
-                  {selectedUser.isActive ? "Yes" : "No"}
+                  <strong>Active:</strong>{' '}
+                  {selectedUser.isActive ? 'Yes' : 'No'}
                 </p>
                 <p>
-                  <strong>Verified:</strong>{" "}
-                  {selectedUser.isVerified ? "Yes" : "No"}
+                  <strong>Verified:</strong>{' '}
+                  {selectedUser.isVerified ? 'Yes' : 'No'}
                 </p>
               </div>
             </div>
@@ -206,11 +204,11 @@ const PendingBusiness = () => {
                 Location Coordinates
               </h3>
               <p>
-                <strong>Latitude:</strong>{" "}
+                <strong>Latitude:</strong>{' '}
                 {selectedUser.location?.coordinates[1]}
               </p>
               <p>
-                <strong>Longitude:</strong>{" "}
+                <strong>Longitude:</strong>{' '}
                 {selectedUser.location?.coordinates[0]}
               </p>
             </div>
@@ -224,11 +222,11 @@ const PendingBusiness = () => {
                 {Object.entries(selectedUser.operatingHours).map(
                   ([day, slots]) => (
                     <div key={day}>
-                      <strong>{day}:</strong>{" "}
+                      <strong>{day}:</strong>{' '}
                       {slots.map((s, i) => (
                         <span key={i}>
                           {s.start} - {s.end}
-                          {i < slots.length - 1 ? ", " : ""}
+                          {i < slots.length - 1 ? ', ' : ''}
                         </span>
                       ))}
                     </div>
@@ -246,7 +244,7 @@ const PendingBusiness = () => {
                 <div>
                   <p className="font-semibold">Registration Certificate:</p>
                   <img
-                    src={`${BASE_URL}/${selectedUser.registrationCertificate}`}
+                    src={getCleanImageUrl(selectedUser.registrationCertificate)}
                     alt="Registration"
                     className="w-32 h-32 object-cover border"
                   />
@@ -254,7 +252,7 @@ const PendingBusiness = () => {
                 <div>
                   <p className="font-semibold">Tax ID / Equivalent:</p>
                   <img
-                    src={`${BASE_URL}/${selectedUser.taxIdOrEquivalent}`}
+                    src={getCleanImageUrl(selectedUser.taxIdOrEquivalent)}
                     alt="Tax ID"
                     className="w-32 h-32 object-cover border"
                   />
@@ -262,7 +260,7 @@ const PendingBusiness = () => {
                 <div>
                   <p className="font-semibold">Studio License:</p>
                   <img
-                    src={`${BASE_URL}/${selectedUser.studioLicense}`}
+                    src={getCleanImageUrl(selectedUser.studioLicense)}
                     alt="Studio License"
                     className="w-32 h-32 object-cover border"
                   />
@@ -277,15 +275,15 @@ const PendingBusiness = () => {
                 <strong>Profile Views:</strong> {selectedUser.profileViews}
               </p>
               <p>
-                <strong>Is Deleted:</strong>{" "}
-                {selectedUser.isDeleted ? "Yes" : "No"}
+                <strong>Is Deleted:</strong>{' '}
+                {selectedUser.isDeleted ? 'Yes' : 'No'}
               </p>
               <p>
-                <strong>Created At:</strong>{" "}
+                <strong>Created At:</strong>{' '}
                 {new Date(selectedUser.createdAt).toLocaleString()}
               </p>
               <p>
-                <strong>Updated At:</strong>{" "}
+                <strong>Updated At:</strong>{' '}
                 {new Date(selectedUser.updatedAt).toLocaleString()}
               </p>
             </div>

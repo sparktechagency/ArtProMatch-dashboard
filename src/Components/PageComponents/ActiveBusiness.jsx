@@ -1,22 +1,22 @@
 /* eslint-disable no-unused-vars */
-import { Avatar, ConfigProvider, Input, Space, Table } from "antd";
-import { useState } from "react";
-import tatto from "../../assets/image/tatto.jpg";
-import { Button, Modal } from "antd";
-import { FaEye, FaUser } from "react-icons/fa";
-import { FiUserCheck } from "react-icons/fi";
-import { SearchOutlined } from "@ant-design/icons";
-import { useGetAllBusinessQuery } from "../../redux/features/usersApi/usersApi";
+import { Avatar, ConfigProvider, Input, Space, Table } from 'antd';
+import { useState } from 'react';
+import tatto from '../../assets/image/tatto.jpg';
+import { Button, Modal } from 'antd';
+import { FaEye, FaUser } from 'react-icons/fa';
+import { FiUserCheck } from 'react-icons/fi';
+import { SearchOutlined } from '@ant-design/icons';
+import { useGetAllBusinessesQuery } from '../../redux/features/usersApis';
 const ActiveBusiness = () => {
-  const { data: businessData } = useGetAllBusinessQuery();
+  const { data: businessData } = useGetAllBusinessesQuery();
   // console.log("data:", businessData?.data);
   const userData = businessData?.data;
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState('');
 
-  const showModal = (record) => {
+  const showModal = record => {
     setSelectedUser(record);
     setIsModalOpen(true);
   };
@@ -30,20 +30,20 @@ const ActiveBusiness = () => {
     // refetc();
   };
 
-  const handleSession = (record) => {
+  const handleSession = record => {
     console.log(record);
   };
 
   const columns = [
     {
-      title: "Sl No",
-      dataIndex: "slno",
-      key: "slno",
+      title: 'Sl No',
+      dataIndex: 'slno',
+      key: 'slno',
       render: (text, record, index) => index + 1,
     },
     {
-      title: "Name",
-      key: "name",
+      title: 'Name',
+      key: 'name',
       render: (_, record) => (
         <div className="flex items-center gap-2">
           <Avatar
@@ -56,9 +56,9 @@ const ActiveBusiness = () => {
       ),
     },
     {
-      title: "Email",
-      dataIndex: "email",
-      key: "email",
+      title: 'Email',
+      dataIndex: 'email',
+      key: 'email',
       render: (_, record) => (
         <div className="flex items-center gap-2">
           <span>{record?.auth.email}</span>
@@ -66,9 +66,9 @@ const ActiveBusiness = () => {
       ),
     },
     {
-      title: "Contact No",
-      dataIndex: "phone",
-      key: "phone",
+      title: 'Contact No',
+      dataIndex: 'phone',
+      key: 'phone',
       render: (_, record) => (
         <div className="flex items-center gap-2">
           <span>{record?.auth.phoneNumber}</span>
@@ -76,25 +76,25 @@ const ActiveBusiness = () => {
       ),
     },
     {
-      title: "Address",
-      dataIndex: "city",
-      key: "city",
+      title: 'Address',
+      dataIndex: 'city',
+      key: 'city',
       render: (_, record) => {
         <p>{record?.city}</p>;
       },
     },
 
     {
-      title: "Action",
-      key: "action",
+      title: 'Action',
+      key: 'action',
       render: (_, record) => (
         <ConfigProvider
           theme={{
             components: {
               Button: {
-                defaultHoverBorderColor: "rgb(47,84,235)",
-                defaultHoverColor: "rgb(47,84,235)",
-                defaultBorderColor: "rgb(47,84,235)",
+                defaultHoverBorderColor: 'rgb(47,84,235)',
+                defaultHoverColor: 'rgb(47,84,235)',
+                defaultBorderColor: 'rgb(47,84,235)',
               },
             },
           }}
@@ -154,10 +154,10 @@ const ActiveBusiness = () => {
                   <strong>Email:</strong> {selectedUser.email}
                 </p>
                 <p>
-                  <strong>Address:</strong> {selectedUser["address"]}
+                  <strong>Address:</strong> {selectedUser['address']}
                 </p>
                 <p>
-                  <strong>Business Name:</strong> {selectedUser["businessName"]}
+                  <strong>Business Name:</strong> {selectedUser['businessName']}
                 </p>
               </div>
 

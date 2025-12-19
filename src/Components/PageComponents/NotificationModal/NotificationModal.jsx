@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import user from "../../../assets/image/User 2.png";
 const NotificationModal = () => {
   return (

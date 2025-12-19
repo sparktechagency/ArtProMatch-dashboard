@@ -1,12 +1,12 @@
 /* eslint-disable no-unused-vars */
-import { Avatar, ConfigProvider, Input, Space, Table } from "antd";
-import { useState } from "react";
-import tatto from "../../assets/image/tatto.jpg";
-import { Button, Modal } from "antd";
-import { FaEye, FaUser } from "react-icons/fa";
-import { FiUserCheck } from "react-icons/fi";
-import { SearchOutlined } from "@ant-design/icons";
-import { useGetAllClientsQuery } from "../../redux/features/usersApi/usersApi";
+import { Avatar, ConfigProvider, Input, Space, Table } from 'antd';
+import { useState } from 'react';
+import tatto from '../../assets/image/tatto.jpg';
+import { Button, Modal } from 'antd';
+import { FaEye, FaUser } from 'react-icons/fa';
+import { FiUserCheck } from 'react-icons/fi';
+import { SearchOutlined } from '@ant-design/icons';
+import { useGetAllClientsQuery } from '../../redux/features/usersApis';
 const ActiveUserList = () => {
   const { data: clientsData } = useGetAllClientsQuery();
   // console.log("data:", clientsData?.data);
@@ -14,9 +14,9 @@ const ActiveUserList = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState('');
 
-  const showModal = (record) => {
+  const showModal = record => {
     setSelectedUser(record);
     setIsModalOpen(true);
   };
@@ -30,20 +30,20 @@ const ActiveUserList = () => {
     // refetc();
   };
 
-  const handleSession = (record) => {
+  const handleSession = record => {
     console.log(record);
   };
 
   const columns = [
     {
-      title: "Sl No",
-      dataIndex: "slno",
-      key: "slno",
+      title: 'Sl No',
+      dataIndex: 'slno',
+      key: 'slno',
       render: (text, record, index) => index + 1,
     },
     {
-      title: "Name",
-      key: "name",
+      title: 'Name',
+      key: 'name',
       render: (_, record) => (
         <div className="flex items-center gap-2">
           <Avatar
@@ -56,23 +56,21 @@ const ActiveUserList = () => {
       ),
     },
     {
-      title: "Email",
-      dataIndex: "email",
-      key: "email",
-       render: (_, record) => (
+      title: 'Email',
+      dataIndex: 'email',
+      key: 'email',
+      render: (_, record) => (
         <div className="flex items-center gap-2">
-         
           <span>{record.auth?.email}</span>
         </div>
       ),
     },
     {
-      title: "Contact No",
-      dataIndex: "phone",
-      key: "phone",
-        render: (_, record) => (
+      title: 'Contact No',
+      dataIndex: 'phone',
+      key: 'phone',
+      render: (_, record) => (
         <div className="flex items-center gap-2">
-         
           <span>{record.auth?.phoneNumber}</span>
         </div>
       ),
@@ -85,16 +83,16 @@ const ActiveUserList = () => {
     // },
 
     {
-      title: "Action",
-      key: "action",
+      title: 'Action',
+      key: 'action',
       render: (_, record) => (
         <ConfigProvider
           theme={{
             components: {
               Button: {
-                defaultHoverBorderColor: "rgb(47,84,235)",
-                defaultHoverColor: "rgb(47,84,235)",
-                defaultBorderColor: "rgb(47,84,235)",
+                defaultHoverBorderColor: 'rgb(47,84,235)',
+                defaultHoverColor: 'rgb(47,84,235)',
+                defaultBorderColor: 'rgb(47,84,235)',
               },
             },
           }}
@@ -154,13 +152,15 @@ const ActiveUserList = () => {
                   <strong>Email:</strong> {selectedUser.auth.email}
                 </p>
                 <p>
-                  <strong>Address:</strong> {selectedUser?.location?.coordinates}
+                  <strong>Address:</strong>{' '}
+                  {selectedUser?.location?.coordinates}
                 </p>
                 <p>
                   <strong>Looking For:</strong> {selectedUser?.lookingFor}
                 </p>
                 <p>
-                  <strong>Favorite Tattoos:</strong> {selectedUser?.favoriteTattoos}
+                  <strong>Favorite Tattoos:</strong>{' '}
+                  {selectedUser?.favoriteTattoos}
                 </p>
               </div>
 
