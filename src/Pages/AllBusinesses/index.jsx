@@ -3,7 +3,10 @@ import { useState } from 'react';
 import { Button, Modal } from 'antd';
 import { FaEye } from 'react-icons/fa';
 // import { SearchOutlined } from '@ant-design/icons';
-import { useGetAllBusinessesQuery } from '../../redux/features/usersApis';
+import {
+  useApproveBusinessMutation,
+  useGetAllBusinessesQuery,
+} from '../../redux/features/usersApis';
 import { getCleanImageUrl } from '../../utils/getCleanImageUrl';
 
 const AllBusinesses = () => {
@@ -12,11 +15,14 @@ const AllBusinesses = () => {
   // const [nameInput, setNameInput] = useState('');
   // const [searchName, setSearchName] = useState('');
 
-  const { data, isLoading, isError } = useGetAllBusinessesQuery({
+  const { data, isLoading, isError, refetch } = useGetAllBusinessesQuery({
     page,
     limit,
     // name: searchName,
   });
+
+  const [approveBusiness] = useApproveBusinessMutation();
+  const [approvingId, setApprovingId] = useState(null);
 
   const meta = data?.meta;
   const businessRows = data?.data || [];
@@ -152,12 +158,6 @@ const AllBusinesses = () => {
       render: value => renderListTags(value, 5),
     },
     {
-      title: 'City',
-      dataIndex: 'city',
-      key: 'city',
-      render: value => <span className="text-gray-700">{value || '-'}</span>,
-    },
-    {
       title: 'Contact',
       key: 'contact',
       render: (_, record) => (
@@ -214,6 +214,106 @@ const AllBusinesses = () => {
               onClick={() => showModal(record)}
               icon={<FaEye className="text-primary" />}
             />
+
+            {!record?.auth?.isActive && (
+              <Button
+                type="primary"
+                loading={approvingId === record?._id}
+                disabled={approvingId === record?._id}
+                onClick={() => {
+                  Modal.confirm({
+                    title: 'Approve this business?',
+                    content: (
+                      <div className="flex items-center gap-3">
+                        <Avatar
+                          size={44}
+                          className="shadow-md bg-primary"
+                          src={getCleanImageUrl(record?.auth?.image)}
+                        >
+                          {getInitials(record?.auth?.fullName)}
+                        </Avatar>
+                        <div className="flex flex-col">
+                          <span className="font-medium">
+                            {record?.studioName ||
+                              record?.auth?.fullName ||
+                              '-'}
+                          </span>
+                          <span className="text-sm text-gray-600">
+                            {record?.auth?.email || '-'}
+                          </span>
+                          <span className="text-sm text-gray-600">
+                            {record?.auth?.phoneNumber || '-'}
+                          </span>
+                        </div>
+                      </div>
+                    ),
+                    okText: 'Approve',
+                    cancelText: 'Cancel',
+                    onOk: async () => {
+                      setApprovingId(record?._id);
+                      try {
+                        await approveBusiness({ _id: record?._id }).unwrap();
+                        await refetch();
+                      } finally {
+                        setApprovingId(null);
+                      }
+                    },
+                  });
+                }}
+              >
+                Approve
+              </Button>
+            )}
+
+            {record?.auth?.isActive && (
+              <Button
+                danger
+                loading={approvingId === record?._id}
+                disabled={approvingId === record?._id}
+                onClick={() => {
+                  Modal.confirm({
+                    title: 'Unapprove this business?',
+                    content: (
+                      <div className="flex items-center gap-3">
+                        <Avatar
+                          size={44}
+                          className="shadow-md bg-primary"
+                          src={getCleanImageUrl(record?.auth?.image)}
+                        >
+                          {getInitials(record?.auth?.fullName)}
+                        </Avatar>
+                        <div className="flex flex-col">
+                          <span className="font-medium">
+                            {record?.studioName ||
+                              record?.auth?.fullName ||
+                              '-'}
+                          </span>
+                          <span className="text-sm text-gray-600">
+                            {record?.auth?.email || '-'}
+                          </span>
+                          <span className="text-sm text-gray-600">
+                            {record?.auth?.phoneNumber || '-'}
+                          </span>
+                        </div>
+                      </div>
+                    ),
+                    okText: 'Unapprove',
+                    cancelText: 'Cancel',
+                    onOk: async () => {
+                      setApprovingId(record?._id);
+                      try {
+                        await approveBusiness({ _id: record?._id }).unwrap();
+                        await refetch();
+                      } finally {
+                        setApprovingId(null);
+                      }
+                    },
+                  });
+                }}
+              >
+                Unapprove
+              </Button>
+            )}
           </Space>
         </ConfigProvider>
       ),
@@ -350,9 +450,6 @@ const AllBusinesses = () => {
                   {typeof selectedArtist?.taskCompleted === 'number'
                     ? selectedArtist.taskCompleted
                     : '-'}
-                </p>
-                <p>
-                  <strong>City:</strong> {selectedArtist?.city || '-'}
                 </p>
               </div>
             </div>
