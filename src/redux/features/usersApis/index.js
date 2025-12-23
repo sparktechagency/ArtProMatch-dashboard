@@ -55,6 +55,7 @@ const usersApi = baseApi.injectEndpoints({
         // body: data,
       }),
     }),
+    
     // approveBusiness
     approveBusiness: builder.mutation({
       query: ({ _id }) => ({
