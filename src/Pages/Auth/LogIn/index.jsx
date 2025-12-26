@@ -39,19 +39,24 @@ const LogIn = () => {
 
       if (res?.success) {
         const user = verifyToken(res.data.accessToken);
-        dispatch(
-          setUser({
-            user: user,
-            accessToken: res.data.accessToken,
-            refreshToken: res.data.refreshToken,
-          })
-        );
 
-        toast.success(res?.message);
+        if (user?.role === 'SUPER_ADMIN' || user?.role === 'ADMIN') {
+          dispatch(
+            setUser({
+              user: user,
+              accessToken: res.data.accessToken,
+              refreshToken: res.data.refreshToken,
+            })
+          );
 
-        setTimeout(() => {
-          navigate(from, { replace: true });
-        }, 10);
+          toast.success(res?.message);
+
+          setTimeout(() => {
+            navigate(from, { replace: true });
+          }, 10);
+        } else {
+          toast.error('You are not permitted to login here!');
+        }
       }
     } catch (error) {
       console.error('Login error:', error);
