@@ -115,7 +115,7 @@ const LogIn = () => {
                       required
                       style={{ padding: '6px' }}
                       className=" text-md"
-                      type={showpassword ? 'password' : 'text'}
+                      type={showpassword ? 'text' : 'password'}
                       placeholder="Password"
                       autoComplete="current-password"
                     />
